@@ -99,6 +99,7 @@
 // export default Navbar;
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { kWebsiteName } from '../../constants/name';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -113,19 +114,19 @@ const Navbar: React.FC = () => {
         <nav className="bg-gray-800 p-4 text-white w-full top-0 z-10 fixed shadow-md">
             <div className="container mx-auto flex justify-between items-center">
                 <Link to={''}>
-                    <h2 className="text-xl font-bold text-blue-400" style={{ fontFamily: '"IM Fell English", serif' }}>New World League</h2>
+                    <h2 className="text-xl font-bold text-blue-400" style={{ fontFamily: '"IM Fell English", serif' }}>{kWebsiteName}</h2>
                 </Link>
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-4 items-center relative">
-                    <NavLink
+                    {/* <NavLink
                         to="/rankings"
                         className={({ isActive }) =>
                             isActive ? 'px-3 py-2 bg-gray-700 rounded' : 'px-3 py-2 hover:bg-gray-600 rounded'
                         }
                     >
                         Rankings
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink
                         to="/wars"
                         className={({ isActive }) =>
@@ -200,7 +201,7 @@ const Navbar: React.FC = () => {
 
             {/* Mobile Menu */}
             <div className={`md:hidden bg-gray-800 p-4 ${isOpen ? 'block' : 'hidden'}`}>
-                <NavLink
+                {/* <NavLink
                     to="/rankings"
                     className={({ isActive }) =>
                         isActive ? 'block px-3 py-2 bg-gray-700 rounded mb-2' : 'block px-3 py-2 rounded mb-2 hover:bg-gray-600'
@@ -208,7 +209,7 @@ const Navbar: React.FC = () => {
                     onClick={toggleMenu}
                 >
                     Rankings
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                     to="/wars"
                     className={({ isActive }) =>

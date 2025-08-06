@@ -31,7 +31,7 @@ const App: React.FC = () => {
             <Route path="/wars/:warId" element={<WarDetail />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/inaccuracy" element={<Inaccuracy />} />
-            <Route path="/rankings" element={<Rankings />} />
+            {/* <Route path="/rankings" element={<Rankings />} /> */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
