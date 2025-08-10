@@ -10,7 +10,6 @@ export function usePlayerDetails(playerName: string) {
     const { alts, loading: altsLoading, error: altsError } = useAlts(playerName);
     const altNames = alts.map(v => v.name) || [playerName];
 
-    console.log(altNames);
     const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboardsByCharacters(altNames);
 
     const warIds = useMemo(() => leaderboard.map(v => v.warid), [leaderboard]);

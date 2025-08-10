@@ -47,6 +47,6 @@ export function constructQuery(columns: string[], params?: QueryParameter[], ord
     const conditions = params ? ` WHERE ${makeConditions(params)}` : '';
     const limitStr = limit ? ` LIMIT ${limit}` : '';
     const orderBy = order ? ` ORDER BY ${order.column} ${order.direction.toUpperCase()}` : '';
-    const select = columns.map(v => v.toUpperCase()).join(', ');
+    const select = columns.sort().map(v => v.toUpperCase()).join(', ');
     return `SELECT ${select}${conditions}${orderBy}${limitStr}`;
 }

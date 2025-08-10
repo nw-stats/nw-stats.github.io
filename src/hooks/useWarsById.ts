@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Qop, type QueryParameter } from "../types/queryparameter";
 import type { War } from "../types/war";
 import { getWars } from "../services/wardbservice";
+import { kWarColumns } from "../mapping/warmap";
 
 export function useWarsById(withIds: number[]) {
     const [wars, setWars] = useState<War[]>([]);
@@ -16,9 +17,9 @@ export function useWarsById(withIds: number[]) {
 
                 const query: QueryParameter[] = [];
                 for (const wid of withIds) {
-                    query.push({ column: "A", fn: Qop.Eq, value: wid });
+                    query.push({ column: kWarColumns.id, fn: Qop.Eq, value: wid });
                 }
-                query.push({ column: "N", fn: Qop.Neq, value: true });
+                query.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
                 const w = (await getWars(query)).sort((a, b) => b.date.getTime() - a.date.getTime());
                 if (cancelled) return;
                 setWars(w)

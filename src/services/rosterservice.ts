@@ -1,4 +1,5 @@
 import { kSheetId } from "../constants/sheets";
+import { kRosterColumns } from "../mapping/rostermap";
 import { type QueryParameter } from "../types/queryparameter";
 import type { Role } from "../types/role";
 import type { Group, GroupKey, Roster } from "../types/roster";
@@ -7,7 +8,15 @@ import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 
 export async function getRosters(params: QueryParameter[]): Promise<Map<number, Map<string, Roster>>> {
-    const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G'], params);
+    const query = constructQuery([
+        kRosterColumns.id,
+        kRosterColumns.war,
+        kRosterColumns.company,
+        kRosterColumns.character,
+        kRosterColumns.role,
+        kRosterColumns.group,
+        kRosterColumns.qpds
+    ], params);
     let data: DataType[][] = [];
 
     try {

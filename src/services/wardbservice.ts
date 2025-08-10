@@ -1,10 +1,12 @@
 import type { War } from "../types/war";
-import { makeConditions } from "../utils/querybuilder";
+import { constructQuery, makeConditions } from "../utils/querybuilder";
 import { combineDateAndTime, convertFromGoogleSheetsDateString } from "../utils/time";
 import { fetchTableFromGoogleSheets } from "./googlesheets";
 import { type Ordering, type QueryParameter } from "../types/queryparameter";
 import type { League } from "../types/league";
 import { kSheetId } from "../constants/sheets";
+import { kWarColumns, kWarTable } from "../mapping/warmap";
+import { convertInt, convertString } from "../utils/sheetconvert";
 
 // //const kSheetId = "14byZyCAX_N_AA-y_1tv4CLtgTCaOB-Zq8QbOHmavE6Y";
 
@@ -97,31 +99,42 @@ import { kSheetId } from "../constants/sheets";
 // }
 
 export async function getWars(params?: QueryParameter[], limit?: number, order?: Ordering): Promise<War[]> {
-    const conditions = params && params.length > 0 ? ` WHERE ${makeConditions(params)} ` : ''
-    const limitStr = limit ? ` LIMIT ${limit} ` : '';
-    const orderStr = order ? ` ORDER BY ${order.column} ${order.direction.toUpperCase()} ` : '';
-    const query = `SELECT A, B, C, D, E, F, G, H, I, J, K, L, M, N, O${conditions}${orderStr}${limitStr} `;
+    const query = constructQuery([
+        kWarColumns.id,
+        kWarColumns.date,
+        kWarColumns.time,
+        kWarColumns.server,
+        kWarColumns.territory,
+        kWarColumns.attacker,
+        kWarColumns.defender,
+        kWarColumns.winnner,
+        kWarColumns.pointA,
+        kWarColumns.pointB,
+        kWarColumns.pointC,
+        kWarColumns.fort,
+        kWarColumns.duration,
+        kWarColumns.show,
+    ], params, order, limit);
     const data = await fetchTableFromGoogleSheets(kSheetId, 'wars', query);
 
     const wars: War[] = [];
     for (const row of data) {
-        const id = row[0] as number;
-        const date = convertFromGoogleSheetsDateString(row[1] as string) || new Date();
-        const time = convertFromGoogleSheetsDateString(row[2] as string) || new Date();
+        const id = convertInt(row[kWarTable.id]);
+        const date = convertFromGoogleSheetsDateString(row[kWarTable.date] as string) || new Date();
+        const time = convertFromGoogleSheetsDateString(row[kWarTable.time] as string) || new Date();
         const dateTime = combineDateAndTime(date, time);
-        const map = row[4] as string;
-        const attacker = row[5] as string;
-        const defender = row[6] as string;
-        const winner = row[7] as string;
+        const map = convertString(row[kWarTable.territory]);
+        const attacker = convertString(row[kWarTable.attacker]);
+        const defender = convertString(row[kWarTable.defender]);
+        const winner = convertString(row[kWarTable.winnner]);
         const captures = {
-            pointA: row[8] as number,
-            pointB: row[9] as number,
-            pointC: row[10] as number,
-            fort: row[11] as number,
-        }
-        const duration = row[12] as number;
-        const league = row[14] as League;
-        wars.push({ id, date: dateTime, map, attacker, defender, winner, captures, duration, league });
+            pointA: convertInt(row[kWarTable.pointA]),
+            pointB: convertInt(row[kWarTable.pointB]),
+            pointC: convertInt(row[kWarTable.pointC]),
+            fort: convertInt(row[kWarTable.fort]),
+        };
+        const duration = convertInt(row[kWarTable.duration]);
+        wars.push({ id, date: dateTime, map, attacker, defender, winner, captures, duration });
     }
     return wars;
 }
