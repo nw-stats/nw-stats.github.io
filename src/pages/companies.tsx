@@ -5,6 +5,7 @@ import { useCompanies } from "../hooks2/useCompaniesNew";
 
 const Companies: React.FC = () => {
     const { loading, err, companies } = useCompanies();
+
     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
     if (err) return <div className="text-white">Problem loading companies</div>
 

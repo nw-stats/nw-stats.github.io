@@ -20,6 +20,9 @@ const CompanyListCard: React.FC<CompanyListCardProps> = ({ company }) => {
                     <div className="text-xs text-gray-200">
                         {company.faction}
                     </div>
+                    <div className="text-xs text-gray-200">
+                        {company.server}
+                    </div>
                 </div>
             </div>
         </Link >

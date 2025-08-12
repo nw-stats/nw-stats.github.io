@@ -20,7 +20,9 @@ function CompanyDetailCard({ company }: CompanyDetailCardProps): JSX.Element {
                         {/* <div>{player.role}</div>s */}
                     </div>
                     <div className="flex flex-row w-full">
-                        <div className="min-w-[100px]">{company.faction}</div>
+                        <div className="">{company.faction}</div>
+                        <div className="pr-2 pl-2">|</div>
+                        <div>{company.server}</div>
                     </div>
                     <div className={`flex flex-row text-xl`}>
                         <div className="min-w-[100px]">Governor</div>
