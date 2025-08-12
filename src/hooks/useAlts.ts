@@ -1,7 +1,7 @@
 // src/hooks/useAlts.ts
 import { useEffect, useState } from 'react';
 import { getAlts } from '../services/altservice';
-import { getPlayers } from '../services/playerservice';
+import { getPlayers } from '../services/characterservice';
 import { Qop } from '../types/queryparameter';
 import type { Character } from '../types/character';
 

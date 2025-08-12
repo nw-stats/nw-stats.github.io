@@ -14,6 +14,7 @@ export async function fetchTableFromGoogleSheets(
     sheetName: string,
     query: string
 ): Promise<DataType[][]> {
+    ''
     try {
         const encodedQuery = encodeURI(query);
         const fullurl = kBaseUrl

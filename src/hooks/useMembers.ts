@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { getPlayers } from "../services/playerservice";
+import { getPlayers as getCharacters } from "../services/characterservice";
 import { Qop } from "../types/queryparameter";
 import type { Character } from "../types/character";
+import { kCharacterColumns } from "../mapping/charactersmap";
 
 export function useMembers(company: string) {
     const [loading, setLoading] = useState<boolean>(true);
@@ -13,7 +14,7 @@ export function useMembers(company: string) {
         async function fetchAll() {
             try {
                 setLoading(true);
-                const m = await getPlayers([{ column: "F", fn: Qop.Eq, value: company }]);
+                const m = await getCharacters([{ column: kCharacterColumns.company, fn: Qop.Eq, value: company }]);
                 if (cancelled) return;
                 setMemebrs(m);
             } catch (err) {

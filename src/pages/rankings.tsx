@@ -19,7 +19,6 @@ function Rankings(): JSX.Element {
     const companies: Map<string, WinLoss> = new Map();
 
     for (const war of wars) {
-        if (war.league !== league) continue;
         let attacker = companies.get(war.attacker);
         let defender = companies.get(war.defender);
 

@@ -1,9 +1,8 @@
 import type { War } from "../types/war";
-import { constructQuery, makeConditions } from "../utils/querybuilder";
+import { constructQuery } from "../utils/querybuilder";
 import { combineDateAndTime, convertFromGoogleSheetsDateString } from "../utils/time";
 import { fetchTableFromGoogleSheets } from "./googlesheets";
 import { type Ordering, type QueryParameter } from "../types/queryparameter";
-import type { League } from "../types/league";
 import { kSheetId } from "../constants/sheets";
 import { kWarColumns, kWarTable } from "../mapping/warmap";
 import { convertInt, convertString } from "../utils/sheetconvert";

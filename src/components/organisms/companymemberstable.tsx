@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import type { Character } from "../../types/character";
 
 import PlayerListCard from "../atom/playerlistcard";
+import { NoData } from "../atom/nodata";
 
 interface CompanyMemberProps {
     members: Character[];
@@ -22,7 +23,9 @@ function CompanyMembersTable({ members }: CompanyMemberProps): JSX.Element {
 
     return (
         <div className="flex flex-col w-full gap-2 max-w-lg">
-            {members.map(v => <div className="hover:scale-105"><PlayerListCard player={v} /></div>)}
+            {members.length > 0 ?
+                members.map(v => <div className="hover:scale-105"><PlayerListCard player={v} /></div>) :
+                <NoData />}
         </div>
         // <StatsTable columns={columns} data={members} />
     );

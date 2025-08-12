@@ -9,7 +9,6 @@ interface CompanyDetailCardProps {
 function CompanyDetailCard({ company }: CompanyDetailCardProps): JSX.Element {
 
     const color = factionBgPrimary(company.faction);
-
     return (
         <div className="flex flex-row">
             <div className={`${color} min-w-10 rounded-l-lg`}></div>
@@ -22,18 +21,16 @@ function CompanyDetailCard({ company }: CompanyDetailCardProps): JSX.Element {
                     </div>
                     <div className="flex flex-row w-full">
                         <div className="min-w-[100px]">{company.faction}</div>
-                        <div className="pr-2">|</div>
-                        <div className="">League {company.tier}</div>
                     </div>
-                    <div className="flex flex-row text-xl">
-                        <div className="min-w-[100px]">Captains</div>
+                    <div className={`flex flex-row text-xl`}>
+                        <div className="min-w-[100px]">Governor</div>
                         <div className="pr-2">|</div>
-                        <div>{company.captains.join(', ')}</div>
+                        <div>{company.governor}</div>
                     </div>
-                    <div className="flex flex-row text-xl">
-                        <div className="min-w-[100px]">Shotcaller</div>
+                    <div className={`flex flex-row text-xl ${company.consuls.length > 0 ? 'visible' : 'invisible'}`}>
+                        <div className="min-w-[100px]">Consuls</div>
                         <div className="pr-2">|</div>
-                        <div>{company.shotcaller}</div>
+                        <div>{company.consuls.join(', ')}</div>
                     </div>
                 </div>
             </div>

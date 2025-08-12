@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlayers } from "../services/playerservice";
+import { getPlayers } from "../services/characterservice";
 import type { Character } from "../types/character";
 
 export function useCharacters() {
