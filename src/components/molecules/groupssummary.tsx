@@ -118,7 +118,7 @@ const GroupsSummary: React.FC<GroupsSummaryProps> = ({
 
                 // If both are strings, sort 'Weak' before 'Strong'
                 if (keyA === keyB) return 0;
-                if (keyA === 'Weak') return -1;
+                if (keyA === 'weak') return -1;
                 return 1; // keyB === 'Weak' or keyA === 'Strong' > keyB === 'Strong'
             })
             .map(key => groups.get(key))

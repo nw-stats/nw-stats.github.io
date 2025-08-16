@@ -113,6 +113,8 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
         kWarColumns.fort,
         kWarColumns.duration,
         kWarColumns.show,
+        kWarColumns.status,
+        kWarColumns.tz,
     ], params, order, limit);
     const data = await fetchTableFromGoogleSheets(kSheetId, 'wars', query);
 
@@ -121,7 +123,8 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
         const id = convertInt(row[kWarTable.id]);
         const date = convertFromGoogleSheetsDateString(row[kWarTable.date] as string) || new Date();
         const time = convertFromGoogleSheetsDateString(row[kWarTable.time] as string) || new Date();
-        const dateTime = combineDateAndTime(date, time);
+        const tz = convertString(row[kWarTable.tz]);
+        const dateTime = combineDateAndTime(date, time, tz);
         const map = convertString(row[kWarTable.territory]);
         const attacker = convertString(row[kWarTable.attacker]);
         const defender = convertString(row[kWarTable.defender]);

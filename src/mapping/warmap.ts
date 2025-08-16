@@ -15,7 +15,9 @@ export const kWarColumns = {
     pointC: "K",
     fort: "L",
     duration: "M",
-    show: "N"
+    show: "N",
+    status: "O",
+    tz: "P",
 }
 
 export const kWarTable = {
@@ -33,4 +35,6 @@ export const kWarTable = {
     fort: 11,
     duration: 12,
     show: 13,
+    status: 14,
+    tz: 15,
 }

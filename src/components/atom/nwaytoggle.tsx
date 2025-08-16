@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { JSX } from "react";
 
-interface NWayToggleProps {
-    options: string[];
-    defaultIndex?: number;
-    onChange?: (value: string, index: number) => void;
+interface NWayToggleProps<T extends string> {
+    options: T[];
+    defaultValue?: T;
+    onChange?: (value: T, index: number) => void;
+    className?: string;
 }
 
-export function NWayToggle({
+export function NWayToggle<T extends string>({
     options,
-    defaultIndex = 0,
+    defaultValue,
     onChange,
-}: NWayToggleProps): JSX.Element {
+    className,
+}: NWayToggleProps<T>): JSX.Element {
+    const defaultIndex = defaultValue ? options.indexOf(defaultValue) : 0;
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
+
+    useEffect(() => {
+        if (defaultValue) {
+            const index = options.indexOf(defaultValue);
+            if (index >= 0) setSelectedIndex(index);
+        }
+    }, [defaultValue, options]);
 
     const handleClick = (index: number) => {
         setSelectedIndex(index);
@@ -20,15 +30,19 @@ export function NWayToggle({
     };
 
     return (
-        <div className="flex gap-2">
+        <div className="flex">
             {options.map((option, index) => (
                 <button
                     key={option}
                     onClick={() => handleClick(index)}
-                    className={`px-3 py-1 rounded ${selectedIndex === index
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300 text-black"
-                        }`}
+                    className={`${className} text-white ${selectedIndex === index
+                        ? "bg-blue-600"
+                        : "bg-gray-600 hover:bg-gray-700"
+                        } ${index === 0
+                            ? 'rounded-l-lg'
+                            : index === options.length - 1
+                                ? 'rounded-r-lg'
+                                : ''}`}
                 >
                     {option}
                 </button>

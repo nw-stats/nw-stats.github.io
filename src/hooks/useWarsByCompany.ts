@@ -19,7 +19,7 @@ export function useWarsByCompany(companyName: string) {
                 const notHiddenQp = { column: kWarColumns.show, fn: Qop.Eq, value: true };
                 const [atk, def] = await Promise.all([getWars([attackerQp, notHiddenQp]), getWars([defenderQp, notHiddenQp])]);
                 if (cancelled) return;
-                const w = atk.concat(def).sort((a, b) => (a.date.getTime() - b.date.getTime()));
+                const w = atk.concat(def).sort((a, b) => (a.date.toMillis() - b.date.toMillis()));
 
                 setWars(w)
             } catch (err) {

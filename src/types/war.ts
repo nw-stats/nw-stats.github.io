@@ -1,9 +1,10 @@
+import type { DateTime } from "luxon";
 import type { CaptureTimes } from "./captures";
 export type WarType = 'M' | 'G' | 'M-10' | 'G-10';
 
 export interface War {
     id: number;
-    date: Date;
+    date: DateTime;
     map: string;
     attacker: string;
     defender: string;
@@ -27,4 +28,5 @@ export const WarTable = {
     fort: "L",
     duration: "M",
     hidden: "N",
+    tz: "P",
 }

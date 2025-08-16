@@ -30,8 +30,6 @@ function WarDetail(): JSX.Element {
         return <DataEntryInProgress />;
     }
 
-
-
     const attackerSummary = summary.get(war.attacker);
     const defenderSummary = summary.get(war.defender);
 

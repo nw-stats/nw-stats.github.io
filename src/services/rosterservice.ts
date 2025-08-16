@@ -33,7 +33,7 @@ export async function getRosters(params: QueryParameter[]): Promise<Map<number, 
         const player = row[3] as string;
         const role = row[4] as Role;
         const gk = row[5] as GroupKey;
-        const qpds = row[6] as boolean;
+        const qpds = row[6] as string;
 
         let warRoster = allRosters.get(war);
         if (!warRoster) {
@@ -53,7 +53,17 @@ export async function getRosters(params: QueryParameter[]): Promise<Map<number, 
             teamRoster.groups.set(gk, group);
         }
 
-        group.push({ name: player, role, qpds });
+        group.push({ name: player, role, qpds: qpds });
+
+        if (qpds) {
+            const qdpsKey = qpds as GroupKey;
+            let qpdsGroup = teamRoster.groups.get(qdpsKey);
+            if (!qpdsGroup) {
+                qpdsGroup = []
+                teamRoster.groups.set(qdpsKey, qpdsGroup);
+            }
+            qpdsGroup.push({ name: player, role, qpds: qpds });
+        }
     }
 
     return allRosters;

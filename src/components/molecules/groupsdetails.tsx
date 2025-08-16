@@ -8,7 +8,6 @@ interface GroupsDetailProps {
 }
 
 const GroupsDetail: React.FC<GroupsDetailProps> = ({ groups }) => {
-
     const rows = []
     if (groups) {
         const sortedGroups = Array.from(groups.entries()).sort((a, b) => {
@@ -26,7 +25,7 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ groups }) => {
 
             // If both are strings, sort 'Weak' before 'Strong'
             if (keyA === keyB) return 0;
-            if (keyA === 'Weak') return -1;
+            if (keyA === 'weak') return -1;
             return 1; // keyB === 'Weak' or keyA === 'Strong' > keyB === 'Strong'
         });
         for (const [n, group] of sortedGroups) {
@@ -39,7 +38,9 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ groups }) => {
     }
 
 
-
+    if (rows.length === 0) {
+        return (<></>);
+    }
     return (
         <div className="rounded-lg grid grid-cols-1 lg:grid-cols-2 gap-8">
             {rows}

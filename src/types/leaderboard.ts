@@ -1,3 +1,4 @@
+import type { DateTime } from "luxon";
 import type { Role } from "./role";
 
 export interface LeaderboardEntry {
@@ -15,9 +16,10 @@ export interface LeaderboardEntry {
 }
 
 export interface GroupsEntry extends LeaderboardEntry {
+    qpds: boolean;
 }
 export interface CharacterDetailsEntry extends LeaderboardEntry {
-    date: Date;
+    date: DateTime;
     attacker: string;
     defender: string;
     isWinner: boolean;

@@ -20,7 +20,7 @@ export function useWarsById(withIds: number[]) {
                     query.push({ column: kWarColumns.id, fn: Qop.Eq, value: wid });
                 }
                 query.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
-                const w = (await getWars(query)).sort((a, b) => b.date.getTime() - a.date.getTime());
+                const w = (await getWars(query)).sort((a, b) => b.date.toMillis() - a.date.toMillis());
                 if (cancelled) return;
                 setWars(w)
 

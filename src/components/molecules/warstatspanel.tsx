@@ -1,9 +1,10 @@
 import type { CaptureTimes } from "../../types/captures";
 import StatWithIcon from "./statwithicon";
 import { formatDate, formatSeconds } from "../../utils/time";
+import type { DateTime } from "luxon";
 
 interface WarStatsPanelProps {
-    date: Date;
+    date: DateTime;
     map: string;
     captures: CaptureTimes
 }
