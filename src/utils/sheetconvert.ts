@@ -1,6 +1,7 @@
 import type { DataType } from "../services/googlesheets";
 import type { Faction } from "../types/faction";
 import type { Role } from "../types/role";
+import type { Region, WorldKind, WorldSet } from "../types/world";
 
 export function convertInt(value: DataType): number {
     return parseInt(String(value));
@@ -22,9 +23,24 @@ export function convertStringArray(value: DataType, delim?: string): string[] {
 }
 
 export function convertFaction(value: DataType): Faction {
+    if (typeof value !== 'string') {
+        return 'Gray';
+    }
     return value as Faction;
 }
 
 export function convertRole(value: DataType): Role {
     return value as Role;
+}
+
+export function convertRegion(value: DataType): Region {
+    return value as Region;
+}
+
+export function convertWorldSet(value: DataType): WorldSet {
+    return value as WorldSet;
+}
+
+export function convertWorldKind(value: DataType): WorldKind {
+    return value as WorldKind;
 }

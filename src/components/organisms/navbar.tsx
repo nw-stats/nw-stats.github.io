@@ -100,6 +100,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { kWebsiteName } from '../../constants/name';
+import { DiscordLogoIcon } from '@phosphor-icons/react';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -167,7 +168,7 @@ const Navbar: React.FC = () => {
                             More ▾
                         </button>
                         {isDropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-40 bg-gray-700 rounded shadow-lg z-20">
+                            <div className="absolute right-0 mt-2 w-64 bg-gray-700 rounded shadow-lg z-20">
                                 <NavLink
                                     to="/feedback"
                                     className="block px-4 py-2 hover:bg-gray-600"
@@ -175,6 +176,13 @@ const Navbar: React.FC = () => {
                                 >
                                     Feedback
                                 </NavLink>
+                                <a
+                                    href="https://discord.gg/jfhRyNSHvD"
+                                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-600"
+                                >
+                                    <DiscordLogoIcon size={12} />
+                                    <span>Join the Discord</span>
+                                </a>
                             </div>
                         )}
                     </div>
@@ -256,7 +264,13 @@ const Navbar: React.FC = () => {
                 >
                     Feedback
                 </NavLink>
-
+                <a
+                    href="https://discord.gg/jfhRyNSHvD"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-600"
+                >
+                    <DiscordLogoIcon size={12} />
+                    <span>Join the Discord</span>
+                </a>
             </div>
         </nav>
     );

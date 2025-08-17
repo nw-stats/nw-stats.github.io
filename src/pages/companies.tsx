@@ -17,14 +17,14 @@ const Companies: React.FC = () => {
         <div className="flex flex-col pt-8 mx-auto gap-4 max-w-3xl">
             <input
                 type="text"
-                placeholder="Search players..."
+                placeholder="Search companies..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 w-full"
             />
             <div className="flex flex-col gap-2 text-white w-full mx-auto">
-                {companies.filter(v => v.name.toLocaleLowerCase().includes(search)).map(c => (
-                    <CompanyListCard company={c} key={c.name} />
+                {companies.filter(v => v.name.toLocaleLowerCase().includes(search)).map((c, i) => (
+                    <CompanyListCard company={c} key={i} />
                 ))}
             </div>
         </div>

@@ -19,6 +19,5 @@ export function useLocalStorage<T>(key: string, defaultValue: T) {
         } catch { }
     }, [key, value]);
 
-
     return [value, setValue] as const;
 }

@@ -5,7 +5,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import NumberCell from "../atom/numbercell";
 import StatsTable from "../atom/statstble";
 import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react";
-import { formatSeconds } from "../../utils/time";
+import { formatDate, formatSeconds } from "../../utils/time";
+import type { DateTime } from "luxon";
 
 
 export interface CharacterWarHistoryProps {
@@ -22,7 +23,7 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
                 header: "Date",
                 cell: info => (
                     <div className="text-left">
-                        {info.getValue<Date>().toLocaleDateString()}
+                        {formatDate(info.getValue<DateTime>())}
                     </div>
                 )
             },
@@ -37,6 +38,10 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
                         </Link >
                     );
                 },
+            },
+            {
+                accessorKey: "role",
+                header: "Role",
             },
             {
                 accessorKey: "isWinner",

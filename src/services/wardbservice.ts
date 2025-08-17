@@ -125,6 +125,7 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
         const time = convertFromGoogleSheetsDateString(row[kWarTable.time] as string) || new Date();
         const tz = convertString(row[kWarTable.tz]);
         const dateTime = combineDateAndTime(date, time, tz);
+        const server = convertString(row[kWarTable.server]);
         const map = convertString(row[kWarTable.territory]);
         const attacker = convertString(row[kWarTable.attacker]);
         const defender = convertString(row[kWarTable.defender]);
@@ -136,7 +137,7 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
             fort: convertInt(row[kWarTable.fort]),
         };
         const duration = convertInt(row[kWarTable.duration]);
-        wars.push({ id, date: dateTime, map, attacker, defender, winner, captures, duration });
+        wars.push({ id, date: dateTime, server, map, attacker, defender, winner, captures, duration });
     }
     return wars;
 }

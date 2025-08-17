@@ -5,6 +5,7 @@ export type WarType = 'M' | 'G' | 'M-10' | 'G-10';
 export interface War {
     id: number;
     date: DateTime;
+    server: string;
     map: string;
     attacker: string;
     defender: string;

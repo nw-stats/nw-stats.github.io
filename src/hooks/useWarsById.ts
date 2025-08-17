@@ -9,6 +9,7 @@ export function useWarsById(withIds: number[]) {
     const [loading, setLoading] = useState<Boolean>(true);
     const [error, setError] = useState<any>(null);
     const warKey = useMemo(() => [...withIds].sort((a, b) => a - b).join(','), [withIds]);
+
     useEffect(() => {
         let cancelled = false;
         async function fetchAll() {
@@ -20,7 +21,8 @@ export function useWarsById(withIds: number[]) {
                     query.push({ column: kWarColumns.id, fn: Qop.Eq, value: wid });
                 }
                 query.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
-                const w = (await getWars(query)).sort((a, b) => b.date.toMillis() - a.date.toMillis());
+                let w = await getWars(query)
+                w = w.sort((a, b) => b.date.toMillis() - a.date.toMillis());
                 if (cancelled) return;
                 setWars(w)
 

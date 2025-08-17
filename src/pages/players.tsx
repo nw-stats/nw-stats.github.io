@@ -19,7 +19,7 @@ const Players: React.FC = () => {
         <div className="flex flex-col max-w-3xl  pt-4 pb-4  mx-auto gap-6" >
             <input
                 type="text"
-                placeholder="Search companies..."
+                placeholder="Search players..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 w-full"

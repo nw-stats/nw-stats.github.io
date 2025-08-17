@@ -9,6 +9,9 @@ export interface WarListCardProp {
 const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
     const attackerWins = war.attacker === war.winner;
     const defenderWins = war.defender === war.winner;
+
+    console.log(war.date);
+
     return (
         <Link to={`/wars/${war.id}`}>
             <div className="grid grid-cols-3 text-white w-full bg-gray-700 rounded-lg">
@@ -35,6 +38,7 @@ const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
                     </div>
                     <div>{formatDate(war.date)}</div>
                     <div>{formatTime(war.date)}</div>
+                    <div>{war.server}</div>
                 </div>
 
                 {/* Defender */}

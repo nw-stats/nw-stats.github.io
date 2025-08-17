@@ -14,7 +14,8 @@ export function useCompanies() {
         async function fetchAll() {
             try {
                 setLoading(true);
-                const c = await getCompanies();
+                let c = await getCompanies();
+                c = c.sort((a, b) => a.name.localeCompare(b.name));
                 if (cancelled) return;
                 setCompanies(c);
 

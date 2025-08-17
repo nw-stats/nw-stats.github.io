@@ -7,7 +7,7 @@ export function formatSeconds(seconds: number, pad: string = '0'): string {
 }
 
 export function formatDate(date: DateTime): string {
-    return date.toFormat("M/dd/yyyy");
+    return date.setZone("local").toFormat("MM/dd/yyyy");
 }
 
 export function formatTime(date: DateTime): string {
@@ -43,7 +43,6 @@ export function combineDateAndTime(date: DateTime, time: DateTime, tz: string): 
         second: time.second,
         millisecond: time.millisecond
     }).setZone(tz, { keepLocalTime: true });
-    console.log(combined.toFormat("MM/dd/yyyy h:mm a z"), tz); // e.g., 08/15/2025 1:34 PM EDT
 
     return combined
 }
@@ -57,4 +56,24 @@ export function currentHour(): DateTime {
 export function formatPercent(value: number, figures?: number): string {
     let sigFig = figures ? figures : 2;
     return `${(value * 100).toFixed(sigFig)}% `
+}
+
+
+export function sortByDateThenTime(a: DateTime, b: DateTime): number {
+    // Convert to a unified zone (UTC here)
+    const utcA = a.setZone("utc");
+    const utcB = b.setZone("utc");
+
+    // Compare date first
+    const dateA = utcA.startOf("day").toMillis();
+    const dateB = utcB.startOf("day").toMillis();
+    if (dateA !== dateB) {
+        return dateB - dateA; // latest date first
+    }
+
+    // If same date, compare time (earlier time first)
+    const timeA = utcA.hour * 3600 + utcA.minute * 60 + utcA.second;
+    const timeB = utcB.hour * 3600 + utcB.minute * 60 + utcB.second;
+
+    return timeA - timeB; // earlier time first
 }
