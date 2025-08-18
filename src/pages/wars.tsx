@@ -3,11 +3,11 @@ import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import WarListCard from "../components/molecules/warlistcard";
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useWarsById } from "../hooks/useWarsById";
 import { useWorlds } from "../hooks/useWorlds";
+import { useWars } from "../hooks/useWars";
 
 const Wars: React.FC = () => {
-    const { loading, error, wars } = useWarsById([]);
+    const { loading, error, wars } = useWars();
 
     const { worlds } = useWorlds();
     const { companies } = useCompanies();
@@ -21,7 +21,7 @@ const Wars: React.FC = () => {
     const filteredWars = wars.filter(v => {
         if (savedServers.includes(v.server)) {
             return true;
-        } else if (savedCompanies.includes(v.attacker) || savedCompanies.includes(v.defender)) {
+        } else if (savedCompanies.includes(v.attacker.name) || savedCompanies.includes(v.defender.name)) {
             return true;
         } else if (savedServers.length + savedCompanies.length === 0) {
             return true;
@@ -60,13 +60,13 @@ const Wars: React.FC = () => {
                 <div className="flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
                     <div className="text-white text-xl font-semibold">Filters</div>
                     <MultiselectDropdown
-                        name="Select worlds"
+                        name="worlds"
                         options={worlds.map(v => v.name)}
                         value={savedServers}
                         onChange={setServers}
                     />
                     <MultiselectDropdown
-                        name="Select companies"
+                        name="companies"
                         options={companies.map(v => v.name)}
                         value={savedCompanies}
                         onChange={setCompanies}

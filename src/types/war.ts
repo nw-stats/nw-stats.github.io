@@ -1,5 +1,6 @@
 import type { DateTime } from "luxon";
 import type { CaptureTimes } from "./captures";
+import type { Company } from "./company";
 export type WarType = 'M' | 'G' | 'M-10' | 'G-10';
 
 export interface War {
@@ -7,8 +8,8 @@ export interface War {
     date: DateTime;
     server: string;
     map: string;
-    attacker: string;
-    defender: string;
+    attacker: Company;
+    defender: Company;
     winner: string;
     duration: number;
     captures: CaptureTimes;

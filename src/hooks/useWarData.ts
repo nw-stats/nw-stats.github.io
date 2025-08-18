@@ -2,19 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useLeaderboardsByIds } from "./useLeaderboardsById";
 import { useRosters } from "./useRostersById";
 import { useCompanies } from "./useCompanies";
-import { useWarsById } from "./useWarsById";
 import { getGroupDetails, getGroupSummaries } from "../utils/groups";
 import { type GroupKey } from "../types/roster";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { Company } from "../types/company";
+import { useWars } from "./useWars";
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
 
     const lbHook = useLeaderboardsByIds(warId);
-    const wHook = useWarsById([warId]);
+    const wHook = useWars({ ids: [warId] });
     const rHook = useRosters([warId]);
-    const companies = useMemo(() => (wHook.wars.length !== 0 ? [wHook.wars[0].attacker, wHook.wars[0].defender] : []), [wHook.wars]);
+    const companies = useMemo(() => (wHook.wars.length !== 0 ? [wHook.wars[0].attacker.name, wHook.wars[0].defender.name] : []), [wHook.wars]);
     const cHook = useCompanies(companies);
     const loading = lbHook.loading || wHook.loading || rHook.loading || cHook.loading;
 

@@ -3,7 +3,7 @@ import { useRostersByPlayer } from "./useRostersByPlayer";
 import { createCharacterDetails } from "../utils/player";
 import { useCharacter } from "./useCharacter";
 import { useLeaderboardsByCharacters } from "./useLeaderboardsByCharacter";
-import { useWarsById } from "./useWarsById";
+import { useWars } from "./useWars";
 
 export function usePlayerDetails(playerName: string) {
     const [error, setError] = useState<any>(null);
@@ -12,7 +12,7 @@ export function usePlayerDetails(playerName: string) {
     const rHook = useRostersByPlayer(playerName);
     const lbHook = useLeaderboardsByCharacters([playerName]);
     const warIds = useMemo(() => lbHook.leaderboard.map(v => v.warid), [lbHook.leaderboard]);
-    const wHook = useWarsById(warIds);
+    const wHook = useWars({ ids: warIds });
     const loading = wHook.loading || rHook.loading || pHook.loading || lbHook.loading;
 
     const playerDetails = createCharacterDetails(lbHook.leaderboard, rHook.rosters, wHook.wars);

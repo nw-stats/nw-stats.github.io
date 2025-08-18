@@ -30,22 +30,22 @@ function WarDetail(): JSX.Element {
         return <DataEntryInProgress />;
     }
 
-    const attackerSummary = summary.get(war.attacker);
-    const defenderSummary = summary.get(war.defender);
+    const attackerSummary = summary.get(war.attacker.name);
+    const defenderSummary = summary.get(war.defender.name);
 
     if (!attackerSummary || !defenderSummary) return <div className="text-shadow-white"> NO SUMARY</div>
 
-    const attackerCompany = companies.get(war.attacker);
-    const defenderCompany = companies.get(war.defender);
+    const attackerCompany = companies.get(war.attacker.name);
+    const defenderCompany = companies.get(war.defender.name);
     if (!attackerCompany || !defenderCompany) {
         return <NotFound />;
     }
 
-    const attackerGroups = groupDetails.get(war.attacker);
-    const defenderGroups = groupDetails.get(war.defender);
+    const attackerGroups = groupDetails.get(war.attacker.name);
+    const defenderGroups = groupDetails.get(war.defender.name);
 
-    const attackerGroupSummary = groupsSummary.get(war.attacker);
-    const defenderGroupSummary = groupsSummary.get(war.defender);
+    const attackerGroupSummary = groupsSummary.get(war.attacker.name);
+    const defenderGroupSummary = groupsSummary.get(war.defender.name);
 
 
 
@@ -55,7 +55,7 @@ function WarDetail(): JSX.Element {
                 <WarStatsPanel date={war.date} map={war.map} captures={war.captures} />
             </div>
             <div>
-                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} winner={war.winner} attacker={war.attacker} />
+                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} winner={war.winner} attacker={war.attacker.name} />
             </div>
             {/* <div className="text-white">
                 <Heatmap
@@ -70,7 +70,7 @@ function WarDetail(): JSX.Element {
                     wide="red" />
             </div> */}
             <div className="text-sm">
-                <GroupsComponent attackerName={war.attacker} defenderName={war.defender} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
+                <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
             </div>
             <div>
                 <LeaderboardDisplay leaderboard={leaderboard} companies={companies} />

@@ -90,7 +90,7 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
         const won = war.winner === forCompany;
         if (won) stat.win += 1;
 
-        if (war.attacker === forCompany) {
+        if (war.attacker.name === forCompany) {
             won ? summary.attack.win++ : summary.attack.loss++;
         } else {
             won ? summary.defense.win++ : summary.defense.loss++;

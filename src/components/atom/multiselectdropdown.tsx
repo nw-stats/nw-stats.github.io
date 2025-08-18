@@ -64,10 +64,10 @@ export function MultiselectDropdown({
             >
                 <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                     {allSelected
-                        ? "All"
+                        ? `All ${name}`
                         : value.length > 0
                             ? value.join(", ")
-                            : name}
+                            : `Select ${name}`}
                 </span>
                 <CaretDownIcon
                     size={18}

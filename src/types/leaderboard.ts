@@ -1,5 +1,6 @@
 import type { DateTime } from "luxon";
 import type { Role } from "./role";
+import type { Company } from "./company";
 
 export interface LeaderboardEntry {
     warid: number;
@@ -20,8 +21,8 @@ export interface GroupsEntry extends LeaderboardEntry {
 }
 export interface CharacterDetailsEntry extends LeaderboardEntry {
     date: DateTime;
-    attacker: string;
-    defender: string;
+    attacker: Company;
+    defender: Company;
     isWinner: boolean;
     duration: number;
 }

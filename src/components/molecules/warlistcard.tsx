@@ -2,21 +2,23 @@ import { CrownIcon, ShieldIcon, SwordIcon } from "@phosphor-icons/react";
 import type { War } from "../../types/war";
 import { formatDate, formatTime } from "../../utils/time";
 import { Link } from "react-router-dom";
+import { factionBgPrimary } from "../../utils/factions";
 
 export interface WarListCardProp {
     war: War,
 }
 const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
-    const attackerWins = war.attacker === war.winner;
-    const defenderWins = war.defender === war.winner;
+    const attackerWins = war.attacker.name === war.winner;
+    const defenderWins = war.defender.name === war.winner;
 
-    console.log(war.date);
-
+    const attackerColor = factionBgPrimary(war.attacker.faction);
+    const defenderColor = factionBgPrimary(war.defender.faction);
     return (
         <Link to={`/wars/${war.id}`}>
             <div className="grid grid-cols-3 text-white w-full bg-gray-700 rounded-lg">
                 {/* Attacker */}
-                <div className="flex items-center justify-center h-full text-center font-semibold text-lg relative">
+                <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
+                    <div className={`absolute inset-0 ${attackerColor} w-1/12 rounded-l-lg`}></div>
                     {attackerWins && (
                         <CrownIcon
                             className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-yellow-400"
@@ -24,8 +26,8 @@ const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
                             size={16}
                         />
                     )}
-                    <span>{war.attacker}</span>
 
+                    <span className="relative z-10">{war.attacker.name}</span>
                 </div>
 
                 {/* Middle column */}
@@ -42,15 +44,15 @@ const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
                 </div>
 
                 {/* Defender */}
-                <div className="flex items-center justify-center h-full text-center font-semibold text-lg relative">
-                    {defenderWins && (
+                <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
+                    <div className={`absolute right-0 top-0 h-full w-1/12 ${defenderColor} rounded-r-lg`} />                    {defenderWins && (
                         <CrownIcon
                             className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-yellow-400"
                             weight="fill"
                             size={16}
                         />
                     )}
-                    <span>{war.defender}</span>
+                    <span className="relative z-10">{war.defender.name}</span>
                 </div>
             </div>
         </Link>

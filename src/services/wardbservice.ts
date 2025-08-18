@@ -1,4 +1,3 @@
-import type { War } from "../types/war";
 import { constructQuery } from "../utils/querybuilder";
 import { combineDateAndTime, convertFromGoogleSheetsDateString } from "../utils/time";
 import { fetchTableFromGoogleSheets } from "./googlesheets";
@@ -6,6 +5,7 @@ import { type Ordering, type QueryParameter } from "../types/queryparameter";
 import { kSheetId } from "../constants/sheets";
 import { kWarColumns, kWarTable } from "../mapping/warmap";
 import { convertInt, convertString } from "../utils/sheetconvert";
+import type { WarRaw } from "../types/rawtypes/warraw";
 
 // //const kSheetId = "14byZyCAX_N_AA-y_1tv4CLtgTCaOB-Zq8QbOHmavE6Y";
 
@@ -97,7 +97,7 @@ import { convertInt, convertString } from "../utils/sheetconvert";
 //     return rosters;
 // }
 
-export async function getWars(params?: QueryParameter[], limit?: number, order?: Ordering): Promise<War[]> {
+export async function getWars(params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
     const query = constructQuery([
         kWarColumns.id,
         kWarColumns.date,
@@ -117,8 +117,7 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
         kWarColumns.tz,
     ], params, order, limit);
     const data = await fetchTableFromGoogleSheets(kSheetId, 'wars', query);
-
-    const wars: War[] = [];
+    const wars: WarRaw[] = [];
     for (const row of data) {
         const id = convertInt(row[kWarTable.id]);
         const date = convertFromGoogleSheetsDateString(row[kWarTable.date] as string) || new Date();

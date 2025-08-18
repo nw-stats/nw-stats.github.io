@@ -3,14 +3,14 @@ import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import PlaceholderTile from "../components/molecules/placeholdertile";
 import WarListCard from "../components/molecules/warlistcard";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useWarsById } from "../hooks/useWarsById";
+import { useWars } from "../hooks/useWars";
 import { useWorlds } from "../hooks/useWorlds";
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { currentHour, sortByDateThenTime } from "../utils/time";
 // import Carousel from "../components/molecules/carousel";
 
 const Home: React.FC = () => {
-    const { loading, error, wars } = useWarsById([]);
+    const { loading, error, wars } = useWars();
     const { worlds } = useWorlds();
     const { companies } = useCompanies();
 
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
     const serverWars = wars.filter(v => {
         if (savedServers.includes(v.server)) {
             return true;
-        } else if (savedCompanies.includes(v.attacker) || savedCompanies.includes(v.defender)) {
+        } else if (savedCompanies.includes(v.attacker.name) || savedCompanies.includes(v.defender.name)) {
             return true;
         } else if (savedServers.length + savedCompanies.length === 0) {
             return true;
@@ -37,6 +37,11 @@ const Home: React.FC = () => {
 
     const worldOptions = worlds.map(v => v.name);
     const companyOptions = companies.map(v => v.name);
+
+    if (savedServers.length === 0 && savedCompanies.length !== 0) {
+        console.log("hello");
+        setServers(companies.filter(v => savedCompanies.includes(v.name)).map(v => v.server));
+    }
 
     return (
         <div className="flex flex-col w-full max-w-5xl mx-auto px-4 mt-4">
@@ -70,13 +75,13 @@ const Home: React.FC = () => {
                 <div className="flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
                     <div className="text-white text-xl font-semibold">Filters</div>
                     <MultiselectDropdown
-                        name="Select worlds"
+                        name="worlds"
                         options={worldOptions}
                         value={savedServers}
                         onChange={setServers}
                     />
                     <MultiselectDropdown
-                        name="Select companies"
+                        name="companies"
                         options={companyOptions}
                         value={savedCompanies}
                         onChange={setCompanies}

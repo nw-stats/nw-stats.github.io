@@ -1,15 +1,14 @@
 import { useState, type JSX } from "react";
-import { useWarsById } from "../hooks/useWarsById";
 import NotFound from "./notfound";
 import Loading from "../components/atom/loading";
-//import RankingCard from "../components/atom/rankingcard";
 import RankingsDisplay from "../components/organisms/rankingsdisplay";
 import type { WinLoss } from "../types/ranking";
+import { useWarRaw } from "../hooks/useWars";
 
 const kLeageNames: Record<string, string> = { M: "Main", G: "G" };
 
 function Rankings(): JSX.Element {
-    const { wars, error, loading } = useWarsById([]);
+    const { wars, error, loading } = useWarRaw();
     const [league, setLeague] = useState<string>("M");
 
     if (error) return <NotFound />;

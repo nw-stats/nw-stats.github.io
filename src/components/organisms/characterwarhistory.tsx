@@ -34,7 +34,7 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
                     const row = info.row.original;
                     return (
                         < Link to={`/wars/${info.getValue<number>()}`}>
-                            <span className="hover:underline">{row.attacker} vs {row.defender}</span>
+                            <span className="hover:underline">{row.attacker.name} vs {row.defender.name}</span>
                         </Link >
                     );
                 },
