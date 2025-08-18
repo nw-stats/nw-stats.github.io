@@ -71,9 +71,9 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
         mostPlayed: { name: '', count: 0 },
         mostWin: { name: '', count: 0 },
         mostLoss: { name: '', count: 0 },
-        defense: { win: 0, loss: 0, count: 0 },
-        attack: { win: 0, loss: 0, count: 0 },
-        overall: { win: 0, loss: 0, count: 0 },
+        defense: { win: 0, loss: 0, count: 0, rate: 0 },
+        attack: { win: 0, loss: 0, count: 0, rate: 0 },
+        overall: { win: 0, loss: 0, count: 0, rate: 0 },
     };
 
     const mapStats = new Map<string, MapStat>();
@@ -130,6 +130,10 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
     summary.mostPlayed = mostPlayed >= 0 ? { name: mostPlayedMap, count: mostPlayed } : { name: '', count: 0 };
     summary.mostWin = mostWins >= 0 ? { name: mostWinMap, count: mostWins } : { name: '', count: 0 };
     summary.mostLoss = mostLosses >= 0 ? { name: mostLossMap, count: mostLosses } : { name: '', count: 0 };
+
+    summary.attack.rate = summary.attack.count > 0 ? summary.attack.win / summary.attack.count : 0;
+    summary.defense.rate = summary.defense.count > 0 ? summary.defense.win / summary.defense.count : 0;
+    summary.overall.rate = summary.overall.count > 0 ? summary.overall.win / summary.overall.count : 0;
 
     return summary;
 }

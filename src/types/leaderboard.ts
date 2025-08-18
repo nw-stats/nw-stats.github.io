@@ -70,7 +70,7 @@ export interface WarsSummary {
     mostPlayed: { name: string, count: number };
     mostWin: { name: string, count: number };
     mostLoss: { name: string, count: number };
-    defense: { win: number, loss: number, count: number };
-    attack: { win: number, loss: number, count: number };
-    overall: { win: number, loss: number, count: number };
+    defense: { win: number, loss: number, count: number, rate: number };
+    attack: { win: number, loss: number, count: number, rate: number };
+    overall: { win: number, loss: number, count: number, rate: number };
 }

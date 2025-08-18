@@ -22,7 +22,7 @@ function CompanyMembersTable({ members }: CompanyMemberProps): JSX.Element {
     // ], []);
 
     return (
-        <div className="flex flex-col w-full gap-2 max-w-lg">
+        <div className="flex flex-col w-full gap-2">
             {members.length > 0 ?
                 members.map(v => <div className="hover:scale-105"><PlayerListCard player={v} /></div>) :
                 <NoData />}

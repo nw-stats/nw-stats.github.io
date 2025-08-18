@@ -1,32 +1,25 @@
-import { useEffect, useState } from "react";
 import { useCompanies } from "./useCompanies";
 import { useMembers } from "./useMembers";
-import { useLeaderboardsByCompany } from "./useLeaderboardsByCompany";
-import { useWars } from "./useWars";
+import { useWarRaw } from "./useWars";
+import { hydrateWars } from "../utils/hydrate";
+import { useLeaderboards } from "./useLeaderboards";
 
 
 export function useCompanyDetails(name: string) {
-    const [error, setError] = useState<any>(null);
+    const { loading: warsLoading, error: warsError, wars } = useWarRaw({ companies: [name] });
+    const { loading: companyLoading, error: companyError, companies } = useCompanies([...(wars.map(v => v.attacker)), ...(wars.map(v => v.defender)), name]);
+    const { loading: membersLoading, error: membersError, members } = useMembers(name);
+    const { loading: lbLoading, error: lbError, leaderboard } = useLeaderboards({ company: name });
 
-    const cHook = useCompanies([name]);
-    const wHook = useWars({ companies: [name] });
-    const mHook = useMembers(name);
-    const lbHook = useLeaderboardsByCompany(name);
-
-
-
-    const loading = cHook.loading || wHook.loading || mHook.loading || lbHook.loading;
-
-    useEffect(() => {
-        setError(cHook.error || wHook.error || mHook.error || lbHook.error);
-    });
+    const loading = companyLoading || warsLoading || membersLoading || lbLoading;
+    const error = companyError || warsError || membersError || lbError;
 
     return {
         loading,
         error,
-        company: cHook.companies[0],
-        wars: wHook.wars,
-        members: mHook.members,
-        leaderboards: lbHook.leaderboard,
+        company: companies[0],
+        leaderboards: leaderboard,
+        wars: hydrateWars(wars, companies),
+        members: members,
     };
 }

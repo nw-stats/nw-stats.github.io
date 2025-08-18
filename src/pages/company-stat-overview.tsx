@@ -58,9 +58,9 @@ function CompanyStatOverview({ companyName, wars, leaderboard }: CompanyStatOver
                             <StatHighlight title="Wars" text={<NumberCell value={wars.length} />} />
                             <StatHighlight title="Wins" text={<NumberCell value={warSummary.overall.win} />} />
                             <StatHighlight title="Loss" text={<NumberCell value={warSummary.overall.loss} />} />
-                            <StatHighlight title="Win Rate" text={formatPercent((warSummary.overall.win / warSummary.overall.count), 2)} />
-                            <StatHighlight title="Attack Win Rate" text={formatPercent((warSummary.attack.win / warSummary.attack.count), 2)} />
-                            <StatHighlight title="Defense Win Rate" text={formatPercent((warSummary.defense.win / warSummary.defense.count), 2)} />
+                            <StatHighlight title="Win Rate" text={formatPercent(warSummary.overall.rate, 2)} />
+                            <StatHighlight title="Attack Win Rate" text={formatPercent(warSummary.attack.rate, 2)} />
+                            <StatHighlight title="Defense Win Rate" text={formatPercent(warSummary.defense.rate, 2)} />
                         </div>
                     </div>
                     <div>

@@ -13,6 +13,7 @@ import Feedback from './pages/feedback';
 // import Rankings from './pages/rankings';
 import Inaccuracy from './pages/inaccuracy';
 import PlayerDetails from './pages/playerdetails';
+import { Footer } from './components/organisms/footer';
 
 const App: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const App: React.FC = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </HashRouter >
 

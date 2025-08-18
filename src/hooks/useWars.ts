@@ -5,6 +5,7 @@ import { Qop, type QueryParameter } from "../types/queryparameter";
 import { kWarColumns } from "../mapping/warmap";
 import type { WarRaw } from "../types/rawtypes/warraw";
 import { getWars } from "../services/wardbservice";
+import { hydrateWars } from "../utils/hydrate";
 
 export interface UseWarsOptions {
     ids?: number[];
@@ -28,15 +29,8 @@ export function useWars(options?: UseWarsOptions) {
 
 
     useEffect(() => {
-        const combined: War[] = [];
-        for (const raw of rawWars) {
-            const attacker = companies.find(c => c.name === raw.attacker);
-            const defender = companies.find(c => c.name === raw.defender);
-            if (attacker && defender) {
-                combined.push({ ...raw, attacker, defender });
-            }
-        }
-        setWars(combined);
+        const w = hydrateWars(rawWars, companies);
+        setWars(w);
     }, [rawWars, companies]);
     return { loading, error, wars }
 }
@@ -48,7 +42,7 @@ export function useWarRaw(options?: UseWarsOptions) {
     const warIdKey = useMemo(() => [...options?.ids || []].sort((a, b) => a - b).join(','), [options?.ids]);
     const warCompanyNameKey = useMemo(() => {
         const companies = options?.companies ?? [];
-        return [...companies].sort((a, b) => a.localeCompare(b));
+        return [...companies].sort((a, b) => a.localeCompare(b)).join(',');
     }, [options?.companies]);
 
     useEffect(() => {
@@ -79,14 +73,19 @@ export function useWarRaw(options?: UseWarsOptions) {
                 let w: WarRaw[] = [];
                 if (queries.length === 0) {
                     w = await getWars([{ column: kWarColumns.show, fn: Qop.Eq, value: true }]);
+                } else {
+                    const results = await Promise.all(
+                        queries.map(query => {
+                            const q = [...query, { column: kWarColumns.show, fn: Qop.Eq, value: true }];
+                            return getWars(q);
+                        })
+                    );
+                    w = results.flat().sort((a, b) => b.date.toMillis() - a.date.toMillis());
                 }
-                for (const query of queries) {
-                    query.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
-                    w = w.concat(await getWars(query));
-                    w = w.sort((a, b) => b.date.toMillis() - a.date.toMillis());
+
+                if (!cancelled) {
+                    setWars(w);
                 }
-                if (cancelled) return;
-                setWars(w)
 
             } catch (err) {
                 if (!cancelled) setError(err);

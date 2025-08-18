@@ -27,7 +27,7 @@ const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
                         />
                     )}
 
-                    <span className="relative z-10">{war.attacker.name}</span>
+                    <span className="relative">{war.attacker.name}</span>
                 </div>
 
                 {/* Middle column */}
@@ -52,7 +52,7 @@ const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
                             size={16}
                         />
                     )}
-                    <span className="relative z-10">{war.defender.name}</span>
+                    <span className="relative">{war.defender.name}</span>
                 </div>
             </div>
         </Link>

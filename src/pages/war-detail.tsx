@@ -50,7 +50,7 @@ function WarDetail(): JSX.Element {
 
 
     return (
-        <div className="flex flex-col mx-auto max-w-7xl gap-8">
+        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
             <div className="pt-8">
                 <WarStatsPanel date={war.date} map={war.map} captures={war.captures} />
             </div>
