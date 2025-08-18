@@ -5,6 +5,7 @@ import { useCompanies } from "../hooks2/useCompaniesNew";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useWorlds } from "../hooks/useWorlds";
 import { useWars } from "../hooks/useWars";
+import { useEffect } from "react";
 
 const Wars: React.FC = () => {
     const { loading, error, wars } = useWars();
@@ -14,6 +15,12 @@ const Wars: React.FC = () => {
 
     const [savedServers, setServers] = useLocalStorage<string[]>('servers', []);
     const [savedCompanies, setCompanies] = useLocalStorage<string[]>('companies', []);
+
+    useEffect(() => {
+        if (worlds.length > 0 && savedServers.length === 0) {
+            setServers(worlds.map(v => v.name));
+        }
+    }, [worlds, setServers]);
 
     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
     if (error) return <div className="text-white">Problem loading wars</div>
@@ -30,14 +37,9 @@ const Wars: React.FC = () => {
     });
     const sortedWars = filteredWars.sort((a, b) => b.date.toMillis() - a.date.toMillis());
 
-    const warCards = []
-    for (let i = wars.length - 1; i >= 0; i--) {
-        warCards.push(
-            <div key={wars[i].id} className="text-white hover:scale-105">
-                <WarListCard war={wars[i]} />
-            </div>
-        );
-    }
+    const worldOptions = worlds.map(v => v.name);
+    const companyOptions = savedServers.length > 0 ? companies.filter(v => savedServers.includes(v.server)).map(v => v.name) : companies.map(v => v.name);
+
     return (
         <div className="flex flex-col w-full max-w-5xl mx-auto px-4 mt-4">
             <main className="flex flex-col md:flex-row md:items-start gap-6">
@@ -61,13 +63,13 @@ const Wars: React.FC = () => {
                     <div className="text-white text-xl font-semibold">Filters</div>
                     <MultiselectDropdown
                         name="worlds"
-                        options={worlds.map(v => v.name)}
+                        options={worldOptions}
                         value={savedServers}
                         onChange={setServers}
                     />
                     <MultiselectDropdown
                         name="companies"
-                        options={companies.map(v => v.name)}
+                        options={companyOptions}
                         value={savedCompanies}
                         onChange={setCompanies}
                     />

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Loading from "../components/atom/loading";
 import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import PlaceholderTile from "../components/molecules/placeholdertile";
@@ -16,6 +17,12 @@ const Home: React.FC = () => {
 
     const [savedServers, setServers] = useLocalStorage<string[]>('servers', []);
     const [savedCompanies, setCompanies] = useLocalStorage<string[]>('companies', []);
+
+    useEffect(() => {
+        if (worlds.length > 0 && savedServers.length === 0) {
+            setServers(worlds.map(v => v.name));
+        }
+    }, [worlds, setServers]);
 
     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
     if (error) return <div className="flex w-full justify-center text-red-500">Error loading wars </div>;
@@ -36,12 +43,7 @@ const Home: React.FC = () => {
     const Upcoming = serverWars.filter(item => item.date.toMillis() >= rightNow.toMillis()).sort((a, b) => sortByDateThenTime(a.date, b.date));
 
     const worldOptions = worlds.map(v => v.name);
-    const companyOptions = companies.map(v => v.name);
-
-    if (savedServers.length === 0 && savedCompanies.length !== 0) {
-        console.log("hello");
-        setServers(companies.filter(v => savedCompanies.includes(v.name)).map(v => v.server));
-    }
+    const companyOptions = savedServers.length > 0 ? companies.filter(v => savedServers.includes(v.server)).map(v => v.name) : companies.map(v => v.name);
 
     return (
         <div className="flex flex-col w-full max-w-5xl mx-auto px-4 mt-4">
