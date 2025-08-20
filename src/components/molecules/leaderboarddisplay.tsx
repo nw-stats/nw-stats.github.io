@@ -17,10 +17,11 @@ import type { Company } from "../../types/company";
 import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
+import { NoData } from "../atom/nodata";
 
 type LeaderboardProps = {
-    leaderboard: Leaderboard,
     companies: Map<string, Company>,
+    leaderboard?: Leaderboard,
 };
 
 export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps): JSX.Element {
@@ -30,7 +31,11 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
     ]);
 
     const filtered = useMemo<LeaderboardEntry[]>(() => {
-        return leaderboard.entries.filter(v => selectedRole === 'All Roles' || selectedRole === v.role);
+        if (leaderboard) {
+            return leaderboard.entries.filter(v => selectedRole === 'All Roles' || selectedRole === v.role);
+        } else {
+            return [];
+        }
     }, [selectedRole]);
 
     const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(
@@ -138,9 +143,11 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
 
     const roleOptions = useMemo(() => {
         const rolesSet = new Set<string>();
-        for (const entry of leaderboard.entries) {
-            if (entry.role !== '') {
-                rolesSet.add(entry.role as string);
+        if (leaderboard) {
+            for (const entry of leaderboard.entries) {
+                if (entry.role !== '') {
+                    rolesSet.add(entry.role as string);
+                }
             }
         }
         return [...rolesSet].sort((a, b) => a.localeCompare(b));
@@ -221,7 +228,7 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
                                     colSpan={columns.length}
                                     className="text-center p-4 text-gray-400"
                                 >
-                                    No data available
+                                    <NoData />
                                 </td>
                             </tr>
                         )}
