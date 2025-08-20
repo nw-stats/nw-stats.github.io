@@ -12,7 +12,7 @@ export interface UseLeaderboardsOptions {
 }
 
 export function useLeaderboards(options: UseLeaderboardsOptions) {
-    const [leaderboard, setLeaderboard] = useState<Leaderboard | null>(null);
+    const [leaderboard, setLeaderboard] = useState<Leaderboard | undefined>(undefined);
     const [summary, setSummary] = useState<Map<string, StatTotals>>(new Map());
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);

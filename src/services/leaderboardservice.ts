@@ -38,17 +38,17 @@ export function summarizeLeaderboard(leaderboard: Leaderboard): Map<string, Stat
     return summaries;
 }
 
-export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | null> {
+export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | undefined> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], params);
     let data: DataType[][] = [];
     try {
         data = await fetchTableFromGoogleSheets(kSheetId, 'leaderboards', query);
     } catch (err) {
-        return null
+        return undefined;
     }
 
     if (data.length === 0) {
-        return null
+        return undefined;
     }
 
     const entries: LeaderboardEntry[] = data.map((row: any[]) => ({

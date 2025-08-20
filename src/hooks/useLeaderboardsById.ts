@@ -5,7 +5,7 @@ import { Qop } from "../types/queryparameter";
 import { fillKpar } from "../utils/leaderboard";
 
 export function useLeaderboardsByIds(warId: number) {
-    const [leaderboard, setLeaderboard] = useState<Leaderboard | null>(null);
+    const [leaderboard, setLeaderboard] = useState<Leaderboard | undefined>(undefined);
     const [summary, setSummary] = useState<Map<string, StatTotals>>(new Map());
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
