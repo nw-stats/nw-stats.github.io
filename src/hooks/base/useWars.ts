@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { useCompanies } from "../hooks2/useCompaniesNew";
-import type { War } from "../types/war";
-import { Qop, type QueryParameter } from "../types/queryparameter";
-import { kWarColumns } from "../mapping/warmap";
-import type { WarRaw } from "../types/rawtypes/warraw";
-import { getWars } from "../services/wardbservice";
-import { hydrateWars } from "../utils/hydrate";
+import { useCompanies } from "../../hooks2/useCompaniesNew";
+import type { War } from "../../types/war";
+import { Qop, type QueryParameter } from "../../types/queryparameter";
+import { kWarColumns } from "../../mapping/warmap";
+import type { WarRaw } from "../../types/rawtypes/warraw";
+import { getWars } from "../../services/wardbservice";
+import { hydrateWars } from "../../utils/hydrate";
 
 export interface UseWarsOptions {
     ids?: number[];

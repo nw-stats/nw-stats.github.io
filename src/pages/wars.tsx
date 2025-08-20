@@ -3,9 +3,9 @@ import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import WarListCard from "../components/molecules/warlistcard";
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useWorlds } from "../hooks/useWorlds";
-import { useWars } from "../hooks/useWars";
+import { useWars } from "../hooks/base/useWars";
 import { useEffect } from "react";
+import { useWorlds } from "../hooks/base/useWorlds";
 
 const Wars: React.FC = () => {
     const { loading, error, wars } = useWars();

@@ -1,11 +1,11 @@
 // src/hooks/useAlts.ts
 import { useEffect, useState } from 'react';
-import { getAlts } from '../services/altservice';
-import { getPlayers } from '../services/characterservice';
-import { Qop } from '../types/queryparameter';
-import type { Character } from '../types/character';
+import { getAlts } from '../../services/altservice';
+import { getPlayers } from '../../services/characterservice';
+import { Qop } from '../../types/queryparameter';
+import type { Character } from '../../types/character';
 
-export function useAlts(owner: string) {
+export function useAlts(player: string) {
     const [alts, setAlts] = useState<Character[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
@@ -17,10 +17,10 @@ export function useAlts(owner: string) {
             try {
 
                 setLoading(true);
-                if (!owner) {
+                if (!player) {
                     setAlts([]);
                 }
-                const names = await getAlts(owner);
+                const names = await getAlts(player);
                 if (cancelled) return;
 
                 if (names.length > 0) {
@@ -46,7 +46,7 @@ export function useAlts(owner: string) {
         return () => {
             cancelled = true;
         };
-    }, [owner]);
+    }, [player]);
 
     return { loading, error, alts };
 }

@@ -3,7 +3,7 @@ import { useRostersByPlayer } from "./useRostersByPlayer";
 import { createCharacterDetails } from "../utils/player";
 import { useCharacter } from "./useCharacter";
 import { useLeaderboardsByCharacters } from "./useLeaderboardsByCharacter";
-import { useWars } from "./useWars";
+import { useWars } from "./base/useWars";
 
 export function usePlayerDetails(playerName: string) {
     const [error, setError] = useState<any>(null);

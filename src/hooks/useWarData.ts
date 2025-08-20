@@ -6,7 +6,7 @@ import { getGroupDetails, getGroupSummaries } from "../utils/groups";
 import { type GroupKey } from "../types/roster";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { Company } from "../types/company";
-import { useWars } from "./useWars";
+import { useWars } from "./base/useWars";
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);

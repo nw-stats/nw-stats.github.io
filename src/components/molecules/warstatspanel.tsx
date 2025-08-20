@@ -1,37 +1,38 @@
 import type { CaptureTimes } from "../../types/captures";
-import StatWithIcon from "./statwithicon";
-import { formatDate, formatSeconds } from "../../utils/time";
+import { formatDate, formatTime } from "../../utils/time";
 import type { DateTime } from "luxon";
 
 interface WarStatsPanelProps {
     date: DateTime;
     map: string;
+    server: string;
     captures: CaptureTimes
 }
 
-const WarStatsPanel: React.FC<WarStatsPanelProps> = ({ date, map, captures }) => {
-    const pa = captures.pointA ? formatSeconds(captures.pointA) : "-";
-    const pb = captures.pointB ? formatSeconds(captures.pointB) : "-";
-    const pc = captures.pointC ? formatSeconds(captures.pointC) : "-";
-    const pf = captures.fort ? formatSeconds(captures.fort) : "-";
+const WarStatsPanel: React.FC<WarStatsPanelProps> = ({ date, map, server }) => {
+    // const pa = captures.pointA ? formatSeconds(captures.pointA) : "-";
+    // const pb = captures.pointB ? formatSeconds(captures.pointB) : "-";
+    // const pc = captures.pointC ? formatSeconds(captures.pointC) : "-";
+    // const pf = captures.fort ? formatSeconds(captures.fort) : "-";
 
     return (
-        <div className="bg-gray-800 text-white text-lg rounded-lg p-5">
+        <div className="bg-gray-800 text-white text-lg rounded-lg p-2">
             <div className="grid grid-cols-1 gap-0">
 
                 {/* Left side: map + date */}
                 <div className="grid grid-rows-2 place-items-center w-full">
                     <div className="font-bold text-3xl">{map}</div>
-                    <div className="text-sm">{formatDate(date)}</div>
+                    <div className="text-sm text-gray-400">{server}</div>
+                    <div className="text-sm">{formatDate(date)} • {formatTime(date)}</div>
                 </div>
 
                 {/* Right side: captures */}
-                <div className="grid grid-cols-4 place-items-center w-full">
+                {/* <div className="grid grid-cols-4 place-items-center w-full">
                     <StatWithIcon icon={<div>A</div>} value={pa} />
                     <StatWithIcon icon={<div>B</div>} value={pb} />
                     <StatWithIcon icon={<div>C</div>} value={pc} />
                     <StatWithIcon icon={<div>Fort</div>} value={pf} />
-                </div>
+                </div> */}
 
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getWorlds } from "../services/worldservice";
-import type { World } from "../types/world";
+import type { World } from "../../types/world";
+import { getWorlds } from "../../services/worldservice";
+
 
 export function useWorlds() {
     const [worlds, setWorlds] = useState<World[]>([]);

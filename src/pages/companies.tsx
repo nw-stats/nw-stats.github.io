@@ -1,8 +1,9 @@
 
 import { useState } from "react";
 import Loading from "../components/atom/loading";
-import CompanyListCard from "../components/molecules/companylistcard";
+
 import { useCompanies } from "../hooks2/useCompaniesNew";
+import { CompanyListCard } from "../components/molecules/companylistcard";
 
 const Companies: React.FC = () => {
     const { loading, err, companies } = useCompanies();

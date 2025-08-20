@@ -4,10 +4,10 @@ import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import PlaceholderTile from "../components/molecules/placeholdertile";
 import WarListCard from "../components/molecules/warlistcard";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useWars } from "../hooks/useWars";
-import { useWorlds } from "../hooks/useWorlds";
+import { useWars } from "../hooks/base/useWars";
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { currentHour, sortByDateThenTime } from "../utils/time";
+import { useWorlds } from "../hooks/base/useWorlds";
 // import Carousel from "../components/molecules/carousel";
 
 const Home: React.FC = () => {
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
         return false;
     });
 
-    const pastWars = serverWars.filter(item => item.date.toMillis() < rightNow.toMillis());
+    const pastWars = serverWars.filter(item => item.date.toMillis() < rightNow.toMillis()).sort((a, b) => b.date.toMillis() - a.date.toMillis());
     const Upcoming = serverWars.filter(item => item.date.toMillis() >= rightNow.toMillis()).sort((a, b) => sortByDateThenTime(a.date, b.date));
 
     const worldOptions = worlds.map(v => v.name);

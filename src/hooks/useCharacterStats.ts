@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { StatTotals } from "../types/leaderboard";
 import { normalize, summarize } from "../utils/leaderboard";
 
-import { useWars } from "./useWars";
+import { useWars } from "./base/useWars";
 import { useLeaderboards } from "./useLeaderboards";
 
 export function useCharacterStats(playerName: string) {

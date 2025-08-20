@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import LeaderboardDisplay from "../components/molecules/leaderboarddisplay";
 // import WarResultsCompany from "../components/molecules/warresultscompany";
-import WarStatsPanel from "../components/molecules/warstatspanel";
+// import WarStatsPanel from "../components/molecules/warstatspanel";
 import { useWarData } from "../hooks/useWarData";
 import GroupsComponent from "../components/molecules/groupscomponent";
 import Loading from "../components/atom/loading";
@@ -10,6 +10,7 @@ import WarResultsCompanyCombined from "../components/molecules/warresultscompany
 import { type JSX } from "react";
 import NotFound from "./notfound";
 import DataEntryInProgress from "./dataentryinprogress";
+import WarListCard from "../components/molecules/warlistcard";
 // import Heatmap from "../components/molecules/heatmap";
 
 
@@ -52,10 +53,11 @@ function WarDetail(): JSX.Element {
     return (
         <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
             <div className="pt-8">
-                <WarStatsPanel date={war.date} map={war.map} captures={war.captures} />
+                {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
+                <WarListCard war={war} />
             </div>
-            <div>
-                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} winner={war.winner} attacker={war.attacker.name} />
+            <div className="text-lg">
+                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} />
             </div>
             {/* <div className="text-white">
                 <Heatmap
