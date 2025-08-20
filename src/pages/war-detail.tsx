@@ -59,18 +59,6 @@ function WarDetail(): JSX.Element {
             <div className="text-lg">
                 <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} />
             </div>
-            {/* <div className="text-white">
-                <Heatmap
-                    point="indianred"
-                    topRight="yellow"
-                    topLeft="red"
-                    bottomLeft="yellow"
-                    bottomRight="green"
-                    weak="green"
-                    strong="orange"
-                    outer="yellow"
-                    wide="red" />
-            </div> */}
             <div className="text-sm">
                 <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
             </div>
