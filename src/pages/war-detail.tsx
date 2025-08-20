@@ -6,11 +6,12 @@ import { useWarData } from "../hooks/useWarData";
 import GroupsComponent from "../components/molecules/groupscomponent";
 import Loading from "../components/atom/loading";
 
-import WarResultsCompanyCombined from "../components/molecules/warresultscompanycombined";
+import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
 import { type JSX } from "react";
 import NotFound from "./notfound";
-import DataEntryInProgress from "./dataentryinprogress";
+// import DataEntryInProgress from "./dataentryinprogress";
 import WarListCard from "../components/molecules/warlistcard";
+import DataEntryInProgress from "./dataentryinprogress";
 // import Heatmap from "../components/molecules/heatmap";
 
 
@@ -27,14 +28,14 @@ function WarDetail(): JSX.Element {
     if (!war) {
         return <NotFound />;
     }
-    if (!leaderboard) {
-        return <DataEntryInProgress />;
-    }
+    // if (!leaderboard) {
+    //     return <DataEntryInProgress />;
+    // }
 
     const attackerSummary = summary.get(war.attacker.name);
     const defenderSummary = summary.get(war.defender.name);
 
-    if (!attackerSummary || !defenderSummary) return <div className="text-shadow-white"> NO SUMARY</div>
+    // if (!attackerSummary || !defenderSummary) return <div className="text-shadow-white"> NO SUMARY</div>
 
     const attackerCompany = companies.get(war.attacker.name);
     const defenderCompany = companies.get(war.defender.name);
@@ -56,14 +57,17 @@ function WarDetail(): JSX.Element {
                 {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                 <WarListCard war={war} />
             </div>
+
             <div className="text-lg">
-                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} />
+                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} defender={war.defender.name} />
             </div>
+            {!leaderboard && <DataEntryInProgress />}
+
             <div className="text-sm">
-                <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
+                {leaderboard && <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
             </div>
             <div>
-                <LeaderboardDisplay leaderboard={leaderboard} companies={companies} />
+                {leaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} />}
             </div>
         </div>
     );
