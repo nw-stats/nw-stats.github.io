@@ -1,5 +1,5 @@
 import type { Leaderboard, LeaderboardEntry } from "../../types/leaderboard";
-import React from 'react';
+import { useMemo, useState, type JSX } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
@@ -17,24 +17,23 @@ import type { Company } from "../../types/company";
 import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
-import { kRoles } from "../../types/role";
 
 type LeaderboardProps = {
     leaderboard: Leaderboard,
     companies: Map<string, Company>,
 };
 
-const LeaderboardDisplay: React.FC<LeaderboardProps> = ({ leaderboard, companies }) => {
-    const [selectedRole, setSelectedRole] = React.useState<string>('All Roles');
-    const [sorting, setSorting] = React.useState<SortingState>([
+export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps): JSX.Element {
+    const [selectedRole, setSelectedRole] = useState<string>('All Roles');
+    const [sorting, setSorting] = useState<SortingState>([
         { id: 'score', desc: true },
     ]);
 
-    const filtered = React.useMemo<LeaderboardEntry[]>(() => {
+    const filtered = useMemo<LeaderboardEntry[]>(() => {
         return leaderboard.entries.filter(v => selectedRole === 'All Roles' || selectedRole === v.role);
     }, [selectedRole]);
 
-    const columns = React.useMemo<ColumnDef<LeaderboardEntry>[]>(
+    const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(
         () => [
             {
                 accessorKey: 'character',
@@ -137,6 +136,16 @@ const LeaderboardDisplay: React.FC<LeaderboardProps> = ({ leaderboard, companies
         []
     );
 
+    const roleOptions = useMemo(() => {
+        const rolesSet = new Set<string>();
+        for (const entry of leaderboard.entries) {
+            if (entry.role !== '') {
+                rolesSet.add(entry.role as string);
+            }
+        }
+        return [...rolesSet].sort((a, b) => a.localeCompare(b));
+    }, [leaderboard]);
+
     const table = useReactTable({
         data: filtered,
         columns,
@@ -152,7 +161,7 @@ const LeaderboardDisplay: React.FC<LeaderboardProps> = ({ leaderboard, companies
         <div className="flex flex-col gap-2 bg-gray-800 rounded-lg shadow-lg text-white">
             <h2 className="text-xl font-bold p-2">Leaderboard</h2>
             <div className="pl-2">
-                <Dropdown options={['All Roles', ...kRoles]} value={selectedRole} onChange={setSelectedRole} />
+                <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full table-auto border-collapse">
