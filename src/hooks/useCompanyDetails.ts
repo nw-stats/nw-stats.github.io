@@ -17,7 +17,7 @@ export function useCompanyDetails(name: string) {
     return {
         loading,
         error,
-        company: companies[0],
+        company: companies.find(v => v.name === name),
         leaderboards: leaderboard,
         wars: hydrateWars(wars, companies),
         members: members,
