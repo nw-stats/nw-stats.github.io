@@ -44,6 +44,17 @@ export function factionBgDark(faction: Faction): string {
     return 'bg-gray-950';
 }
 
+export function factionBgLight(faction: Faction): string {
+    if (faction === "Marauder") {
+        return 'bg-green-100';
+    } else if (faction === "Covenant") {
+        return 'bg-yellow-100';
+    } else if (faction === "Syndicate") {
+        return 'bg-purple-100';
+    }
+    return 'bg-gray-100';
+}
+
 export function factionBorder(faction: Faction): string {
     if (faction === "Marauder") {
         return 'border-green-900';
