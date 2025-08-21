@@ -29,14 +29,9 @@ function WarDetail(): JSX.Element {
     if (!war) {
         return <NotFound />;
     }
-    // if (!leaderboard) {
-    //     return <DataEntryInProgress />;
-    // }
 
     const attackerSummary = summary.get(war.attacker.name);
     const defenderSummary = summary.get(war.defender.name);
-
-    // if (!attackerSummary || !defenderSummary) return <div className="text-shadow-white"> NO SUMARY</div>
 
     const attackerCompany = companies.get(war.attacker.name);
     const defenderCompany = companies.get(war.defender.name);
