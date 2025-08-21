@@ -6,6 +6,7 @@ interface NWayToggleProps<T extends string> {
     defaultValue?: T;
     onChange?: (value: T, index: number) => void;
     className?: string;
+    disabled?: boolean;
 }
 
 export function NWayToggle<T extends string>({
@@ -13,6 +14,7 @@ export function NWayToggle<T extends string>({
     defaultValue,
     onChange,
     className,
+    disabled,
 }: NWayToggleProps<T>): JSX.Element {
     const defaultIndex = defaultValue ? options.indexOf(defaultValue) : 0;
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
@@ -25,9 +27,12 @@ export function NWayToggle<T extends string>({
     }, [defaultValue, options]);
 
     const handleClick = (index: number) => {
+        if (disabled) return;
         setSelectedIndex(index);
         onChange?.(options[index], index);
     };
+
+
 
     return (
         <div className="flex">
@@ -35,9 +40,10 @@ export function NWayToggle<T extends string>({
                 <button
                     key={option}
                     onClick={() => handleClick(index)}
-                    className={`${className} text-white ${selectedIndex === index
-                        ? "bg-blue-600"
-                        : "bg-gray-600 hover:bg-gray-700"
+                    className={`${className} ${disabled ? 'bg-gray-700 text-gray-400'
+                        : selectedIndex === index
+                            ? "bg-blue-600"
+                            : "bg-gray-600 hover:bg-gray-700"
                         } ${index === 0
                             ? 'rounded-l-lg'
                             : index === options.length - 1
@@ -46,7 +52,8 @@ export function NWayToggle<T extends string>({
                 >
                     {option}
                 </button>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     );
 }
