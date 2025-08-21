@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import type { GroupPerformance, StatTotals } from '../../types/leaderboard';
 import GroupsDetail from './groupsdetails';
 import GroupsSummary from './groupssummary';
-import type { GroupKey } from '../../types/roster';
+import type { Group, GroupKey } from '../../types/roster';
 import { NWayToggle } from '../atom/nwaytoggle';
 import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/groups';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -65,6 +65,8 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
         }
     };
 
+    const hasQdps = Array.from(attackerSummary?.keys() || []).concat(Array.from(defenderSummary?.keys() || [])).some(v => typeof v !== 'number');
+
     return (
         <div className='text-white'>
             <div className="flex w-full p-2">
@@ -76,23 +78,25 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
                             options={[attackerName, defenderName]}
                             onChange={(_, index) => setCompany(index)}
                         />
-                        <div className="flex flex-row gap-2 items-center">
-                            <span>QDPS arrangement</span>
-                            <NWayToggle
-                                className="text-small px-2 py-1"
-                                defaultValue={qdpsSplit}
-                                options={['Joined', 'Split', 'Both']}
-                                onChange={(value) =>
-                                    setQdpsSplit(value as 'Joined' | 'Split' | 'Both')
-                                }
-                            />
-                        </div>
+                        {hasQdps && (
+                            <div className="flex flex-row gap-2 items-center">
+                                <span>QDPS arrangement</span>
+                                <NWayToggle
+                                    className="text-small px-2 py-1"
+                                    defaultValue={qdpsSplit}
+                                    options={['Joined', 'Split', 'Both']}
+                                    onChange={(value) =>
+                                        setQdpsSplit(value as 'Joined' | 'Split' | 'Both')
+                                    }
+                                />
+                            </div>
+                        )}
                     </div>
 
                     {/* Right screenshot button */}
                     <button
                         onClick={handleScreenshot}
-                        className="p-2 bg-blue-600 rounded-full hover:bg-blue-700 text-white"
+                        className={`p-2 rounded-full text-white ${ssLoading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"}`}
                     >
                         {ssLoading ? (
                             <CircleNotchIcon className="animate-spin" weight="fill" size={24} />
