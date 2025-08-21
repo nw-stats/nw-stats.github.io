@@ -12,6 +12,7 @@ import NotFound from "./notfound";
 // import DataEntryInProgress from "./dataentryinprogress";
 import WarListCard from "../components/molecules/warlistcard";
 import DataEntryInProgress from "./dataentryinprogress";
+import Heatmap from "../components/molecules/heatmap";
 // import Heatmap from "../components/molecules/heatmap";
 
 
@@ -57,7 +58,6 @@ function WarDetail(): JSX.Element {
                 {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                 <WarListCard war={war} />
             </div>
-
             <div className="text-lg">
                 <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} defender={war.defender.name} />
             </div>

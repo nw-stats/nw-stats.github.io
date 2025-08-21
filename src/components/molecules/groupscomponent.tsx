@@ -47,7 +47,7 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
                 <div className="flex flex-col gap-2">
                     <NWayToggle className='px-3 py-2 text-md' options={[attackerName, defenderName]} onChange={(_, index) => setCompany(index)} />
                     <div className="flex flex-row gap-2 items-center">
-                        <span>QDPS</span>
+                        <span>QDPS arrangement</span>
                         <NWayToggle className='text-small px-2 py-1' defaultValue={qdpsSplit} options={['Joined', 'Split', 'Both']} onChange={(value) => setQdpsSplit(value as 'Joined' | 'Split' | 'Both')} />
                     </div>
                 </div>
