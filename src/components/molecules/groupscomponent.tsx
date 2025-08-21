@@ -7,9 +7,8 @@ import type { GroupKey } from '../../types/roster';
 import { NWayToggle } from '../atom/nwaytoggle';
 import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/groups';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { CameraIcon, CircleNotchIcon, HourglassIcon } from '@phosphor-icons/react';
+import { CameraIcon, CircleNotchIcon } from '@phosphor-icons/react';
 import { toPng } from 'html-to-image';
-import Loading from '../atom/loading';
 
 interface GroupsSummaryProps {
     attackerName: string,
