@@ -36,14 +36,6 @@ export function ScreenShotable({ button, children }: ScreenShotableProps): JSX.E
         return () => button.removeEventListener("click", handleClick);
     }, [button, children]);
 
-    useEffect(() => {
-        if (!screenshotRef.current) return;
-        const observer = new MutationObserver(() => {
-            generateScreenshot(); // call your async pre-render
-        });
-        observer.observe(screenshotRef.current, { subtree: true, childList: true, characterData: true });
-        return () => observer.disconnect();
-    }, []);
 
 
     useEffect(() => {

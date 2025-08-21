@@ -9,7 +9,6 @@ import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/grou
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { CameraIcon, CircleNotchIcon } from '@phosphor-icons/react';
 import { toPng } from 'html-to-image';
-import { useMediaQuery } from 'react-responsive';
 
 interface GroupsSummaryProps {
     attackerName: string,
