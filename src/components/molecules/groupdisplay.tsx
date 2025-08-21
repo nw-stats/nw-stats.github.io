@@ -5,10 +5,10 @@ import NumberCell from '../atom/numbercell';
 import LabelIcon from '../atom/labelicon';
 import StatsTable, { type Calculation } from '../atom/statstble';
 import { Link } from 'react-router-dom';
-import { kRoleOrder } from '../../constants/roleorder';
 import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from '@phosphor-icons/react';
 import type { GroupKey } from '../../types/roster';
 import { formatPercent } from '../../utils/format';
+import { kRoles, type Role } from '../../types/role';
 
 
 interface GroupDisplayProps {
@@ -38,8 +38,8 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group }) => {
                 sortingFn: (rowA, rowB) => {
                     const a = rowA.getValue<string>('role');
                     const b = rowB.getValue<string>('role');
-                    const ai = kRoleOrder.indexOf(a);
-                    const bi = kRoleOrder.indexOf(b);
+                    const ai = kRoles.indexOf(a as Role);
+                    const bi = kRoles.indexOf(b as Role);
                     return ai - bi;
                 },
             },
