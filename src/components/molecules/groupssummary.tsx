@@ -127,10 +127,10 @@ const GroupsSummary: React.FC<GroupsSummaryProps> = ({
 
     return (
         <div className="bg-gray-800 text-white rounded-lg shadow-md overflow-x-auto">
-            <h2 className="text-lg font-bold p-2">Group Summary</h2>
+            <h2 className="font-bold p-2">Group Summary</h2>
 
             {groups ? (
-                <div className="text-lg"><StatsTable columns={columns} data={data} /></div>
+                <div className=""><StatsTable columns={columns} data={data} /></div>
             ) : (<div className='text-gray-500 p-2'>No data</div>)}
         </div>
     );
