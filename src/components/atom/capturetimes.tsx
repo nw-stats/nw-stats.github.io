@@ -13,7 +13,7 @@ export function CaptureTimes({ captures }: CaptureTimesProps): JSX.Element {
     const pf = captures.fort ? formatSeconds(captures.fort) : "-";
     return (
         <div className="flex flex-col text-white">
-            <span className="text-sm text-centers">Captures</span>
+            <span className="text-sm text-center">Captures</span>
             <div className="grid grid-cols-4 place-items-center w-full text-white text-sm">
                 <StatWithIcon icon={<div>A</div>} value={pa} />
                 <StatWithIcon icon={<div>B</div>} value={pb} />
