@@ -11,22 +11,16 @@ export interface UseWarsOptions {
     ids?: number[];
     companies?: string[];
     players?: string[];
+    showHidden?: boolean;
 }
 
 export function useWars(options?: UseWarsOptions) {
-    const [error, setError] = useState<any>(null);
-    const [loading, setLoading] = useState<Boolean>(true);
     const [wars, setWars] = useState<War[]>([]);
     const { error: rawWarsError, loading: rawWarsLoading, wars: rawWars } = useWarRaw(options);
     const { err: companiesError, loading: companiesLoading, companies } = useCompanies();
 
-    useEffect(() => {
-        setError(rawWarsError || companiesError);
-    }, [rawWarsError, companiesError]);
-    useEffect(() => {
-        setLoading(rawWarsLoading || companiesLoading);
-    }, [rawWarsLoading, companiesLoading]);
-
+    const error = rawWarsError || companiesError;
+    const loading = rawWarsLoading || companiesLoading;
 
     useEffect(() => {
         const w = hydrateWars(rawWars, companies);
@@ -52,16 +46,20 @@ export function useWarRaw(options?: UseWarsOptions) {
                 setLoading(true);
 
                 const queries: QueryParameter[][] = [];
+                if (!options?.showHidden) {
+                    queries.push([{ column: kWarColumns.show, fn: Qop.Eq, value: true }]);
+                }
+
                 if (options?.ids) {
-                    const query: QueryParameter[] = [{ column: kWarColumns.show, fn: Qop.Eq, value: true }];
+                    const query: QueryParameter[] = []
                     for (const wid of options.ids) {
                         query.push({ column: kWarColumns.id, fn: Qop.Eq, value: wid });
                     }
                     queries.push(query);
 
                 } else if (options?.companies) {
-                    const atkQuery: QueryParameter[] = [{ column: kWarColumns.show, fn: Qop.Eq, value: true }];
-                    const defQuery: QueryParameter[] = [{ column: kWarColumns.show, fn: Qop.Eq, value: true }];
+                    const atkQuery: QueryParameter[] = [];
+                    const defQuery: QueryParameter[] = [];
                     for (const name of options.companies) {
                         atkQuery.push({ column: kWarColumns.attacker, fn: Qop.Eq, value: name });
                         defQuery.push({ column: kWarColumns.defender, fn: Qop.Eq, value: name });
@@ -71,17 +69,13 @@ export function useWarRaw(options?: UseWarsOptions) {
                 }
 
                 let w: WarRaw[] = [];
-                if (queries.length === 0) {
-                    w = await getWars([{ column: kWarColumns.show, fn: Qop.Eq, value: true }]);
-                } else {
-                    const results = await Promise.all(
-                        queries.map(query => {
-                            const q = [...query, { column: kWarColumns.show, fn: Qop.Eq, value: true }];
-                            return getWars(q);
-                        })
-                    );
-                    w = results.flat().sort((a, b) => b.date.toMillis() - a.date.toMillis());
-                }
+                const results = await Promise.all(
+                    queries.map(query => {
+                        const q = [...query];
+                        return getWars(q);
+                    })
+                );
+                w = results.flat().sort((a, b) => b.date.toMillis() - a.date.toMillis());
 
                 if (!cancelled) {
                     setWars(w);

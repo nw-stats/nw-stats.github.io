@@ -12,7 +12,7 @@ export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
 
     const lbHook = useLeaderboardsByIds(warId);
-    const wHook = useWars({ ids: [warId] });
+    const wHook = useWars({ ids: [warId], showHidden: true });
     const rHook = useRosters([warId]);
     const companies = useMemo(() => (wHook.wars.length !== 0 ? [wHook.wars[0].attacker.name, wHook.wars[0].defender.name] : []), [wHook.wars]);
     const cHook = useCompanies(companies);
