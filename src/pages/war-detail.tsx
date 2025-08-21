@@ -12,7 +12,6 @@ import NotFound from "./notfound";
 // import DataEntryInProgress from "./dataentryinprogress";
 import WarListCard from "../components/molecules/warlistcard";
 import DataEntryInProgress from "./dataentryinprogress";
-import Heatmap from "../components/molecules/heatmap";
 // import Heatmap from "../components/molecules/heatmap";
 
 
