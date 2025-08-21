@@ -1,5 +1,5 @@
 
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { GroupPerformance, StatTotals } from '../../types/leaderboard';
 import GroupsDetail from './groupsdetails';
 import GroupsSummary from './groupssummary';
@@ -9,6 +9,7 @@ import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/grou
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { CameraIcon, CircleNotchIcon } from '@phosphor-icons/react';
 import { toPng } from 'html-to-image';
+import { useMediaQuery } from 'react-responsive';
 
 interface GroupsSummaryProps {
     attackerName: string,
@@ -65,7 +66,15 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
         }
     };
 
-    const hasQdps = Array.from(attackerSummary?.keys() || []).concat(Array.from(defenderSummary?.keys() || [])).some(v => typeof v !== 'number');
+    const attackerHasQdps = useMemo(() => {
+        return Array.from(attackerSummary?.keys() || []).some(v => typeof v !== 'number');
+    }, [attackerSummary]);
+    const defenderHasQdps = useMemo(() => {
+        return Array.from(defenderSummary?.keys() || []).some(v => typeof v !== 'number');
+    }, [attackerSummary]);
+
+    const eitherTeamHasQpds = attackerHasQdps || defenderHasQdps;
+    const selectedTeamHasQpds = company === 1 ? attackerHasQdps : defenderHasQdps;
 
     return (
         <div className='text-white'>
@@ -78,7 +87,7 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
                             options={[attackerName, defenderName]}
                             onChange={(_, index) => setCompany(index)}
                         />
-                        {hasQdps && (
+                        {eitherTeamHasQpds && (
                             <div className="flex flex-row gap-2 items-center">
                                 <span>QDPS arrangement</span>
                                 <NWayToggle
@@ -88,6 +97,7 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
                                     onChange={(value) =>
                                         setQdpsSplit(value as 'Joined' | 'Split' | 'Both')
                                     }
+                                    disabled={selectedTeamHasQpds}
                                 />
                             </div>
                         )}
