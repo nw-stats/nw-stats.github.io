@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import type { GroupPerformance, StatTotals } from '../../types/leaderboard';
 import GroupsDetail from './groupsdetails';
 import GroupsSummary from './groupssummary';
-import type { Group, GroupKey } from '../../types/roster';
+import type { GroupKey } from '../../types/roster';
 import { NWayToggle } from '../atom/nwaytoggle';
 import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/groups';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
