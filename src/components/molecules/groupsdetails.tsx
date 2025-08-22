@@ -4,10 +4,11 @@ import GroupDisplay from './groupdisplay';
 import type { GroupKey } from '../../types/roster';
 
 interface GroupsDetailProps {
+    hideRoles: boolean
     groups?: Map<GroupKey, GroupPerformance>;
 }
 
-const GroupsDetail: React.FC<GroupsDetailProps> = ({ groups }) => {
+const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups }) => {
     const rows = []
     if (groups) {
         const sortedGroups = Array.from(groups.entries()).sort((a, b) => {
@@ -31,7 +32,7 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ groups }) => {
         for (const [n, group] of sortedGroups) {
             rows.push(
                 <div className="w-full overflow-x-auto" key={n}>
-                    <GroupDisplay group={group} groupId={n} />
+                    <GroupDisplay group={group} groupId={n} hideRoles={hideRoles} />
                 </div>
             )
         }

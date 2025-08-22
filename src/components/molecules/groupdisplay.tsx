@@ -14,13 +14,14 @@ import { kRoles, type Role } from '../../types/role';
 interface GroupDisplayProps {
     groupId: GroupKey;
     group: GroupPerformance;
+    hideRoles: boolean;
 }
 
-const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group }) => {
-    const sort = [{ id: "role", desc: false }];
+const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles }) => {
+    const sort = [hideRoles ? { id: 'score', desc: true } : { id: "role", desc: false }];
 
-    const columns = React.useMemo<ColumnDef<LeaderboardEntry>[]>(
-        () => [
+    const columns = React.useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
+        const baseCols: ColumnDef<LeaderboardEntry>[] = [
             {
                 accessorKey: 'character',
                 header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
@@ -31,17 +32,6 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group }) => {
                         </Link>
                     </div>
                 )
-            },
-            {
-                accessorKey: 'role',
-                header: () => <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />,
-                sortingFn: (rowA, rowB) => {
-                    const a = rowA.getValue<string>('role');
-                    const b = rowB.getValue<string>('role');
-                    const ai = kRoles.indexOf(a as Role);
-                    const bi = kRoles.indexOf(b as Role);
-                    return ai - bi;
-                },
             },
             {
                 accessorKey: 'score',
@@ -81,8 +71,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group }) => {
             },
             {
                 accessorKey: 'healing',
-                header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />
-                } />,
+                header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
                         <NumberCell value={info.getValue<number>()} />
@@ -107,9 +96,28 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group }) => {
                     </div>
                 ),
             },
-        ],
-        []
-    );
+        ];
+
+        // Insert role column only if NOT hidden
+        if (!hideRoles) {
+            baseCols.splice(1, 0, {
+                accessorKey: 'role',
+                header: () => (
+                    <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
+                ),
+                sortingFn: (rowA, rowB) => {
+                    const a = rowA.getValue<string>('role');
+                    const b = rowB.getValue<string>('role');
+                    const ai = kRoles.indexOf(a as Role);
+                    const bi = kRoles.indexOf(b as Role);
+                    return ai - bi;
+                },
+                cell: info => <>{info.getValue<string>()}</>,
+            });
+        }
+
+        return baseCols;
+    }, [hideRoles]);
 
     const calcColumns: Calculation[] = [
         { fn: "sum", column: "score" },

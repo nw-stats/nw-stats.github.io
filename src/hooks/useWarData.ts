@@ -11,7 +11,7 @@ import { summarizeLeaderboard } from "../services/leaderboardservice"; // refact
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
-
+    console.log("useWarData");
     const lbHook = useLeaderboards({ warIds: [warId] });
     const wHook = useWars({ ids: [warId], showHidden: true });
     const rHook = useRosters([warId]);
@@ -41,8 +41,6 @@ export function useWarData(warId: number) {
     useEffect(() => {
         setError(lbHook.error || wHook.error || rHook.error || cHook.error);
     }, [lbHook.error, wHook.error, rHook.error, cHook.error]);
-
-
 
     return {
         loading,

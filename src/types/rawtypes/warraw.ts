@@ -11,4 +11,5 @@ export interface WarRaw {
     winner: string;
     duration: number;
     captures: CaptureTimes;
+    hideRoles: boolean;
 }

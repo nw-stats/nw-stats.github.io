@@ -3,10 +3,14 @@ export function formatCompact(value: number): string {
 }
 
 export function formatThousands(value: number, figures?: number): string {
-    return value.toLocaleString(undefined, {
-        minimumFractionDigits: figures,
-        maximumFractionDigits: figures,
-    });
+    try {
+        return value.toLocaleString(undefined, {
+            minimumFractionDigits: figures,
+            maximumFractionDigits: figures,
+        });
+    } catch (err) {
+        return "";
+    }
 }
 
 export function formatPercent(value: number, figures?: number): string {

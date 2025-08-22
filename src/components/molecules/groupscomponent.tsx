@@ -10,6 +10,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 interface GroupsSummaryProps {
     attackerName: string,
     defenderName: string,
+    hideRoles: boolean,
     attackerGroups?: Map<GroupKey, GroupPerformance>;
     defenderGroups?: Map<GroupKey, GroupPerformance>;
     attackerSummary?: Map<GroupKey, StatTotals>;
@@ -21,7 +22,8 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
     attackerGroups,
     defenderGroups,
     attackerSummary,
-    defenderSummary
+    defenderSummary,
+    hideRoles
 }) => {
     const [company, setCompany] = useState(0);
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
@@ -85,7 +87,7 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
 
             <div className='grid grid-cols-1 gap-8' ref={screenshotRef}>
                 {/* <GroupsSummary groups={filteredSummaries} /> */}
-                <GroupsDetail groups={filteredGroups} />
+                <GroupsDetail groups={filteredGroups} hideRoles={hideRoles} />
             </div>
         </div >
     );

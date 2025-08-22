@@ -18,6 +18,7 @@ export const kWarColumns = {
     show: "N",
     status: "O",
     tz: "P",
+    hideRoles: "Q"
 }
 
 export const kWarTable = {
@@ -37,4 +38,5 @@ export const kWarTable = {
     show: 13,
     status: 14,
     tz: 15,
+    hideRoles: 16,
 }

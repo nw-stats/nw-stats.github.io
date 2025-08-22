@@ -101,12 +101,12 @@ function WarDetail(): JSX.Element {
                             <CameraIcon weight="fill" size={24} />
                         )}
                     </button>
-                    {leaderboard && <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
+                    {leaderboard && <GroupsComponent hideRoles={war.hideRoles} attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
                 </div>
 
             </div>
             <div>
-                {leaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} />}
+                {leaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} hideRoles={war.hideRoles} />}
             </div>
         </div >
     );

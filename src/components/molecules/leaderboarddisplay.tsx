@@ -12,19 +12,21 @@ import {
 import NumberCell from "../atom/numbercell";
 import LabelIcon from "../atom/labelicon";
 import { Link } from "react-router-dom";
-import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UserListIcon, UsersThreeIcon } from "@phosphor-icons/react";
+import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from "@phosphor-icons/react";
 import type { Company } from "../../types/company";
 import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
 import { NoData } from "../atom/nodata";
+import { kRoles, type Role } from "../../types/role";
 
 type LeaderboardProps = {
     companies: Map<string, Company>,
+    hideRoles: boolean,
     leaderboard?: LeaderboardEntry[],
 };
 
-export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps): JSX.Element {
+export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: LeaderboardProps): JSX.Element {
     const [selectedRole, setSelectedRole] = useState<string>('All Roles');
     const [sorting, setSorting] = useState<SortingState>([
         { id: 'score', desc: true },
@@ -38,34 +40,14 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
         }
     }, [selectedRole]);
 
-    const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(
-        () => [
+    const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
+        const baseCols: ColumnDef<LeaderboardEntry>[] = [
             {
                 accessorKey: 'character',
-                header: () => (<LabelIcon text={"Player"} icon={<UserListIcon weight="fill" />} />),
+                header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-left hover:underline">
                         <Link to={`/players/${info.getValue<string>()}`}>
-                            {info.getValue<string>()}
-                        </Link>
-                    </div>
-                )
-            },
-            {
-                accessorKey: 'role',
-                header: () => (<LabelIcon text={"Role"} icon={<PlusCircleIcon weight="fill" />} />),
-                cell: info => (
-                    <div className="text-left">
-                        {info.getValue<number>()}
-                    </div>
-                )
-            },
-            {
-                accessorKey: 'company',
-                header: () => (<LabelIcon text='Company' icon={<UsersThreeIcon weight="fill" />} />),
-                cell: info => (
-                    <div className="hover:underline">
-                        <Link to={`/companies/${info.getValue<string>()}`}>
                             {info.getValue<string>()}
                         </Link>
                     </div>
@@ -91,9 +73,7 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
             },
             {
                 accessorKey: 'deaths',
-                header: () => {
-                    return <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />;
-                },
+                header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
                         <NumberCell value={info.getValue<number>()} />
@@ -111,8 +91,7 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
             },
             {
                 accessorKey: 'healing',
-                header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />
-                } />,
+                header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
                         <NumberCell value={info.getValue<number>()} />
@@ -137,9 +116,28 @@ export function LeaderboardDisplay({ leaderboard, companies }: LeaderboardProps)
                     </div>
                 ),
             },
-        ],
-        []
-    );
+        ];
+
+        // Insert role column only if NOT hidden
+        if (!hideRoles) {
+            baseCols.splice(1, 0, {
+                accessorKey: 'role',
+                header: () => (
+                    <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
+                ),
+                sortingFn: (rowA, rowB) => {
+                    const a = rowA.getValue<string>('role');
+                    const b = rowB.getValue<string>('role');
+                    const ai = kRoles.indexOf(a as Role);
+                    const bi = kRoles.indexOf(b as Role);
+                    return ai - bi;
+                },
+                cell: info => <>{info.getValue<string>()}</>,
+            });
+        }
+
+        return baseCols;
+    }, [hideRoles]);
 
     const roleOptions = useMemo(() => {
         const rolesSet = new Set<string>();

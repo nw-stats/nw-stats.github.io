@@ -1,7 +1,6 @@
 import type { DateTime } from "luxon";
 import type { CaptureTimes } from "./captures";
 import type { Company } from "./company";
-export type WarType = 'M' | 'G' | 'M-10' | 'G-10';
 
 export interface War {
     id: number;
@@ -13,22 +12,5 @@ export interface War {
     winner: string;
     duration: number;
     captures: CaptureTimes;
-}
-
-export const WarTable = {
-    id: "A",
-    date: "B",
-    time: "C",
-    server: "D",
-    territory: "E",
-    attacker: "F",
-    defender: "G",
-    winner: "H",
-    pointa: "I",
-    pointb: "J",
-    pointc: "K",
-    fort: "L",
-    duration: "M",
-    hidden: "N",
-    tz: "P",
+    hideRoles: boolean;
 }

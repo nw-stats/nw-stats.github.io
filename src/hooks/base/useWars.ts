@@ -39,6 +39,7 @@ export function useWarRaw(options?: UseWarsOptions) {
         return [...companies].sort((a, b) => a.localeCompare(b)).join(',');
     }, [options?.companies]);
 
+
     useEffect(() => {
         let cancelled = false;
         async function fetchAll() {

@@ -8,6 +8,11 @@ export function convertInt(value: DataType): number {
     return parseInt(String(value));
 }
 
+export function convertBoolean(value: DataType): boolean {
+    console.log(value);
+    return Boolean(value);
+}
+
 export function convertString(value: DataType): string {
     if (value === null) {
         return '';
