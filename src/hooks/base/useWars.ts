@@ -46,10 +46,6 @@ export function useWarRaw(options?: UseWarsOptions) {
                 setLoading(true);
 
                 const queries: QueryParameter[][] = [];
-                if (!options?.showHidden) {
-                    queries.push([{ column: kWarColumns.show, fn: Qop.Eq, value: true }]);
-                }
-
                 if (options?.ids) {
                     const query: QueryParameter[] = []
                     for (const wid of options.ids) {
@@ -66,6 +62,11 @@ export function useWarRaw(options?: UseWarsOptions) {
                     }
                     queries.push(atkQuery);
                     queries.push(defQuery);
+                }
+                if (!options?.showHidden) {
+                    for (const q of queries) {
+                        q.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
+                    }
                 }
 
                 let w: WarRaw[] = [];
