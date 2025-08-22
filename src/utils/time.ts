@@ -20,6 +20,13 @@ export function formatDatetime(date: DateTime): string {
     return `${formatDate(date)} ${formatTime(date)}`;
 }
 
+export function formatDateTimeSlug(date: DateTime): string {
+    const localDt = date.setZone("local");
+    const fd = localDt.toFormat("yyyyMMdd");
+    const ft = localDt.toLocaleString(DateTime.TIME_24_SIMPLE).replaceAll(":", "");
+    return `${fd}_${ft}`;
+}
+
 export function convertFromGoogleSheetsDateString(dateString: string): DateTime {
     const match = dateString.match(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)/);
     if (!match) return DateTime.now();
