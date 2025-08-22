@@ -17,6 +17,7 @@ export function useLeaderboards(options?: UseLeaderboardsOptions) {
 
     const warIdsKey = useMemo(() => (options?.warIds || []).sort().join(','), [options?.warIds]);
     const playersKey = useMemo(() => (options?.characters || []).sort().join(','), [options?.characters]);
+    const companiesKey = useMemo(() => (options?.companies || []).sort().join(','), [options?.companies]);
 
     useEffect(() => {
         let cancelled = false;
@@ -31,7 +32,7 @@ export function useLeaderboards(options?: UseLeaderboardsOptions) {
                 let qp: QueryParameter[] = [];
                 if (options.warIds) {
                     qp = options.warIds.map(v => ({
-                        column: kLeaderboardColumns.character,
+                        column: kLeaderboardColumns.warid,
                         fn: Qop.Eq,
                         value: v
                     }));
@@ -49,8 +50,9 @@ export function useLeaderboards(options?: UseLeaderboardsOptions) {
                     }));
                 }
                 const lb = await getLeaderboard(qp);
-                if (!cancelled) return;
+                if (cancelled) return;
                 setLeaderboards(lb || []);
+
             } catch (err) {
                 setError(err)
             } finally {
@@ -59,7 +61,7 @@ export function useLeaderboards(options?: UseLeaderboardsOptions) {
         }
         fetchAll();
         return () => { cancelled = true };
-    }, [warIdsKey, playersKey]);
+    }, [warIdsKey, playersKey, companiesKey]);
 
     return { loading, error, leaderboards };
 }
