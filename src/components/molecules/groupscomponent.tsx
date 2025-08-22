@@ -103,21 +103,12 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
                     </div>
 
                     {/* Right screenshot button */}
-                    <button
-                        onClick={handleScreenshot}
-                        className={`p-2 rounded-full text-white ${ssLoading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"}`}
-                    >
-                        {ssLoading ? (
-                            <CircleNotchIcon className="animate-spin" weight="fill" size={24} />
-                        ) : (
-                            <CameraIcon weight="fill" size={24} />
-                        )}
-                    </button>
+
                 </div>
             </div>
 
-            <div className='grid grid-cols-1 gap-8 pl-2 pr-2 pb-2' ref={screenshotRef}>
-                <GroupsSummary groups={filteredSummaries} />
+            <div className='grid grid-cols-1 gap-8' ref={screenshotRef}>
+                {/* <GroupsSummary groups={filteredSummaries} /> */}
                 <GroupsDetail groups={filteredGroups} />
             </div>
         </div >

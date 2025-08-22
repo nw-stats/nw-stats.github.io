@@ -15,6 +15,7 @@ import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
 import { toPng } from "html-to-image";
 import { formatDateTimeSlug } from "../utils/time";
+import { CameraIcon, CircleNotchIcon } from "@phosphor-icons/react";
 // import { toPng } from "html-to-image";
 // import { formatDateTimeSlug } from "../utils/time";
 // import Heatmap from "../components/molecules/heatmap";
@@ -75,26 +76,35 @@ function WarDetail(): JSX.Element {
     };
 
     return (
-        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20" ref={screenshotRef}>
+        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
+            <div className="flex flex-col gap-4 p-2" ref={screenshotRef}>
+                <div className="pt-8">
+                    {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
+                    <WarListCard war={war} />
+                </div>
+                <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">{/* exclude this in screenshot*/}
+                    <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} defender={war.defender.name} />
+                    <CaptureTimes captures={war.captures} />
+                </div>
 
-            <button className="text-white rounded-full hidden" onClick={handleScreenshot}>
-                {ssLoading ? "WAIT" : "CLICK"}
-            </button>
-            <div className="pt-8">
-                {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
-                <WarListCard war={war} />
+                {!leaderboard && <DataEntryInProgress />}
+
+                <div className="text-sm relative">{/* Include this in screenshot*/}
+                    <button
+                        onClick={handleScreenshot}
+                        className={`absolute top-0 right-4 p-3 rounded-full text-white shadow-lg transition ${ssLoading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"
+                            }`}
+                    >
+                        {ssLoading ? (
+                            <CircleNotchIcon className="animate-spin" weight="fill" size={24} />
+                        ) : (
+                            <CameraIcon weight="fill" size={24} />
+                        )}
+                    </button>
+                    {leaderboard && <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
+                </div>
+
             </div>
-            <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">{/* exclude this in screenshot*/}
-                <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} defender={war.defender.name} />
-                <CaptureTimes captures={war.captures} />
-            </div>
-
-            {!leaderboard && <DataEntryInProgress />}
-
-            <div className="text-sm">{/* Include this in screenshot*/}
-                {leaderboard && <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
-            </div>
-
             <div>
                 {leaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} />}
             </div>
