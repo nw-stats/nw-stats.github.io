@@ -13,6 +13,8 @@ import NotFound from "./notfound";
 import WarListCard from "../components/molecules/warlistcard";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
+import { toPng } from "html-to-image";
+import { formatDateTimeSlug } from "../utils/time";
 // import { toPng } from "html-to-image";
 // import { formatDateTimeSlug } from "../utils/time";
 // import Heatmap from "../components/molecules/heatmap";
@@ -20,9 +22,9 @@ import { CaptureTimes } from "../components/atom/capturetimes";
 
 function WarDetail(): JSX.Element {
     const { warId } = useParams<{ warId: string, slug: string }>();
-    // const [ssLoading, setSsLoading] = useState(false);
+    const [ssLoading, setSsLoading] = useState(false);
 
-    const screenshotRefs = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)]
+    const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
     const { loading, error, war, companies, leaderboard, summary, groupDetails, groupsSummary } = useWarData(warIdNum);
 
@@ -49,55 +51,36 @@ function WarDetail(): JSX.Element {
     const attackerGroupSummary = groupsSummary.get(war.attacker.name);
     const defenderGroupSummary = groupsSummary.get(war.defender.name);
 
-    // const handleScreenshot = async () => {
-    //     if (screenshotRefs.some(v => !v.current)) return;
+    const handleScreenshot = async () => {
+        if (!screenshotRef.current) return;
 
-    //     try {
-    //         setSsLoading(true);
-    //         await new Promise(resolve => setTimeout(resolve, 0));
+        try {
+            if (!screenshotRef.current) return;
+            setSsLoading(true);
+            await new Promise(resolve => setTimeout(resolve, 0));
 
-    //         const tempDiv = document.createElement("div");
-    //         tempDiv.style.position = "absolute";
-    //         tempDiv.style.top = "-9999px";
-    //         tempDiv.style.backgroundColor = "#1f2937";
-    //         tempDiv.style.padding = "16px";
-    //         tempDiv.style.display = "flex";
-    //         tempDiv.style.flexDirection = "column";
-    //         tempDiv.style.gap = "2rem";      // gap-8 = 2rem
-    //         tempDiv.style.marginBottom = "5rem"; // mb-20 = 5rem
-    //         tempDiv.style.maxWidth = "80rem";    // max-w-7xl = 80rem
-    //         tempDiv.style.marginLeft = "auto";   // mx-auto
-    //         tempDiv.style.marginRight = "auto";
-    //         tempDiv.className = "flex flex-col mx-auto max-w-7xl gap-8 mb-20";
-    //         document.body.appendChild(tempDiv);
+            const dataUrl = await toPng(screenshotRef.current, {
+                cacheBust: true,
+                skipFonts: true,
+                backgroundColor: "#1f2937",
+            });
 
-    //         for (const ref of screenshotRefs) {
-    //             if (ref.current) {
-    //                 tempDiv.appendChild(ref.current.cloneNode(true));
-    //             }
-    //         }
-
-    //         const dataUrl = await toPng(tempDiv, {
-    //             cacheBust: true,
-    //             skipFonts: true,
-    //             backgroundColor: "#1f2937",
-    //         });
-
-    //         const link = document.createElement("a");
-    //         link.download = `leaderboard_${formatDateTimeSlug(war.date)}_${war.attacker.name}_${war.defender.name}.png`;
-    //         link.href = dataUrl;
-    //         link.click();
-
-    //         document.body.removeChild(tempDiv);
-    //     } finally {
-    //         setSsLoading(false);
-    //     }
-    // };
+            const link = document.createElement("a");
+            link.download = `leaderboard_${formatDateTimeSlug(war.date)}_${war.attacker.name}_${war.defender.name}.png`;
+            link.href = dataUrl;
+            link.click();
+        } finally {
+            setSsLoading(false);
+        }
+    };
 
     return (
-        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
-            {/* <button className="text-white" onClick={handleScreenshot}>{ssLoading ? "WAIT" : "CLICK"}</button> */}
-            <div className="pt-8" ref={screenshotRefs[0]}> {/* Include this in screenshot*/}
+        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20" ref={screenshotRef}>
+
+            <button className="text-white rounded-full hidden" onClick={handleScreenshot}>
+                {ssLoading ? "WAIT" : "CLICK"}
+            </button>
+            <div className="pt-8">
                 {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                 <WarListCard war={war} />
             </div>
@@ -108,9 +91,10 @@ function WarDetail(): JSX.Element {
 
             {!leaderboard && <DataEntryInProgress />}
 
-            <div className="text-sm" ref={screenshotRefs[1]} >{/* Include this in screenshot*/}
+            <div className="text-sm">{/* Include this in screenshot*/}
                 {leaderboard && <GroupsComponent attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
             </div>
+
             <div>
                 {leaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} />}
             </div>

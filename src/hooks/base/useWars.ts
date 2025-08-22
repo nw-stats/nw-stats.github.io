@@ -64,8 +64,12 @@ export function useWarRaw(options?: UseWarsOptions) {
                     queries.push(defQuery);
                 }
                 if (!options?.showHidden) {
-                    for (const q of queries) {
-                        q.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
+                    if (queries.length > 0) {
+                        for (const q of queries) {
+                            q.push({ column: kWarColumns.show, fn: Qop.Eq, value: true });
+                        }
+                    } else {
+                        queries.push([{ column: kWarColumns.show, fn: Qop.Eq, value: true }]);
                     }
                 }
 
