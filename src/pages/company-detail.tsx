@@ -23,7 +23,7 @@ const CompanyDetail: React.FC = () => {
     if (error || !company || !leaderboards) return (<span className="text-white" ><NotFound /></span>);
 
     const content = [
-        <CompanyStatOverview companyName={companyName} wars={wars} leaderboard={leaderboards.entries} />,
+        <CompanyStatOverview companyName={companyName} wars={wars} leaderboard={leaderboards} />,
         <CompanyWarHistory companyName={companyName} wars={wars} />,
         <CompanyMembersTable members={members} />
     ]

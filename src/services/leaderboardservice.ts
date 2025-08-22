@@ -1,15 +1,15 @@
 import { kSheetId } from "../constants/sheets";
-import { type Leaderboard, type LeaderboardEntry, type StatTotals } from "../types/leaderboard";
+import { type LeaderboardEntry, type StatTotals } from "../types/leaderboard";
 import { type QueryParameter } from "../types/queryparameter";
 import type { Role } from "../types/role";
 import { constructQuery } from "../utils/querybuilder";
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 
-export function summarizeLeaderboard(leaderboard: Leaderboard): Map<string, StatTotals> {
+export function summarizeLeaderboard(leaderboard: LeaderboardEntry[]): Map<string, StatTotals> {
     const summaries = new Map<string, StatTotals>();
 
-    for (const entry of leaderboard.entries) {
+    for (const entry of leaderboard) {
         let summary = summaries.get(entry.company);
         if (!summary) {
             summary = {
@@ -38,7 +38,7 @@ export function summarizeLeaderboard(leaderboard: Leaderboard): Map<string, Stat
     return summaries;
 }
 
-export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | undefined> {
+export async function getLeaderboard(params: QueryParameter[]): Promise<LeaderboardEntry[] | undefined> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], params);
     let data: DataType[][] = [];
     try {
@@ -64,5 +64,5 @@ export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderbo
         kpar: 0,
         company: row[9] as string,
     }));
-    return { entries };
+    return entries;
 }

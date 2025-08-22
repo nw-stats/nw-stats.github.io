@@ -1,8 +1,8 @@
-import type { GroupPerformance, Leaderboard, StatDiff, StatTotals } from "../types/leaderboard";
+import type { GroupPerformance, LeaderboardEntry, StatDiff, StatTotals } from "../types/leaderboard";
 import type { GroupKey, Roster } from "../types/roster";
 import { isQpdsGroup } from "./roster";
 
-export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, Roster>): Map<string, Map<GroupKey, GroupPerformance>> {
+export function getGroupDetails(leaderboard: LeaderboardEntry[], rosters: Map<string, Roster>): Map<string, Map<GroupKey, GroupPerformance>> {
     const performance = new Map<string, Map<GroupKey, GroupPerformance>>();
 
     for (const [company, roster] of rosters) {
@@ -19,7 +19,7 @@ export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, R
                 companyPerformance.set(gk, groupPerformance);
             }
 
-            for (const entry of leaderboard.entries) {
+            for (const entry of leaderboard) {
                 for (const player of players) {
                     if (player.name === entry.character) {
                         entry.role = player.role;

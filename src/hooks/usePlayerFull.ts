@@ -1,18 +1,18 @@
 
 import { useAlts } from "./base/useAlts";
-import { useLeaderboardsByCharacters } from "./useLeaderboardsByCharacter";
 import { useRosters } from "./useRostersById";
 import { createPlayerDetailsAndSummary } from "../utils/player";
 import { useMemo } from "react";
 import { useWars } from "./base/useWars";
+import { useLeaderboards } from "./base/useLeaderboards";
 
 export function usePlayerDetails(playerName: string) {
     const { alts, loading: altsLoading, error: altsError } = useAlts(playerName);
     const altNames = alts.map(v => v.name) || [playerName];
 
-    const { leaderboard, loading: lbLoading, error: lbError } = useLeaderboardsByCharacters(altNames);
+    const { leaderboards, loading: lbLoading, error: lbError } = useLeaderboards({ characters: altNames });
 
-    const warIds = useMemo(() => leaderboard.map(v => v.warid), [leaderboard]);
+    const warIds = useMemo(() => leaderboards.map(v => v.warid), [leaderboards]);
     const { rosters, loading: rostersLoading, error: rostersError } = useRosters(warIds);
 
     const { wars, loading: warsLoading, error: warsError } = useWars({ ids: warIds });
@@ -20,7 +20,7 @@ export function usePlayerDetails(playerName: string) {
     const loading = altsLoading || lbLoading || rostersLoading || warsLoading;
     const error = altsError || lbError || rostersError || warsError;
 
-    const details = createPlayerDetailsAndSummary(alts, leaderboard, rosters, wars);
+    const details = createPlayerDetailsAndSummary(alts, leaderboards, rosters, wars);
 
     return {
         loading,

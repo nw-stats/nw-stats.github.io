@@ -1,5 +1,5 @@
 
-import { type StatTotals, type LeaderboardEntry, type MapStat, type WarsSummary, type Leaderboard } from "../types/leaderboard"
+import { type StatTotals, type LeaderboardEntry, type MapStat, type WarsSummary } from "../types/leaderboard"
 import type { War } from "../types/war";
 import { kThirtyMinutesInSeconds } from "./constants";
 
@@ -138,8 +138,8 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
     return summary;
 }
 
-export function fillKpar(leaderboard: Leaderboard, summaries: Map<string, StatTotals>) {
-    for (const entry of leaderboard.entries) {
+export function fillKpar(leaderboard: LeaderboardEntry[], summaries: Map<string, StatTotals>) {
+    for (const entry of leaderboard) {
         const company = entry.company;
         if (!summaries.has(company)) { continue; }
         const summary = summaries.get(company)!;

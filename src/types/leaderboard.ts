@@ -27,10 +27,6 @@ export interface CharacterDetailsEntry extends LeaderboardEntry {
     duration: number;
 }
 
-export interface Leaderboard {
-    entries: LeaderboardEntry[];
-}
-
 export interface GroupStats {
     name: string;
     score: number;

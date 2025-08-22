@@ -73,10 +73,11 @@ export function createPlayerDetailsAndSummary(
         details.set(character.name, { character, totals, normalized, history });
     }
 
-
     const allTotals = summarize(leaderboardEntries);
     const allNormalized = normalize(leaderboardEntries, wars);
     details.set('All', { character: combineCharacters(characters), totals: allTotals, normalized: allNormalized, history: allHistory });
+
+    console.log(details);
 
     return details;
 }
