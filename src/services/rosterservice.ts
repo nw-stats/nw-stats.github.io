@@ -4,6 +4,7 @@ import { type QueryParameter } from "../types/queryparameter";
 import type { Role } from "../types/role";
 import type { Group, GroupKey, Roster } from "../types/roster";
 import { constructQuery } from "../utils/querybuilder";
+import { convertGroupKey, convertInt, convertRole, convertString } from "../utils/sheetconvert";
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 
@@ -28,12 +29,14 @@ export async function getRosters(params: QueryParameter[]): Promise<Map<number, 
     const allRosters = new Map<number, Map<string, Roster>>();
     for (const row of data) {
         //const id = row[0] as number;
-        const war = row[1] as number;
-        const company = row[2] as string;
-        const player = row[3] as string;
-        const role = row[4] as Role;
-        const gk = row[5] as GroupKey;
-        const qpds = row[6] as string;
+        const war = convertInt(row[1]);
+        const company = convertString(row[2]);
+        const player = convertString(row[3]);
+        const role = convertRole(row[4]);
+        const gk = convertGroupKey(row[5]);
+        const qpds = convertString(row[6]);
+
+        if (gk === '') continue; // ignore entries with empty groups
 
         let warRoster = allRosters.get(war);
         if (!warRoster) {

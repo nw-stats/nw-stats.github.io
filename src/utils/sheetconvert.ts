@@ -1,6 +1,7 @@
 import type { DataType } from "../services/googlesheets";
 import type { Faction } from "../types/faction";
 import type { Role } from "../types/role";
+import type { GroupKey } from "../types/roster";
 import type { Region, WorldKind, WorldSet } from "../types/world";
 
 export function convertInt(value: DataType): number {
@@ -12,6 +13,12 @@ export function convertString(value: DataType): string {
         return '';
     }
     return String(value);
+}
+export function convertGroupKey(value: DataType): GroupKey {
+    if (typeof value === 'number') {
+        return convertInt(value) as GroupKey;
+    }
+    return convertString(value);
 }
 export function convertStringArray(value: DataType, delim?: string): string[] {
     const d = delim ? delim : ',';

@@ -82,14 +82,14 @@ function WarDetail(): JSX.Element {
                     {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                     <WarListCard war={war} />
                 </div>
-                <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">{/* exclude this in screenshot*/}
+                <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">
                     <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} defender={war.defender.name} />
                     <CaptureTimes captures={war.captures} />
                 </div>
 
                 {!leaderboard && <DataEntryInProgress />}
 
-                <div className="text-sm relative">{/* Include this in screenshot*/}
+                <div className="text-sm relative">
                     <button
                         onClick={handleScreenshot}
                         className={`absolute top-0 right-4 p-3 rounded-full text-white shadow-lg transition ${ssLoading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"

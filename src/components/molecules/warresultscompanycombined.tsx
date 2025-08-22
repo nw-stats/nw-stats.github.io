@@ -111,7 +111,7 @@ export function WarResultsCompanyCombined({ attacker, defender, summaries, facti
     }
     else {
         return (
-            <table className="table-fixed border-collapse w-full h-full  text-center text-gray-200 rounded-lg overflow-hidden">
+            <table className="table-fixed border-collapse w-full h-full  text-center text-white font-semibold rounded-lg overflow-hidden">
                 <thead>
                     <tr className="bg-gray-700">
                         <th className="w-[4%] border-r-gray-900"></th>
