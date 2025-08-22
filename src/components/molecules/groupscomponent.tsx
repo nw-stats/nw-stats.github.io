@@ -2,13 +2,10 @@
 import { useMemo, useRef, useState } from 'react';
 import type { GroupPerformance, StatTotals } from '../../types/leaderboard';
 import GroupsDetail from './groupsdetails';
-import GroupsSummary from './groupssummary';
 import type { GroupKey } from '../../types/roster';
 import { NWayToggle } from '../atom/nwaytoggle';
-import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/groups';
+import { joinedRoster, splitRoster } from '../../utils/groups';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { CameraIcon, CircleNotchIcon } from '@phosphor-icons/react';
-import { toPng } from 'html-to-image';
 
 interface GroupsSummaryProps {
     attackerName: string,
@@ -28,42 +25,21 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
 }) => {
     const [company, setCompany] = useState(0);
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
-    const [ssLoading, setSsLoading] = useState<Boolean>(false);
 
-    const selectedSummary = company === 0 ? attackerSummary : defenderSummary;
+    // const selectedSummary = company === 0 ? attackerSummary : defenderSummary;
     const selectedGroups = company === 0 ? attackerGroups : defenderGroups;
     const screenshotRef = useRef<HTMLDivElement>(null);
 
     let filteredGroups = selectedGroups;
-    let filteredSummaries = selectedSummary;
+    // let filteredSummaries = selectedSummary;
     if (filteredGroups) {
         if (qdpsSplit === 'Joined' && filteredGroups) {
             filteredGroups = joinedRoster(filteredGroups);
         } else if (qdpsSplit === 'Split') {
             filteredGroups = splitRoster(filteredGroups);
         }
-        filteredSummaries = companyGroupSummary(filteredGroups);
+        // filteredSummaries = companyGroupSummary(filteredGroups);
     }
-
-    const handleScreenshot = async () => {
-        if (!screenshotRef.current) return;
-        try {
-            setSsLoading(true);
-            await new Promise(resolve => setTimeout(resolve, 0));
-
-            const dataUrl = await toPng(screenshotRef.current, {
-                backgroundColor: "#1f2937",
-                cacheBust: true,
-                skipFonts: true,
-            });
-            const link = document.createElement("a");
-            link.download = "leaderboard.png";
-            link.href = dataUrl;
-            link.click();
-        } finally {
-            setSsLoading(false);
-        }
-    };
 
     const attackerHasQdps = useMemo(() => {
         return Array.from(attackerSummary?.keys() || []).some(v => typeof v !== 'number');
