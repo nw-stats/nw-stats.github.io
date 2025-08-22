@@ -1,7 +1,6 @@
 import { kSheetId } from "../constants/sheets";
 import { kRosterColumns } from "../mapping/rostermap";
 import { type QueryParameter } from "../types/queryparameter";
-import type { Role } from "../types/role";
 import type { Group, GroupKey, Roster } from "../types/roster";
 import { constructQuery } from "../utils/querybuilder";
 import { convertGroupKey, convertInt, convertRole, convertString } from "../utils/sheetconvert";
