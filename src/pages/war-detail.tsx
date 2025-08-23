@@ -15,7 +15,6 @@ import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
 import { toPng } from "html-to-image";
 import { formatDateTimeSlug } from "../utils/time";
-import { CameraIcon, CircleNotchIcon } from "@phosphor-icons/react";
 import { CameraButton } from "../components/atom/camerabutton";
 // import { toPng } from "html-to-image";
 // import { formatDateTimeSlug } from "../utils/time";
@@ -101,6 +100,11 @@ function WarDetail(): JSX.Element {
             <div>
                 {!hasLeaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} hideRoles={war.hideRoles} />}
             </div>
+            {/* <TabbedContent>
+                <button className="text-white text-3xl font-bold">PLACEHOLDER</button>
+                <button className="text-white text-3xl font-bold">PLACEHOLDER</button>
+                <button className="text-white text-3xl font-bold">PLACEHOLDER</button>
+            </TabbedContent> */}
         </div >
     );
 

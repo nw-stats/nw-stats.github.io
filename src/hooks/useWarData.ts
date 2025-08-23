@@ -11,7 +11,6 @@ import { summarizeLeaderboard } from "../services/leaderboardservice"; // refact
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
-    console.log("useWarData");
     const lbHook = useLeaderboards({ warIds: [warId] });
     const wHook = useWars({ ids: [warId], showHidden: true });
     const rHook = useRosters([warId]);

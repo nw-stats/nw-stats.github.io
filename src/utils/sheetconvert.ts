@@ -9,7 +9,6 @@ export function convertInt(value: DataType): number {
 }
 
 export function convertBoolean(value: DataType): boolean {
-    console.log(value);
     return Boolean(value);
 }
 
