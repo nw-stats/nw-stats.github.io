@@ -16,6 +16,7 @@ import { CaptureTimes } from "../components/atom/capturetimes";
 import { toPng } from "html-to-image";
 import { formatDateTimeSlug } from "../utils/time";
 import { CameraIcon, CircleNotchIcon } from "@phosphor-icons/react";
+import { CameraButton } from "../components/atom/camerabutton";
 // import { toPng } from "html-to-image";
 // import { formatDateTimeSlug } from "../utils/time";
 // import Heatmap from "../components/molecules/heatmap";
@@ -51,7 +52,7 @@ function WarDetail(): JSX.Element {
 
     const attackerGroupSummary = groupsSummary.get(war.attacker.name);
     const defenderGroupSummary = groupsSummary.get(war.defender.name);
-
+    const hasLeaderboard = leaderboard.length === 0;
     const handleScreenshot = async () => {
         if (!screenshotRef.current) return;
 
@@ -87,26 +88,18 @@ function WarDetail(): JSX.Element {
                     <CaptureTimes captures={war.captures} />
                 </div>
 
-                {!leaderboard && <DataEntryInProgress />}
-
-                <div className="text-sm relative">
-                    <button
-                        onClick={handleScreenshot}
-                        className={`absolute top-0 right-4 p-3 rounded-full text-white shadow-lg transition ${ssLoading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"
-                            }`}
-                    >
-                        {ssLoading ? (
-                            <CircleNotchIcon className="animate-spin" weight="fill" size={24} />
-                        ) : (
-                            <CameraIcon weight="fill" size={24} />
-                        )}
-                    </button>
-                    {leaderboard && <GroupsComponent hideRoles={war.hideRoles} attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />}
-                </div>
+                {hasLeaderboard ? (
+                    <DataEntryInProgress />
+                ) : (
+                    <div className="text-sm relative">
+                        <CameraButton onClick={handleScreenshot} loading={ssLoading} />
+                        <GroupsComponent hideRoles={war.hideRoles} attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
+                    </div>
+                )}
 
             </div>
             <div>
-                {leaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} hideRoles={war.hideRoles} />}
+                {!hasLeaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} hideRoles={war.hideRoles} />}
             </div>
         </div >
     );
