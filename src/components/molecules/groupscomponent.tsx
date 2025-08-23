@@ -79,9 +79,6 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
                             </div>
                         )}
                     </div>
-
-                    {/* Right screenshot button */}
-
                 </div>
             </div>
 

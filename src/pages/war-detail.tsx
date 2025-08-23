@@ -1,57 +1,74 @@
 import { useParams } from "react-router-dom";
 import LeaderboardDisplay from "../components/molecules/leaderboarddisplay";
-// import WarResultsCompany from "../components/molecules/warresultscompany";
-// import WarStatsPanel from "../components/molecules/warstatspanel";
 import { useWarData } from "../hooks/useWarData";
-import GroupsComponent from "../components/molecules/groupscomponent";
 import Loading from "../components/atom/loading";
 
 import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
-import { useRef, useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import NotFound from "./notfound";
-// import DataEntryInProgress from "./dataentryinprogress";
 import WarListCard from "../components/molecules/warlistcard";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
 import { toPng } from "html-to-image";
 import { formatDateTimeSlug } from "../utils/time";
 import { CameraButton } from "../components/atom/camerabutton";
-// import { toPng } from "html-to-image";
-// import { formatDateTimeSlug } from "../utils/time";
-// import Heatmap from "../components/molecules/heatmap";
+import { Tab, TabbedContent } from "../components/molecules/tabbedcontent";
+import { GroupsSummary } from "../components/molecules/groupssummary";
+import GroupsDetail from "../components/molecules/groupsdetails";
+
 
 
 function WarDetail(): JSX.Element {
     const { warId } = useParams<{ warId: string, slug: string }>();
-    const [ssLoading, setSsLoading] = useState(false);
-
     const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
-    const { loading, error, war, companies, leaderboard, summary, groupDetails, groupsSummary } = useWarData(warIdNum);
+
+    const { loading, error, war, companies, leaderboard, summary, groupDetails } = useWarData(warIdNum);
+
+    const [ssLoading, setSsLoading] = useState(false);
+    const [innerTabLabel, setInnerTabLabel] = useState<string>("");
+    const [outerTabLabel, setOuterTabLabel] = useState<string>("");
+    const [lastNonAllLabel, setLastNonAllLabel] = useState<string>("");
+
+    useEffect(() => {
+        if (!war) return;
+
+        const attackerGroups = groupDetails.get(war.attacker.name);
+        const defenderGroups = groupDetails.get(war.defender.name);
+
+        const hasAttacker = attackerGroups && attackerGroups.size > 0;
+        const hasDefender = defenderGroups && defenderGroups.size > 0;
+
+        let nextOuter = "Groups Summary";
+        let nextInner = war.attacker.name;
+
+        if (!hasAttacker && hasDefender) {
+            nextInner = war.defender.name;
+        } else if (!hasAttacker && !hasDefender) {
+            nextOuter = "Leaderboard";
+            nextInner = "All";
+        }
+
+        setOuterTabLabel(nextOuter);
+        setInnerTabLabel(nextInner);
+        setLastNonAllLabel(nextInner !== "All" ? nextInner : "");
+
+    }, [war, groupDetails]);
 
     if (loading) return <Loading />;
-    if (error) {
-        return <NotFound />;
-    }
-    if (!war) {
-        return <NotFound />;
-    }
+    if (error) return <NotFound />;
+    if (!war) return <NotFound />;
 
+
+    const attackerLeaderboard = leaderboard.get(war.attacker.name);
+    const defenderLeaderboard = leaderboard.get(war.defender.name);
+    const combinedLeaderboard = leaderboard.get("All");
     const attackerSummary = summary.get(war.attacker.name);
     const defenderSummary = summary.get(war.defender.name);
-
-    const attackerCompany = companies.get(war.attacker.name);
-    const defenderCompany = companies.get(war.defender.name);
-    if (!attackerCompany || !defenderCompany) {
-        return <NotFound />;
-    }
-
     const attackerGroups = groupDetails.get(war.attacker.name);
     const defenderGroups = groupDetails.get(war.defender.name);
+    const hasLeaderboard = combinedLeaderboard !== undefined;
 
-    const attackerGroupSummary = groupsSummary.get(war.attacker.name);
-    const defenderGroupSummary = groupsSummary.get(war.defender.name);
-    const hasLeaderboard = leaderboard.length === 0;
     const handleScreenshot = async () => {
         if (!screenshotRef.current) return;
 
@@ -83,28 +100,99 @@ function WarDetail(): JSX.Element {
                     <WarListCard war={war} />
                 </div>
                 <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">
-                    <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[attackerCompany.faction, defenderCompany.faction]} attacker={war.attacker.name} defender={war.defender.name} />
+                    <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[war.attacker.faction, war.defender.faction]} attacker={war.attacker.name} defender={war.defender.name} />
                     <CaptureTimes captures={war.captures} />
                 </div>
 
-                {hasLeaderboard ? (
+                {!hasLeaderboard ? (
                     <DataEntryInProgress />
                 ) : (
+                    // <div className="text-sm relative">
+                    //     <CameraButton onClick={handleScreenshot} loading={ssLoading} />
+                    //     <GroupsComponent hideRoles={war.hideRoles} attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
+                    // </div>
                     <div className="text-sm relative">
                         <CameraButton onClick={handleScreenshot} loading={ssLoading} />
-                        <GroupsComponent hideRoles={war.hideRoles} attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
+                        <TabbedContent
+                            activeLabel={outerTabLabel}
+                            onChangeLabel={setOuterTabLabel}
+                        >
+                            <Tab label="Groups Summary">
+                                <TabbedContent
+                                    key={`summary-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={lastNonAllLabel}
+                                    onChangeLabel={(label) => {
+                                        setInnerTabLabel(label);
+                                        if (label !== "All") setLastNonAllLabel(label);
+                                    }}
+                                >
+                                    <Tab label={war.attacker.name}>
+
+                                        <GroupsSummary groups={attackerGroups} />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <GroupsSummary groups={defenderGroups} />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
+
+                            <Tab label="Groups Detail">
+                                <TabbedContent
+                                    key={`details-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={lastNonAllLabel}
+                                    onChangeLabel={(label) => {
+                                        setInnerTabLabel(label);
+                                        if (label !== "All") setLastNonAllLabel(label);
+                                    }}
+                                >
+                                    <Tab label={war.attacker.name}>
+                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
+
+                            <Tab label="Leaderboard">
+                                <TabbedContent
+                                    key={`leaderboard-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={innerTabLabel}
+                                    onChangeLabel={(label) => {
+                                        setInnerTabLabel(label);
+                                        if (label !== "All") setLastNonAllLabel(label);
+                                    }}
+                                >
+                                    <Tab label={"All"}>
+                                        <LeaderboardDisplay
+                                            leaderboard={combinedLeaderboard}
+                                            companies={companies}
+                                            hideRoles={war.hideRoles}
+                                        />
+                                    </Tab>
+                                    <Tab label={war.attacker.name}>
+                                        <LeaderboardDisplay
+                                            leaderboard={attackerLeaderboard}
+                                            companies={companies}
+                                            hideRoles={war.hideRoles}
+                                        />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <LeaderboardDisplay
+                                            leaderboard={defenderLeaderboard}
+                                            companies={companies}
+                                            hideRoles={war.hideRoles}
+                                        />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
+                        </TabbedContent>
                     </div>
                 )}
-
             </div>
             <div>
-                {!hasLeaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} hideRoles={war.hideRoles} />}
+                {/* {!hasLeaderboard && <LeaderboardDisplay leaderboard={leaderboard} companies={companies} hideRoles={war.hideRoles} />} */}
             </div>
-            {/* <TabbedContent>
-                <button className="text-white text-3xl font-bold">PLACEHOLDER</button>
-                <button className="text-white text-3xl font-bold">PLACEHOLDER</button>
-                <button className="text-white text-3xl font-bold">PLACEHOLDER</button>
-            </TabbedContent> */}
         </div >
     );
 

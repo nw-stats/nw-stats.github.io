@@ -8,6 +8,7 @@ import type { Company } from "../types/company";
 import { useWars } from "./base/useWars";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { summarizeLeaderboard } from "../services/leaderboardservice"; // refactor this. idk what it's doing in there.
+import { splitLeaderboards } from "../utils/leaderboard";
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
@@ -28,6 +29,9 @@ export function useWarData(warId: number) {
     const summary = useMemo(() => {
         return summarizeLeaderboard(lbHook.leaderboards);
     }, [lbHook.leaderboards]);
+    const split = useMemo(() => {
+        return splitLeaderboards(lbHook.leaderboards);
+    }, [lbHook.leaderboards]);
     const groupsSummary = useMemo(() => {
         return getGroupSummaries(groupDetails);
     }, [groupDetails]);
@@ -46,7 +50,7 @@ export function useWarData(warId: number) {
         error,
         war: wHook.wars.at(0),
         companies: companyMap,
-        leaderboard: lbHook.leaderboards,
+        leaderboard: split,
         summary: summary,
         groupDetails,
         groupsSummary,

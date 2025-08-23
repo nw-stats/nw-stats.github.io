@@ -147,3 +147,19 @@ export function fillKpar(leaderboard: LeaderboardEntry[], summaries: Map<string,
         entry.kpar = kpar;
     }
 }
+
+export function splitLeaderboards(leaderboard: LeaderboardEntry[]): Map<string, LeaderboardEntry[]> {
+    const allLb = new Map<string, LeaderboardEntry[]>();
+    allLb.set("All", []);
+
+    for (const entry of leaderboard) {
+        allLb.get("All")!.push(entry);
+        let split = allLb.get(entry.company);
+        if (!split) {
+            split = [];
+            allLb.set(entry.company, split);
+        }
+        split.push(entry);
+    }
+    return allLb;
+}

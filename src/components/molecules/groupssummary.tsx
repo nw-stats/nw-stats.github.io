@@ -1,24 +1,24 @@
-import React from 'react';
-import {
-    type ColumnDef,
-
-
-} from '@tanstack/react-table';
-import type { StatTotals } from '../../types/leaderboard';
+import React, { useMemo, type JSX } from 'react';
+import { type ColumnDef, } from '@tanstack/react-table';
+import type { GroupPerformance, StatTotals } from '../../types/leaderboard';
 import NumberCell from '../atom/numbercell';
 import LabelIcon from '../atom/labelicon';
 import StatsTable from '../atom/statstble';
 import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from '@phosphor-icons/react';
 import type { GroupKey } from '../../types/roster';
 import { formatPercent } from '../../utils/format';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { NWayToggle } from '../atom/nwaytoggle';
+import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/groups';
 
 interface GroupsSummaryProps {
-    groups?: Map<GroupKey, StatTotals>;
+    groups?: Map<GroupKey, GroupPerformance>;
 }
-const GroupsSummary: React.FC<GroupsSummaryProps> = ({
-    groups
-}) => {
-
+export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
+    const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
+    const hasQdps = useMemo(() => {
+        return Array.from(groups?.keys() || []).some(v => typeof v !== 'number');
+    }, [groups]);
 
     const columns = React.useMemo<ColumnDef<StatTotals>[]>(
         () => [
@@ -101,8 +101,15 @@ const GroupsSummary: React.FC<GroupsSummaryProps> = ({
 
     const data: Array<StatTotals> = React.useMemo(() => {
         if (!groups) return [];
+        let filteredGroups = groups;
+        if (qdpsSplit === 'Joined') {
+            filteredGroups = joinedRoster(groups);
+        } else if (qdpsSplit === 'Split') {
+            filteredGroups = splitRoster(groups);
+        }
 
-        return Array.from(groups.keys())
+        const summary = companyGroupSummary(filteredGroups);
+        return Array.from(summary.keys())
             .sort((a, b) => {
                 const keyA = a;
                 const keyB = b;
@@ -121,19 +128,28 @@ const GroupsSummary: React.FC<GroupsSummaryProps> = ({
                 if (keyA === 'weak') return -1;
                 return 1; // keyB === 'Weak' or keyA === 'Strong' > keyB === 'Strong'
             })
-            .map(key => groups.get(key))
+            .map(key => summary.get(key))
             .filter((item): item is StatTotals => item !== undefined);
-    }, [groups]);
+    }, [groups, qdpsSplit]);
 
     return (
-        <div className="bg-gray-800 text-white rounded-lg shadow-md overflow-x-auto">
-            <h2 className="font-bold p-2">Group Summary</h2>
-
-            {groups ? (
-                <div className=""><StatsTable columns={columns} data={data} /></div>
-            ) : (<div className='text-gray-500 p-2'>No data</div>)}
-        </div>
+        <div className="flex flex-col gap-2 w-full ">
+            <div className=''>
+                <div className=''>
+                    <NWayToggle
+                        className="mb-2 text-small px-2 py-1"
+                        defaultValue={qdpsSplit}
+                        options={['Joined', 'Split', 'Both']}
+                        onChange={(value) =>
+                            setQdpsSplit(value as 'Joined' | 'Split' | 'Both')
+                        }
+                        disabled={!hasQdps}
+                    />
+                </div>
+                {groups ? (
+                    <div className=""><StatsTable columns={columns} data={data} /></div>
+                ) : (<div className='text-gray-500 p-2'>No data</div>)}
+            </div>
+        </div >
     );
 };
-
-export default GroupsSummary;

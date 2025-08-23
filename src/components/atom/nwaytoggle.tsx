@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { JSX } from "react";
 
 interface NWayToggleProps<T extends string> {
@@ -19,12 +19,12 @@ export function NWayToggle<T extends string>({
     const defaultIndex = defaultValue ? options.indexOf(defaultValue) : 0;
     const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
 
-    useEffect(() => {
-        if (defaultValue) {
-            const index = options.indexOf(defaultValue);
-            if (index >= 0) setSelectedIndex(index);
-        }
-    }, [defaultValue, options]);
+    // useEffect(() => {
+    //     if (defaultValue) {
+    //         const index = options.indexOf(defaultValue);
+    //         if (index >= 0) setSelectedIndex(index);
+    //     }
+    // }, [defaultValue, options]);
 
     const handleClick = (index: number) => {
         if (disabled) return;
@@ -38,7 +38,7 @@ export function NWayToggle<T extends string>({
         <div className="flex">
             {options.map((option, index) => (
                 <button
-                    key={option}
+                    key={index}
                     onClick={() => handleClick(index)}
                     className={`${className} ${disabled ? 'bg-gray-700 text-gray-400'
                         : selectedIndex === index
