@@ -22,9 +22,10 @@ interface StatsTableProps<T> {
     data: T[];
     sort?: SortingState;
     calc?: Calculation[];
+    bottomRowOverride?: Partial<Record<keyof T, number | null>>;
 }
 
-function StatsTable<T>({ columns, data, calc, sort }: StatsTableProps<T>): JSX.Element {
+function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTableProps<T>): JSX.Element {
     const [sorting, setSorting] = useState<SortingState>(sort || []);
 
     const table = useReactTable({
@@ -37,23 +38,32 @@ function StatsTable<T>({ columns, data, calc, sort }: StatsTableProps<T>): JSX.E
     });
 
     const bottomRowCalc = useMemo(() => {
-        let calcs = {} as Record<string, number>;
+        let calcs: Record<string, number> = {};
+
         if (calc) {
             for (const { fn, column } of calc) {
-                if (fn === 'sum') {
-                    calcs = {
-                        ...calcs, ...calculateColumnSums(data, [column as (keyof T)])
-                    };
-                } else if (fn === 'average') {
-                    calcs = {
-                        ...calcs, ...calculateColumnAverage(data, [column as (keyof T)])
-                    };
+                const override = bottomRowOverride?.[column as keyof T];
+                if (typeof override === "number") {
+                    calcs = { ...calcs, [column]: override };
+                } else {
+                    if (fn === "sum") {
+                        calcs = {
+                            ...calcs,
+                            ...calculateColumnSums(data, [column as keyof T]),
+                        };
+                    } else if (fn === "average") {
+                        calcs = {
+                            ...calcs,
+                            ...calculateColumnAverage(data, [column as keyof T]),
+                        };
+                    }
                 }
-
             }
         }
+
         return calcs;
-    }, [data])
+    }, [data, calc, bottomRowOverride]);
+
 
     const headerRow: JSX.Element[] = [];
     for (const headerGroup of table.getHeaderGroups()) {

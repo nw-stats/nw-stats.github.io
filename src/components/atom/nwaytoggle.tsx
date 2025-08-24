@@ -35,7 +35,7 @@ export function NWayToggle<T extends string>({
 
 
     return (
-        <div className="flex">
+        <div className="flex flex-row gap-0.5">
             {options.map((option, index) => (
                 <button
                     key={index}
@@ -45,9 +45,9 @@ export function NWayToggle<T extends string>({
                             ? "bg-blue-600"
                             : "bg-gray-600 hover:bg-gray-700"
                         } ${index === 0
-                            ? 'rounded-l-lg'
+                            ? 'rounded-l-full'
                             : index === options.length - 1
-                                ? 'rounded-r-lg'
+                                ? 'rounded-r-full'
                                 : ''}`}
                 >
                     {option}

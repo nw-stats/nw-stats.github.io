@@ -18,7 +18,7 @@ import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
 import { NoData } from "../atom/nodata";
-import { kRoles, type Role } from "../../types/role";
+import { sortRolesStrings } from "../../utils/roster";
 
 type LeaderboardProps = {
     companies: Map<string, Company>,
@@ -128,9 +128,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 sortingFn: (rowA, rowB) => {
                     const a = rowA.getValue<string>('role');
                     const b = rowB.getValue<string>('role');
-                    const ai = kRoles.indexOf(a as Role);
-                    const bi = kRoles.indexOf(b as Role);
-                    return ai - bi;
+                    return sortRolesStrings(a, b);
                 },
                 cell: info => <>{info.getValue<string>()}</>,
             });
@@ -143,12 +141,12 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         const rolesSet = new Set<string>();
         if (leaderboard) {
             for (const entry of leaderboard) {
-                if (entry.role !== '') {
-                    rolesSet.add(entry.role as string);
+                if (typeof entry.role === "string") {
+                    rolesSet.add(entry.role);
                 }
             }
         }
-        return [...rolesSet].sort((a, b) => a.localeCompare(b));
+        return [...rolesSet].sort(sortRolesStrings);
     }, [leaderboard]);
 
     const table = useReactTable({

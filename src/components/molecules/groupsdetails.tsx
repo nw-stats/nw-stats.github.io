@@ -13,11 +13,13 @@ interface GroupsDetailProps {
 
 const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups }) => {
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
+    const [aoeSplit, setAoeSplit] = useLocalStorage<'Include' | 'Exclude'>('aoeSplit', 'Include');
+
     const hasQdps = useMemo(() => {
         return Array.from(groups?.keys() || []).some(v => typeof v !== 'number');
     }, [groups]);
 
-    const rows = []
+    const splitRoles = useMemo(() => aoeSplit === 'Exclude' ? ['aoe'] : undefined, [aoeSplit]);
 
     const sortedGroups = useMemo(() => {
         if (!groups) return [];
@@ -48,24 +50,14 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups }) => {
             return 1; // keyB === 'Weak' or keyA === 'Strong' > keyB === 'Strong'
         });
 
-    }, [qdpsSplit, groups]);
+    }, [qdpsSplit]);
 
-    for (const [n, group] of sortedGroups) {
-        rows.push(
-            <div className="w-full overflow-x-auto" key={n}>
-                <GroupDisplay group={group} groupId={n} hideRoles={hideRoles} />
-            </div>
-        )
-    }
-
-    if (rows.length === 0) {
-        return (<></>);
-    }
     return (
         <div className=''>
-            <div className=''>
+            <div className='flex flex-row items-center h-full mb-2 gap-2'>
+                <span className="">QDPS arrangement</span>
                 <NWayToggle
-                    className="mb-2 text-small px-2 py-1"
+                    className="text-small px-2 py-1"
                     defaultValue={qdpsSplit}
                     options={['Joined', 'Split', 'Both']}
                     onChange={(value) =>
@@ -73,11 +65,21 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups }) => {
                     }
                     disabled={!hasQdps}
                 />
+                <span className="">AoE healing</span>
+                <NWayToggle
+                    className="text-small px-2 py-1"
+                    defaultValue={aoeSplit}
+                    options={['Include', 'Exclude']}
+                    onChange={(value) => {
+                        setAoeSplit(value as 'Include' | 'Exclude')
+                    }}
+                    disabled={false}
+                />
             </div>
             <div className="rounded-lg grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {sortedGroups.map((v) => (
                     <div className="w-full overflow-x-auto" key={v[0]}>
-                        <GroupDisplay group={v[1]} groupId={v[0]} hideRoles={hideRoles} />
+                        <GroupDisplay group={v[1]} groupId={v[0]} hideRoles={hideRoles} splitRoles={splitRoles} />
                     </div>
                 ))}
             </div>

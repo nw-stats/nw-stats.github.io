@@ -12,7 +12,7 @@
 //     'Shot Caller',
 //     'Other',
 // ]
-export type Role = "Healer MB" | "Healer AOE" | "Bruiser" | "Tank" | "Shotcaller" | "Flail" | "QDPS" | "VG IG" | "Healer KS" | "Disruptor" | "Firestaff" | "Ranged" | "Blunderbuss" | '' | 'Many';
+export type Role = "Healer MB" | "Healer AOE" | "Bruiser" | "Tank" | "Shotcaller" | "Flail" | "QDPS" | "VG IG" | "Healer KS" | "Disruptor" | "Firestaff" | "Ranged" | "Blunderbuss" | 'Many' | "";
 export const kRoles: Role[] = [
     "Healer MB",
     "Healer AOE",

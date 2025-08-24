@@ -8,16 +8,17 @@ import { Link } from 'react-router-dom';
 import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from '@phosphor-icons/react';
 import type { GroupKey } from '../../types/roster';
 import { formatPercent } from '../../utils/format';
-import { kRoles, type Role } from '../../types/role';
+import { sortRolesStrings } from '../../utils/roster';
 
 
 interface GroupDisplayProps {
     groupId: GroupKey;
     group: GroupPerformance;
     hideRoles: boolean;
+    splitRoles?: string[];
 }
 
-const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles }) => {
+const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, splitRoles }) => {
     const sort = [hideRoles ? { id: 'score', desc: true } : { id: "role", desc: false }];
 
     const columns = React.useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
@@ -108,9 +109,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles }
                 sortingFn: (rowA, rowB) => {
                     const a = rowA.getValue<string>('role');
                     const b = rowB.getValue<string>('role');
-                    const ai = kRoles.indexOf(a as Role);
-                    const bi = kRoles.indexOf(b as Role);
-                    return ai - bi;
+                    return sortRolesStrings(a, b);
                 },
                 cell: info => <>{info.getValue<string>()}</>,
             });
@@ -129,6 +128,17 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles }
         { fn: 'average', column: 'kpar' },
     ]
 
+    const override = splitRoles ? {
+        "healing": group.stats
+            .filter(s => splitRoles.some(v => {
+                if (s.role) {
+                    return !s.role.toLowerCase().includes(v)
+                }
+                return true;
+            }))
+            .reduce((sum, s) => sum + s.healing, 0)
+    } : undefined;
+
     const combinedData = useMemo(() => {
         return group.stats.map(entry => {
             return { ...entry };
@@ -139,7 +149,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles }
     return (
         <div className="text-white">
             <div className="font-bold p-2 bg-gray-800 rounded-t-lg text-xs">Group {groupId}</div>
-            <StatsTable columns={columns} data={combinedData} sort={sort} calc={calcColumns} />
+            <StatsTable columns={columns} data={combinedData} sort={sort} calc={calcColumns} bottomRowOverride={override} />
         </div >
     );
 };

@@ -16,6 +16,7 @@ interface GroupsSummaryProps {
 }
 export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
+    const [aoeSplit, setAoeSplit] = useLocalStorage<'Include' | 'Exclude'>('aoeSplit', 'Include');
     const hasQdps = useMemo(() => {
         return Array.from(groups?.keys() || []).some(v => typeof v !== 'number');
     }, [groups]);
@@ -99,6 +100,8 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
         []
     );
 
+    const splitRoles = useMemo(() => aoeSplit === 'Exclude' ? ['aoe'] : undefined, [aoeSplit]);
+
     const data: Array<StatTotals> = React.useMemo(() => {
         if (!groups) return [];
         let filteredGroups = groups;
@@ -109,6 +112,17 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
         }
 
         const summary = companyGroupSummary(filteredGroups);
+        if (splitRoles) {
+            for (const [gk, group] of filteredGroups) {
+                for (const stat of group.stats) {
+                    if (stat.role) {
+                        if (splitRoles.some(v => stat.role.toLowerCase().includes(v))) {
+                            summary.get(gk)!.healing -= stat.healing;
+                        }
+                    }
+                }
+            }
+        }
         return Array.from(summary.keys())
             .sort((a, b) => {
                 const keyA = a;
@@ -130,20 +144,31 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
             })
             .map(key => summary.get(key))
             .filter((item): item is StatTotals => item !== undefined);
-    }, [groups, qdpsSplit]);
+    }, [groups, qdpsSplit, splitRoles]);
 
     return (
         <div className="flex flex-col gap-2 w-full ">
             <div className=''>
-                <div className=''>
+                <div className='flex flex-row items-center h-full mb-2 gap-2'>
+                    <span className="">QDPS arrangement</span>
                     <NWayToggle
-                        className="mb-2 text-small px-2 py-1"
+                        className="text-small px-2 py-1"
                         defaultValue={qdpsSplit}
                         options={['Joined', 'Split', 'Both']}
                         onChange={(value) =>
                             setQdpsSplit(value as 'Joined' | 'Split' | 'Both')
                         }
                         disabled={!hasQdps}
+                    />
+                    <span className="">AoE healing</span>
+                    <NWayToggle
+                        className="text-small px-2 py-1"
+                        defaultValue={aoeSplit}
+                        options={['Include', 'Exclude']}
+                        onChange={(value) => {
+                            setAoeSplit(value as 'Include' | 'Exclude')
+                        }}
+                        disabled={false}
                     />
                 </div>
                 {groups ? (

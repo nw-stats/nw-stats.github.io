@@ -41,7 +41,11 @@ export function convertFaction(value: DataType): Faction {
 }
 
 export function convertRole(value: DataType): Role {
-    return value as Role;
+    if (value) {
+        return value as Role;
+    } else {
+        return '';
+    }
 }
 
 export function convertRegion(value: DataType): Region {

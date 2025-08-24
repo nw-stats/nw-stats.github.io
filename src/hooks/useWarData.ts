@@ -8,7 +8,7 @@ import type { Company } from "../types/company";
 import { useWars } from "./base/useWars";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { summarizeLeaderboard } from "../services/leaderboardservice"; // refactor this. idk what it's doing in there.
-import { splitLeaderboards } from "../utils/leaderboard";
+import { fillKpar, splitLeaderboards } from "../utils/leaderboard";
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
@@ -18,6 +18,7 @@ export function useWarData(warId: number) {
     const companies = useMemo(() => (wHook.wars.length !== 0 ? [wHook.wars[0].attacker.name, wHook.wars[0].defender.name] : []), [wHook.wars]);
     const cHook = useCompanies(companies);
     const loading = lbHook.loading || wHook.loading || rHook.loading || cHook.loading;
+
 
     const groupDetails = useMemo(() => {
         if (!lbHook.leaderboards || !rHook.rosters) return new Map<string, Map<GroupKey, GroupPerformance>>();
@@ -35,11 +36,14 @@ export function useWarData(warId: number) {
     const groupsSummary = useMemo(() => {
         return getGroupSummaries(groupDetails);
     }, [groupDetails]);
-
+    useMemo(() => {
+        return fillKpar(lbHook.leaderboards, summary);
+    }, [lbHook.leaderboards]);
     const companyMap = new Map<string, Company>();
     for (const company of cHook.companies) {
         companyMap.set(company.name, company);
     }
+
 
     useEffect(() => {
         setError(lbHook.error || wHook.error || rHook.error || cHook.error);
