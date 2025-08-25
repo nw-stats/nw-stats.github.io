@@ -1,5 +1,5 @@
 import { type JSX } from "react";
-import type { War } from "../../types/war";
+import type { War } from "../../types/hydratedtypes/war";
 import { Link } from "react-router-dom";
 import { formatDatetime } from "../../utils/time";
 

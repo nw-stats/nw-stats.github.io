@@ -1,6 +1,6 @@
 import { useCompanies } from "./useCompanies";
 import { useMembers } from "./useMembers";
-import { useWarRaw } from "./base/useWars";
+import { useWarRaw } from "./base/useWarsRaw";
 import { hydrateWars } from "../utils/hydrate";
 import { useLeaderboards } from "./base/useLeaderboards";
 

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import type { StatTotals } from "../types/leaderboard";
 import { normalize, summarize } from "../utils/leaderboard";
 
-import { useWars } from "./base/useWars";
 import { useLeaderboards } from "./base/useLeaderboards";
+import { useWarsHydrated } from "./composite/useWarsHydrated";
 
 export function useCharacterStats(playerName: string) {
     const [summary, setSummary] = useState<StatTotals | null>(null);
@@ -11,7 +11,7 @@ export function useCharacterStats(playerName: string) {
     const [error, setError] = useState<unknown>(null);
 
     const { loading: lbLoading, error: lbError, leaderboards } = useLeaderboards({ characters: [playerName] });
-    const { loading: warsLoading, error: warsError, wars } = useWars({ ids: leaderboards.map(v => v.warid) });
+    const { loading: warsLoading, error: warsError, wars } = useWarsHydrated({ ids: leaderboards.map(v => v.warid) });
 
     const loading = lbLoading || warsLoading;
 

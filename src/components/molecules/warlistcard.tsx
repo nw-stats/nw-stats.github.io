@@ -1,5 +1,5 @@
 import { CrownIcon, ShieldIcon, SwordIcon } from "@phosphor-icons/react";
-import type { War } from "../../types/war";
+import type { War } from "../../types/hydratedtypes/war";
 import { formatDate, formatTime } from "../../utils/time";
 import { Link } from "react-router-dom";
 import { factionBgPrimary } from "../../utils/factions";

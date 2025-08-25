@@ -3,7 +3,7 @@ import NotFound from "./notfound";
 import Loading from "../components/atom/loading";
 import RankingsDisplay from "../components/organisms/rankingsdisplay";
 import type { WinLoss } from "../types/ranking";
-import { useWarRaw } from "../hooks/base/useWars";
+import { useWarRaw } from "../hooks/base/useWarsRaw";
 
 const kLeageNames: Record<string, string> = { M: "Main", G: "G" };
 

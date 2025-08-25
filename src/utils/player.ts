@@ -2,7 +2,7 @@ import type { CharacterDetailsEntry, LeaderboardEntry } from "../types/leaderboa
 import type { Character } from "../types/character";
 import type { Role } from "../types/role";
 import type { Roster } from "../types/roster";
-import type { War } from "../types/war";
+import type { War } from "../types/hydratedtypes/war";
 import type { CharacterDetails } from "../types/characterdetails";
 import { normalize, summarize } from "./leaderboard";
 

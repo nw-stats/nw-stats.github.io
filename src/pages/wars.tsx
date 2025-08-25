@@ -3,10 +3,10 @@ import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import WarListCard from "../components/molecules/warlistcard";
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useWars } from "../hooks/base/useWars";
+import { useWarsHydrated } from "../hooks/composite/useWarsHydrated";
 
 const Wars: React.FC = () => {
-    const { loading, error, wars } = useWars();
+    const { loading, error, wars } = useWarsHydrated();
 
     const { companies } = useCompanies();
 

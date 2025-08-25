@@ -3,14 +3,14 @@ import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import PlaceholderTile from "../components/molecules/placeholdertile";
 import WarListCard from "../components/molecules/warlistcard";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useWars } from "../hooks/base/useWars";
+
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { currentHour, sortByDateThenTime } from "../utils/time";
 import { useWorlds } from "../hooks/base/useWorlds";
-// import Carousel from "../components/molecules/carousel";
+import { useWarsHydrated } from "../hooks/composite/useWarsHydrated";
 
 const Home: React.FC = () => {
-    const { loading, error, wars } = useWars();
+    const { loading, error, wars } = useWarsHydrated();
     const { worlds } = useWorlds();
     const { companies } = useCompanies();
 

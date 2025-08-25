@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import type { War } from "../types/war";
+import type { War } from "../types/hydratedtypes/war";
 import { summarize, summarizeWars } from "../utils/leaderboard";
 import type { LeaderboardEntry } from "../types/leaderboard";
 

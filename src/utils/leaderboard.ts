@@ -1,6 +1,6 @@
 
 import { type StatTotals, type LeaderboardEntry, type MapStat, type WarsSummary } from "../types/leaderboard"
-import type { War } from "../types/war";
+import type { War } from "../types/hydratedtypes/war";
 import { kThirtyMinutesInSeconds } from "./constants";
 
 export function normalize(toNormalize: LeaderboardEntry[], wars: War[]): StatTotals {

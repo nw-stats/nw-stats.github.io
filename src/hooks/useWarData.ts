@@ -5,15 +5,15 @@ import { getGroupDetails, getGroupSummaries } from "../utils/groups";
 import { type GroupKey } from "../types/roster";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { Company } from "../types/company";
-import { useWars } from "./base/useWars";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { summarizeLeaderboard } from "../services/leaderboardservice"; // refactor this. idk what it's doing in there.
 import { fillKpar, splitLeaderboards } from "../utils/leaderboard";
+import { useWarsHydrated } from "./composite/useWarsHydrated";
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
     const lbHook = useLeaderboards({ warIds: [warId] });
-    const wHook = useWars({ ids: [warId], showHidden: true });
+    const wHook = useWarsHydrated({ ids: [warId], showHidden: true });
     const rHook = useRosters([warId]);
     const companies = useMemo(() => (wHook.wars.length !== 0 ? [wHook.wars[0].attacker.name, wHook.wars[0].defender.name] : []), [wHook.wars]);
     const cHook = useCompanies(companies);
