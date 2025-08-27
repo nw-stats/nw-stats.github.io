@@ -15,6 +15,7 @@ import { CameraButton } from "../components/atom/camerabutton";
 import { Tab, TabbedContent } from "../components/molecules/tabbedcontent";
 import { GroupsSummary } from "../components/molecules/groupssummary";
 import GroupsDetail from "../components/molecules/groupsdetails";
+import { HealerCompare } from "../components/organisms/healercompare";
 
 
 
@@ -23,7 +24,7 @@ function WarDetail(): JSX.Element {
     const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
 
-    const { loading, error, war, companies, leaderboard, summary, groupDetails } = useWarData(warIdNum);
+    const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
 
     const [ssLoading, setSsLoading] = useState(false);
     const [innerTabLabel, setInnerTabLabel] = useState<string>("");
@@ -67,6 +68,8 @@ function WarDetail(): JSX.Element {
     const defenderSummary = summary.get(war.defender.name);
     const attackerGroups = groupDetails.get(war.attacker.name);
     const defenderGroups = groupDetails.get(war.defender.name);
+    const attackerHealer = healerSummary.get(war.attacker.name);
+    const defenderHealer = healerSummary.get(war.defender.name);
     const hasLeaderboard = combinedLeaderboard !== undefined;
 
     const handleScreenshot = async () => {
@@ -117,6 +120,23 @@ function WarDetail(): JSX.Element {
                             activeLabel={outerTabLabel}
                             onChangeLabel={setOuterTabLabel}
                         >
+                            <Tab label="Groups Detail">
+                                <TabbedContent
+                                    key={`details-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={lastNonAllLabel}
+                                    onChangeLabel={(label) => {
+                                        setInnerTabLabel(label);
+                                        if (label !== "All") setLastNonAllLabel(label);
+                                    }}
+                                >
+                                    <Tab label={war.attacker.name}>
+                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
                             <Tab label="Groups Summary">
                                 <TabbedContent
                                     key={`summary-${war.attacker.name}-${war.defender.name}`}
@@ -136,24 +156,10 @@ function WarDetail(): JSX.Element {
                                 </TabbedContent>
                             </Tab>
 
-                            <Tab label="Groups Detail">
-                                <TabbedContent
-                                    key={`details-${war.attacker.name}-${war.defender.name}`}
-                                    activeLabel={lastNonAllLabel}
-                                    onChangeLabel={(label) => {
-                                        setInnerTabLabel(label);
-                                        if (label !== "All") setLastNonAllLabel(label);
-                                    }}
-                                >
-                                    <Tab label={war.attacker.name}>
-                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
-                                    </Tab>
-                                    <Tab label={war.defender.name}>
-                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
-                                    </Tab>
-                                </TabbedContent>
-                            </Tab>
 
+                            <Tab label="Healer">
+                                <HealerCompare attackerName={war.attacker.name} defenderName={war.defender.name} attackerHealers={attackerHealer} defenderHealers={defenderHealer} />
+                            </Tab>
                             <Tab label="Leaderboard">
                                 <TabbedContent
                                     key={`leaderboard-${war.attacker.name}-${war.defender.name}`}
@@ -186,6 +192,7 @@ function WarDetail(): JSX.Element {
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
+
                         </TabbedContent>
                     </div>
                 )}

@@ -160,3 +160,7 @@ export function joinedRoster(roster: Map<GroupKey, GroupPerformance>): Map<Group
     }
     return joinedRoster;
 }
+
+export function isNumberGroup(gk: GroupKey): boolean {
+    return typeof gk === 'number';
+}

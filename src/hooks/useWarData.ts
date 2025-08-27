@@ -9,6 +9,7 @@ import { useLeaderboards } from "./base/useLeaderboards";
 import { summarizeLeaderboard } from "../services/leaderboardservice"; // refactor this. idk what it's doing in there.
 import { fillKpar, splitLeaderboards } from "../utils/leaderboard";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
+import { calculateHealerStats } from "../utils/healer";
 
 export function useWarData(warId: number) {
     const [error, setError] = useState<any>(null);
@@ -36,6 +37,9 @@ export function useWarData(warId: number) {
     const groupsSummary = useMemo(() => {
         return getGroupSummaries(groupDetails);
     }, [groupDetails]);
+    const healerSummary = useMemo(() => {
+        return calculateHealerStats(groupDetails);
+    }, [groupDetails]);
     useMemo(() => {
         return fillKpar(lbHook.leaderboards, summary);
     }, [lbHook.leaderboards]);
@@ -58,5 +62,6 @@ export function useWarData(warId: number) {
         summary: summary,
         groupDetails,
         groupsSummary,
+        healerSummary: healerSummary
     }
 }

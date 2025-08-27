@@ -3,6 +3,7 @@ import { type LeaderboardEntry, type StatTotals } from "../types/leaderboard";
 import { type QueryParameter } from "../types/queryparameter";
 import type { Role } from "../types/role";
 import { constructQuery } from "../utils/querybuilder";
+import { convertInt, convertString } from "../utils/sheetconvert";
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 
@@ -52,17 +53,17 @@ export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderbo
     }
 
     const entries: LeaderboardEntry[] = data.map((row: any[]) => ({
-        warid: row[1] as number,
+        warid: convertInt(row[1]),
         role: '' as Role,
-        character: row[2] as string,
-        score: row[3] as number,
-        kills: row[4] as number,
-        deaths: row[5] as number,
-        assists: row[6] as number,
-        healing: row[7] as number,
-        damage: row[8] as number,
+        character: convertString(row[2]),
+        score: convertInt(row[3]),
+        kills: convertInt(row[4]),
+        deaths: convertInt(row[5]),
+        assists: convertInt(row[6]),
+        healing: convertInt(row[7]),
+        damage: convertInt(row[8]),
         kpar: 0,
-        company: row[9] as string,
+        company: convertString(row[9]),
     }));
     return entries;
 }

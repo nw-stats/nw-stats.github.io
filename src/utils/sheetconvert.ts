@@ -16,7 +16,7 @@ export function convertString(value: DataType): string {
     if (value === null) {
         return '';
     }
-    return String(value);
+    return String(value).trim();
 }
 export function convertGroupKey(value: DataType): GroupKey {
     if (typeof value === 'number') {
@@ -41,11 +41,24 @@ export function convertFaction(value: DataType): Faction {
 }
 
 export function convertRole(value: DataType): Role {
-    if (value) {
-        return value as Role;
-    } else {
-        return '';
+    if (!value) return '';
+    if (typeof value !== 'string') return '';
+
+    const lower = value.toLowerCase();
+    if (lower.includes('healer')) {
+        if (lower.includes('aoe')) {
+            return 'Healer AOE';
+        } else if (lower.includes('ks')) {
+            return 'Healer KS';
+        }
+        return 'Healer MB';
     }
+
+    if (lower.includes('sender') || lower.includes('holder')) {
+        return 'Disruptor'
+    }
+
+    return value as Role;
 }
 
 export function convertRegion(value: DataType): Region {

@@ -53,6 +53,7 @@ export interface StatTotals {
 
 export interface StatDiff extends StatTotals { }
 
+
 export interface GroupPerformance {
     stats: GroupsEntry[];
 }
