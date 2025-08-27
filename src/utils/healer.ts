@@ -1,4 +1,5 @@
 
+import StatsTable from "../components/atom/statstble";
 import type { HealerStats } from "../types/healerstats";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { GroupKey } from "../types/roster";
@@ -8,37 +9,44 @@ import { isHealer } from "./role";
 export function calculateHealerStats(groups: Map<string, Map<GroupKey, GroupPerformance>>): Map<string, HealerStats[]> {
     const stats = new Map<string, HealerStats[]>();
 
-    for (const [company, group] of groups) {
-        let hstats = stats.get(company)
-        if (!hstats) {
-            hstats = [];
-            stats.set(company, hstats);
-        }
-
-        for (const [gk, stats] of group) {
+    for (const [company, allGroups] of groups) {
+        let hstat: HealerStats[] = [];
+        for (const [gk, g] of allGroups) {
             if (!isNumberGroup(gk)) continue;
 
-            let groupDeaths = 0;
+            const healers = [];
             let qdpsDeaths = 0;
-            for (const entry of stats.stats) {
+            let groupDeaths = 0;
+            for (const entry of g.stats) {
                 if (isHealer(entry.role)) {
-                    hstats.push({
+                    healers.push({
                         character: entry.character,
-                        group: gk,
+                        group: entry.role === 'Healer AOE' ? 'AoE' : gk,
+                        role: entry.role,
                         healing: entry.healing,
+                        qdpsDeaths: 0,
                         groupDeaths: 0,
-                        qdpsDeaths: 0
-                    });
+                    })
                 }
 
-                groupDeaths += !entry.qpds ? entry.deaths : 0;
-                qdpsDeaths += entry.qpds ? entry.deaths : 0;
+                if (entry.qpds) {
+                    qdpsDeaths += entry.deaths;
+                } else {
+                    groupDeaths += entry.deaths
+                }
             }
-            for (let i = 0; i < hstats.length; i++) {
-                hstats[i].groupDeaths = groupDeaths;
-                hstats[i].qdpsDeaths = qdpsDeaths;
+
+            for (let i = 0; i < healers.length; i++) {
+                if (healers[i].role !== 'Healer AOE') {
+                    healers[i].groupDeaths = groupDeaths;
+                    healers[i].qdpsDeaths = qdpsDeaths;
+                }
             }
+
+            hstat = hstat!.concat(healers);
         }
+
+        stats.set(company, hstat);
     }
     return stats;
 }

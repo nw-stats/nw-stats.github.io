@@ -155,8 +155,6 @@ function WarDetail(): JSX.Element {
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
-
-
                             <Tab label="Healer">
                                 <HealerCompare attackerName={war.attacker.name} defenderName={war.defender.name} attackerHealers={attackerHealer} defenderHealers={defenderHealer} />
                             </Tab>

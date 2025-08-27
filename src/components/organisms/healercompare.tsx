@@ -53,7 +53,7 @@ export function HealerCompare({ attackerName, defenderName, attackerHealers, def
         },
         {
             accessorKey: "qdpsDeaths",
-            header: () => <LabelIcon text='Deaths' icon={<span>Q<SkullIcon weight='fill' /></span>} />,
+            header: () => <LabelIcon text='Qdps Deaths' icon={<span>Qdps<SkullIcon weight='fill' /></span>} />,
             cell: info => (
                 <div className="text-right">
                     <NumberCell value={info.getValue<number>()} />
