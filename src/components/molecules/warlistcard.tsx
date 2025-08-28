@@ -3,11 +3,13 @@ import type { War } from "../../types/hydratedtypes/war";
 import { formatDate, formatTime } from "../../utils/time";
 import { Link } from "react-router-dom";
 import { factionBgPrimary } from "../../utils/factions";
+import type { JSX } from "react";
+import { Skeleton } from "../atom/skeleton";
 
 export interface WarListCardProp {
     war: War,
 }
-const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
+export function WarListCard({ war }: WarListCardProp): JSX.Element {
     const attackerWins = war.attacker.name === war.winner;
     const defenderWins = war.defender.name === war.winner;
 
@@ -78,60 +80,34 @@ const WarListCard: React.FC<WarListCardProp> = ({ war }) => {
                 </div>
             </div>
         </Link >
-
     );
-    // return (
-    //     <Link to={`/wars/${war.id}`} className="block">
-    //         <div className="bg-gray-800 rounded-lg w-full">
-    //             <div className="grid grid-rows-[auto_1fr_auto] text-center text-gray-200">
-    //                 <div className="pt-1 text-xs drop-shadow-lg">{war.map}</div>
+}
 
-    //                 <div className="grid grid-cols-3 place-items-center text-white font-bold relative">
-    //                     <div className="relative flex items-center justify-center">
-    //                         {attackerWins && (
-    //                             <CrownIcon
-    //                                 className="absolute -top-4 left-1/2 -translate-x-1/2 text-yellow-400"
-    //                                 weight="fill"
-    //                                 size={16}
-    //                             />
-    //                         )}
-    //                         <span className="drop">{war.attacker}</span>
-    //                     </div>
+export function WarListCardSkeleton(): JSX.Element {
+    return (
+        <div className="grid grid-cols-3 bg-gray-700 text-white rounded-lg overflow-hidden animate-pulse">
+            {/* Attacker */}
+            <div className="flex items-center justify-center h-full text-center font-semibold text-lg relative">
+                <div className="absolute inset-0 bg-gray-600 w-1/12 rounded-l-lg" />
+                <Skeleton className="h-5 w-24 rounded-md" />
+            </div>
 
-    //                     <div className="text-gray-300 font-normal">
-    //                         <div className="relative flex items-center justify-center">
-    //                             <SwordIcon className="absolute right-full mr-4 drop-shadow-2xl" weight="fill" />
-    //                             <span className="drop-shadow-lg">vs</span>
-    //                             <ShieldIcon className="absolute left-full ml-4 drop-shadow-lg" weight="fill" />
-    //                         </div>
-    //                     </div>
+            {/* Center */}
+            <div className="flex flex-col items-center justify-center text-center h-full py-2 gap-2">
+                <Skeleton className="h-4 w-40 rounded-md" /> {/* date + time */}
+                <div className="flex flex-row items-center font-extrabold gap-1">
+                    <Skeleton className="h-4 w-4 rounded-full" />
+                    <Skeleton className="h-4 w-6 rounded-md" />
+                    <Skeleton className="h-4 w-4 rounded-full" />
+                </div>
+                <Skeleton className="h-4 w-32 rounded-md" /> {/* map + server */}
+            </div>
 
-    //                     <div className="relative flex items-center justify-center">
-    //                         {defenderWins && (
-    //                             <CrownIcon
-    //                                 className="absolute -top-4 left-1/2 -translate-x-1/2 text-yellow-400"
-    //                                 weight="fill"
-    //                                 size={16}
-    //                             />
-    //                         )}
-    //                         <span>{war.defender}</span>
-    //                     </div>
-    //                 </div>
-
-    //                 <div className="pb-1 text-xs">{formatDate(war.date)}</div>
-    //                 <div className="pb-1 text-xs">{formatTime(war.date)}</div>
-    //             </div>
-    //         </div>
-    //     </Link>
-    // );
-
-    // return (
-    //     <div className="bg-gray-700 w-full hover:bg-fuchsia-200">
-    //         Hello world
-    //     </div>
-    // );
-};
-
-
-
-export default WarListCard;
+            {/* Defender */}
+            <div className="flex items-center justify-center h-full text-center font-semibold text-lg relative">
+                <div className="absolute right-0 top-0 h-full w-1/12 bg-gray-600 rounded-r-lg" />
+                <Skeleton className="h-5 w-24 rounded-md" />
+            </div>
+        </div>
+    );
+}

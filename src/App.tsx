@@ -3,7 +3,6 @@ import Navbar from './components/organisms/navbar';
 
 
 import WarDetail from './pages/war-detail'
-import Wars from './pages/wars';
 import Companies from './pages/companies';
 import Players from './pages/players';
 import NotFound from './pages/notfound';
@@ -14,6 +13,7 @@ import Feedback from './pages/feedback';
 import Inaccuracy from './pages/inaccuracy';
 import PlayerDetails from './pages/playerdetails';
 import { Footer } from './components/organisms/footer';
+import { Wars } from './pages/wars';
 
 const App: React.FC = () => {
   return (

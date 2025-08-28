@@ -6,7 +6,6 @@ import Loading from "../components/atom/loading";
 import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
 import { useEffect, useRef, useState, type JSX } from "react";
 import NotFound from "./notfound";
-import WarListCard from "../components/molecules/warlistcard";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
 import { toPng } from "html-to-image";
@@ -16,6 +15,7 @@ import { Tab, TabbedContent } from "../components/molecules/tabbedcontent";
 import { GroupsSummary } from "../components/molecules/groupssummary";
 import GroupsDetail from "../components/molecules/groupsdetails";
 import { HealerCompare } from "../components/organisms/healercompare";
+import { WarListCard } from "../components/molecules/warlistcard";
 
 
 

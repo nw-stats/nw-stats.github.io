@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import type { War } from "../../types/hydratedtypes/war";
-import WarListCard from "../molecules/warlistcard";
 import { NoData } from "../atom/nodata";
+import { WarListCard } from "../molecules/warlistcard";
 
 interface CompanyWarHistoryProps {
     companyName: string
