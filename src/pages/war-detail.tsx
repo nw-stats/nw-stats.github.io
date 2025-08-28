@@ -40,7 +40,7 @@ function WarDetail(): JSX.Element {
         const hasAttacker = attackerGroups && attackerGroups.size > 0;
         const hasDefender = defenderGroups && defenderGroups.size > 0;
 
-        let nextOuter = "Groups Details";
+        let nextOuter = "Groups Detail";
         let nextInner = war.attacker.name;
 
         if (!hasAttacker && hasDefender) {
