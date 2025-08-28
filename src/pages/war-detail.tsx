@@ -110,10 +110,6 @@ function WarDetail(): JSX.Element {
                 {!hasLeaderboard ? (
                     <DataEntryInProgress />
                 ) : (
-                    // <div className="text-sm relative">
-                    //     <CameraButton onClick={handleScreenshot} loading={ssLoading} />
-                    //     <GroupsComponent hideRoles={war.hideRoles} attackerName={war.attacker.name} defenderName={war.defender.name} attackerGroups={attackerGroups} defenderGroups={defenderGroups} attackerSummary={attackerGroupSummary} defenderSummary={defenderGroupSummary} />
-                    // </div>
                     <div className="text-sm relative">
                         <CameraButton onClick={handleScreenshot} loading={ssLoading} />
                         <TabbedContent
