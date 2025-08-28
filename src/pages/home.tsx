@@ -8,6 +8,7 @@ import { useCompanies } from "../hooks2/useCompaniesNew";
 import { currentHour, sortByDateThenTime } from "../utils/time";
 import { useWorlds } from "../hooks/base/useWorlds";
 import { useWarsHydrated } from "../hooks/composite/useWarsHydrated";
+import { Checkbox } from "../components/atom/checkbox";
 
 const Home: React.FC = () => {
     const { loading, error, wars } = useWarsHydrated();
@@ -15,6 +16,7 @@ const Home: React.FC = () => {
     const { companies } = useCompanies();
 
     const [savedCompanies, setCompanies] = useLocalStorage<string[]>('companies', []);
+    const [showOnlyCompleted, setShowOnlyCompleted] = useLocalStorage<boolean>('onlyCompleted', false);
 
 
     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
@@ -29,7 +31,7 @@ const Home: React.FC = () => {
         }
     });
 
-    const pastWars = serverWars.filter(item => item.date.toMillis() < rightNow.toMillis()).sort((a, b) => b.date.toMillis() - a.date.toMillis());
+    const pastWars = serverWars.filter(v => v.winner === v.attacker.name || v.winner === v.defender.name || !showOnlyCompleted).filter(item => item.date.toMillis() < rightNow.toMillis()).sort((a, b) => b.date.toMillis() - a.date.toMillis());
     const Upcoming = serverWars.filter(item => item.date.toMillis() >= rightNow.toMillis()).sort((a, b) => sortByDateThenTime(a.date, b.date));
 
     let worldOptions = [];
@@ -74,7 +76,7 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Sidebar filters */}
-                <div className="flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
+                <div className="text-white flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
                     <div className="text-white text-xl font-semibold">Filters</div>
 
                     <MultiselectDropdown
@@ -83,6 +85,7 @@ const Home: React.FC = () => {
                         value={savedCompanies}
                         onChange={setCompanies}
                     />
+                    <Checkbox label={"Only show past wars with stats"} checked={showOnlyCompleted} onChecked={setShowOnlyCompleted} />
                 </div>
             </main>
         </div>

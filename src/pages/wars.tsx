@@ -4,6 +4,7 @@ import WarListCard from "../components/molecules/warlistcard";
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useWarsHydrated } from "../hooks/composite/useWarsHydrated";
+import { Checkbox } from "../components/atom/checkbox";
 
 const Wars: React.FC = () => {
     const { loading, error, wars } = useWarsHydrated();
@@ -11,6 +12,7 @@ const Wars: React.FC = () => {
     const { companies } = useCompanies();
 
     const [savedCompanies, setCompanies] = useLocalStorage<string[]>('companies', []);
+    const [showOnlyCompleted, setShowOnlyCompleted] = useLocalStorage<boolean>('onlyCompleted', false);
 
 
     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
@@ -55,6 +57,7 @@ const Wars: React.FC = () => {
                         value={savedCompanies}
                         onChange={setCompanies}
                     />
+                    <Checkbox label={"Only show past wars with stats"} checked={showOnlyCompleted} onChecked={setShowOnlyCompleted} />
                 </div>
             </main>
         </div>
