@@ -1,5 +1,4 @@
 
-import StatsTable from "../components/atom/statstble";
 import type { HealerStats } from "../types/healerstats";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { GroupKey } from "../types/roster";
