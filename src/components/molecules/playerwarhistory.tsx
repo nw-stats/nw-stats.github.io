@@ -12,7 +12,7 @@
 // import type { LeaderboardEntry } from "../../types/leaderboard";
 
 // interface PlayerMatchHistoryProps {
-//     entries: LeaderboardEntry[];
+//     entries: Leaderboard;
 // }
 
 // const PlayerMatchHistory: React.FC<PlayerMatchHistoryProps> = ({ entries }) => {

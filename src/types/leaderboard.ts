@@ -1,11 +1,11 @@
 import type { DateTime } from "luxon";
-import type { Role } from "./role";
+import type { RoleAssignment } from "./role";
 import type { Company } from "./company";
 
 export interface LeaderboardEntry {
     warid: number;
     character: string;
-    role: Role;
+    roleAssignment: RoleAssignment;
     score: number;
     kills: number;
     deaths: number;
@@ -71,3 +71,5 @@ export interface WarsSummary {
     attack: { win: number, loss: number, count: number, rate: number };
     overall: { win: number, loss: number, count: number, rate: number };
 }
+
+export type Leaderboard = LeaderboardEntry[];

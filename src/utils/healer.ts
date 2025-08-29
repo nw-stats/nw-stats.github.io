@@ -17,11 +17,11 @@ export function calculateHealerStats(groups: Map<string, Map<GroupKey, GroupPerf
             let qdpsDeaths = 0;
             let groupDeaths = 0;
             for (const entry of g.stats) {
-                if (isHealer(entry.role)) {
+                if (isHealer(entry.roleAssignment.role)) {
                     healers.push({
                         character: entry.character,
-                        group: entry.role === 'Healer AOE' ? 'AoE' : gk,
-                        role: entry.role,
+                        group: entry.roleAssignment.role === 'Healer AOE' ? 'AoE' : gk,
+                        roleAssignment: entry.roleAssignment,
                         healing: entry.healing,
                         qdpsDeaths: 0,
                         groupDeaths: 0,
@@ -36,7 +36,7 @@ export function calculateHealerStats(groups: Map<string, Map<GroupKey, GroupPerf
             }
 
             for (let i = 0; i < healers.length; i++) {
-                if (healers[i].role !== 'Healer AOE') {
+                if (healers[i].roleAssignment.role !== 'Healer AOE') {
                     healers[i].groupDeaths = groupDeaths;
                     healers[i].qdpsDeaths = qdpsDeaths;
                 }

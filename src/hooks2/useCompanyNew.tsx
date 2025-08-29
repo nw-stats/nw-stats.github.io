@@ -13,7 +13,7 @@
 //     const [company, setCompany] = useState<Company | null>(null);
 //     const [wars, setWars] = useState<War[]>([]);
 //     const [members, setMembers] = useState<Player[]>([]);
-//     const [leaderboards, setLeaderboards] = useState<LeaderboardEntry[]>([]);
+//     const [leaderboards, setLeaderboards] = useState<Leaderboard>([]);
 //     const [loading, setLoading] = useState<boolean>(true);
 //     const [err, setError] = useState<any>(null);
 //     useEffect(() => {

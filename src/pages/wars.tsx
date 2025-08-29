@@ -84,7 +84,7 @@ export function Wars(): JSX.Element {
         }
     });
 
-    const sortedWars = filteredWars.sort((a, b) => b.date.toMillis() - a.date.toMillis());
+    const sortedWars = filteredWars.filter(v => v.status === 'complete' || !showOnlyCompleted).sort((a, b) => b.date.toMillis() - a.date.toMillis());
     const companyOptions = companies.map(v => v.name);
 
     return (

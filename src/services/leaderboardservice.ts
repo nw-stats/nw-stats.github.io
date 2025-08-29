@@ -1,5 +1,5 @@
 import { kSheetId } from "../constants/sheets";
-import { type LeaderboardEntry, type StatTotals } from "../types/leaderboard";
+import { type Leaderboard, type StatTotals } from "../types/leaderboard";
 import { type QueryParameter } from "../types/queryparameter";
 import type { Role } from "../types/role";
 import { constructQuery } from "../utils/querybuilder";
@@ -7,7 +7,7 @@ import { convertInt, convertString } from "../utils/sheetconvert";
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 
-export function summarizeLeaderboard(leaderboard: LeaderboardEntry[]): Map<string, StatTotals> {
+export function summarizeLeaderboard(leaderboard: Leaderboard): Map<string, StatTotals> {
     const summaries = new Map<string, StatTotals>();
 
     for (const entry of leaderboard) {
@@ -39,7 +39,7 @@ export function summarizeLeaderboard(leaderboard: LeaderboardEntry[]): Map<strin
     return summaries;
 }
 
-export async function getLeaderboard(params: QueryParameter[]): Promise<LeaderboardEntry[] | undefined> {
+export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | undefined> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], params);
     let data: DataType[][] = [];
     try {
@@ -52,9 +52,9 @@ export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderbo
         return undefined;
     }
 
-    const entries: LeaderboardEntry[] = data.map((row: any[]) => ({
+    const entries: Leaderboard = data.map((row: any[]) => ({
         warid: convertInt(row[1]),
-        role: '' as Role,
+        roleAssignment: { role: '' as Role },
         character: convertString(row[2]),
         score: convertInt(row[3]),
         kills: convertInt(row[4]),

@@ -116,12 +116,7 @@ const Home: React.FC = () => {
     });
 
     const pastWars = serverWars
-        .filter(
-            v =>
-                v.winner === v.attacker.name ||
-                v.winner === v.defender.name ||
-                !showOnlyCompleted
-        )
+        .filter(v => v.status === 'complete' || !showOnlyCompleted)
         .filter(item => item.date.toMillis() < rightNow.toMillis())
         .sort((a, b) => b.date.toMillis() - a.date.toMillis());
 

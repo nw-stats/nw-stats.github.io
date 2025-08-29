@@ -1,4 +1,4 @@
-import type { CharacterDetailsEntry, LeaderboardEntry } from "../types/leaderboard";
+import type { CharacterDetailsEntry, Leaderboard } from "../types/leaderboard";
 import type { Character } from "../types/character";
 import type { Role } from "../types/role";
 import type { Roster } from "../types/roster";
@@ -7,7 +7,7 @@ import type { CharacterDetails } from "../types/characterdetails";
 import { normalize, summarize } from "./leaderboard";
 
 export function createCharacterDetails(
-    leaderboard: LeaderboardEntry[],
+    leaderboard: Leaderboard,
     rosters: Map<number, Map<string, Roster>>,
     wars: War[]
 ): CharacterDetailsEntry[] {
@@ -35,16 +35,16 @@ export function createCharacterDetails(
         const isWinner = war.winner === lbEntry.company;
         const date = war.date;
         const duration = war.duration;
-        let role: Role = '';
+        let roleAssignment = { role: '' as Role };
         for (const [_, group] of companyRoster.groups) {
             const wp = group.find(v => v.name === lbEntry.character);
             if (wp) {
-                role = wp.role;
+                roleAssignment.role = wp.role;
                 break;
             }
         }
 
-        detailEntires.push({ ...lbEntry, date, attacker, defender, role, isWinner, duration });
+        detailEntires.push({ ...lbEntry, date, attacker, defender, roleAssignment, isWinner, duration });
     }
 
     return detailEntires;
@@ -53,7 +53,7 @@ export function createCharacterDetails(
 
 export function createPlayerDetailsAndSummary(
     characters: Character[],
-    leaderboardEntries: LeaderboardEntry[],
+    leaderboardEntries: Leaderboard,
     rosters: Map<number, Map<string, Roster>>,
     wars: War[]): Map<string, CharacterDetails> {
 

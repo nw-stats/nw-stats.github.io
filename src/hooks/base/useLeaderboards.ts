@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { LeaderboardEntry } from "../../types/leaderboard";
+import type { Leaderboard, } from "../../types/leaderboard";
 import { getLeaderboard } from "../../services/leaderboardservice";
 import { kLeaderboardColumns } from "../../mapping/leaderboardmap";
 import { Qop, type QueryParameter } from "../../types/queryparameter";
@@ -11,7 +11,7 @@ export interface UseLeaderboardsOptions {
 }
 
 export function useLeaderboards(options?: UseLeaderboardsOptions) {
-    const [leaderboards, setLeaderboards] = useState<LeaderboardEntry[]>([]);
+    const [leaderboards, setLeaderboards] = useState<Leaderboard>([]);
     const [loading, setLoading] = useState<Boolean>(true);
     const [error, setError] = useState<any>(null);
 

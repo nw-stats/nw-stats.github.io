@@ -1,4 +1,4 @@
-import type { LeaderboardEntry } from "../../types/leaderboard";
+import type { Leaderboard, LeaderboardEntry } from "../../types/leaderboard";
 import { useMemo, useState, type JSX } from 'react';
 import {
     useReactTable,
@@ -23,7 +23,7 @@ import { sortRolesStrings } from "../../utils/roster";
 type LeaderboardProps = {
     companies: Map<string, Company>,
     hideRoles: boolean,
-    leaderboard?: LeaderboardEntry[],
+    leaderboard?: Leaderboard,
 };
 
 export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: LeaderboardProps): JSX.Element {
@@ -32,9 +32,9 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         { id: 'score', desc: true },
     ]);
 
-    const filtered = useMemo<LeaderboardEntry[]>(() => {
+    const filtered = useMemo(() => {
         if (leaderboard) {
-            return leaderboard.filter(v => selectedRole === 'All Roles' || selectedRole === v.role);
+            return leaderboard.filter(v => selectedRole === 'All Roles' || selectedRole === v.roleAssignment.role);
         } else {
             return [];
         }
@@ -141,8 +141,8 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         const rolesSet = new Set<string>();
         if (leaderboard) {
             for (const entry of leaderboard) {
-                if (typeof entry.role === "string") {
-                    rolesSet.add(entry.role);
+                if (typeof entry.roleAssignment.role === "string") {
+                    rolesSet.add(entry.roleAssignment.role);
                 }
             }
         }

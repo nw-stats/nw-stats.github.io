@@ -17,3 +17,8 @@ export const kRoles = [
 ] as const;
 
 export type Role = typeof kRoles[number];
+
+export interface RoleAssignment {
+    role: Role;
+    inferred?: boolean;
+};

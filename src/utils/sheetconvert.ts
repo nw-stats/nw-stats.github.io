@@ -2,6 +2,7 @@ import type { DataType } from "../services/googlesheets";
 import type { Faction } from "../types/faction";
 import type { Role } from "../types/role";
 import type { GroupKey } from "../types/roster";
+import type { Status } from "../types/status";
 import type { Region, WorldKind, WorldSet } from "../types/world";
 
 export function convertInt(value: DataType): number {
@@ -71,4 +72,15 @@ export function convertWorldSet(value: DataType): WorldSet {
 
 export function convertWorldKind(value: DataType): WorldKind {
     return value as WorldKind;
+}
+
+export function convertToStatus(value: DataType): Status {
+    var s = convertString(value);
+    if (s !== 'complete'
+        && s !== 'pending'
+        && s !== 'cancelled'
+        && s !== 'given') {
+        s = 'not started';
+    }
+    return s as Status;
 }

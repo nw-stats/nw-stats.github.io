@@ -1,3 +1,4 @@
+
 import type { Role } from "../types/role";
 
 export function isRoleFuzzy(role: Role, compare: string): boolean {

@@ -4,7 +4,7 @@ import { fetchTableFromGoogleSheets } from "./googlesheets";
 import { type Ordering, type QueryParameter } from "../types/queryparameter";
 import { kSheetId } from "../constants/sheets";
 import { kWarColumns, kWarTable } from "../mapping/warmap";
-import { convertBoolean, convertInt, convertString } from "../utils/sheetconvert";
+import { convertBoolean, convertInt, convertString, convertToStatus } from "../utils/sheetconvert";
 import type { WarRaw } from "../types/rawtypes/warraw";
 
 export async function getWars(params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
@@ -46,9 +46,10 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
             pointC: convertInt(row[kWarTable.pointC]),
             fort: convertInt(row[kWarTable.fort]),
         };
+        const status = convertToStatus(row[kWarTable.status]);
         const duration = convertInt(row[kWarTable.duration]);
         const hideRoles = convertBoolean(row[kWarTable.hideRoles]);
-        wars.push({ id, date: dateTime, server, map, attacker, defender, winner, captures, duration, hideRoles });
+        wars.push({ id, date: dateTime, server, map, attacker, defender, winner, captures, duration, status, hideRoles });
     }
     return wars;
 }

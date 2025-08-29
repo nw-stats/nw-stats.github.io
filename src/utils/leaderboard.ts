@@ -1,9 +1,10 @@
 
-import { type StatTotals, type LeaderboardEntry, type MapStat, type WarsSummary } from "../types/leaderboard"
+import { type StatTotals, type MapStat, type WarsSummary, type Leaderboard } from "../types/leaderboard"
 import type { War } from "../types/hydratedtypes/war";
 import { kThirtyMinutesInSeconds } from "./constants";
+import type { Roster } from "../types/roster";
 
-export function normalize(toNormalize: LeaderboardEntry[], wars: War[]): StatTotals {
+export function normalize(toNormalize: Leaderboard, wars: War[]): StatTotals {
     let name = '';
     let score = 0;
     let kills = 0;
@@ -37,7 +38,7 @@ export function normalize(toNormalize: LeaderboardEntry[], wars: War[]): StatTot
     }
     return { name, score, kills, deaths, assists, healing, damage, count, kpar }
 }
-export function summarize(toSummarize: LeaderboardEntry[]): StatTotals {
+export function summarize(toSummarize: Leaderboard): StatTotals {
     const summary = {
         name: '',
         score: 0,
@@ -138,7 +139,7 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
     return summary;
 }
 
-export function fillKpar(leaderboard: LeaderboardEntry[], summaries: Map<string, StatTotals>) {
+export function fillKpar(leaderboard: Leaderboard, summaries: Map<string, StatTotals>) {
     for (const entry of leaderboard) {
         const company = entry.company;
         if (!summaries.has(company)) { continue; }
@@ -148,8 +149,8 @@ export function fillKpar(leaderboard: LeaderboardEntry[], summaries: Map<string,
     }
 }
 
-export function splitLeaderboards(leaderboard: LeaderboardEntry[]): Map<string, LeaderboardEntry[]> {
-    const allLb = new Map<string, LeaderboardEntry[]>();
+export function splitLeaderboards(leaderboard: Leaderboard): Map<string, Leaderboard> {
+    const allLb = new Map<string, Leaderboard>();
     allLb.set("All", []);
 
     for (const entry of leaderboard) {
@@ -162,4 +163,46 @@ export function splitLeaderboards(leaderboard: LeaderboardEntry[]): Map<string, 
         split.push(entry);
     }
     return allLb;
+}
+
+export function fillRoleAssignment(leaderboard: Leaderboard, rosters: Map<string, Roster>) {
+    for (const entry of leaderboard) {
+        const companyRoster = rosters.get(entry.company);
+        if (companyRoster) {
+            for (const [_, group] of companyRoster.groups) {
+                for (const wp of group) {
+                    if (wp.name === entry.character) {
+                        entry.roleAssignment = { role: wp.role }
+                    }
+                }
+            }
+        }
+    }
+}
+
+export function inferRoles(leaderboard: Leaderboard) {
+    inferHealers(leaderboard);
+}
+
+function inferHealers(leaderboard: Leaderboard) {
+    if (leaderboard.length === 0) return [];
+    const healersFirst = leaderboard.sort((a, b) => b.healing - a.healing);
+
+    // const minHealing = leaderboard.reduce((a, b) => a.healing < b.healing ? a : b);
+    // const maxHealing = leaderboard.reduce((a, b) => a.healing > b.healing ? a : b);
+
+    // Highest healing is probably aoe healer
+    healersFirst[0].roleAssignment = { role: "Healer AOE", inferred: true };
+    healersFirst[1].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[2].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[3].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[4].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[5].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[6].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[7].roleAssignment = { role: "Healer MB", inferred: true };
+    healersFirst[8].roleAssignment = { role: "Healer KS", inferred: true };
+    healersFirst[9].roleAssignment = { role: "Healer KS", inferred: true };
+    healersFirst[10].roleAssignment = { role: "Healer KS", inferred: true };
+
+    return healersFirst;
 }

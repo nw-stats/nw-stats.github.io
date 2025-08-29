@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import type { War } from "../types/hydratedtypes/war";
 import { summarize, summarizeWars } from "../utils/leaderboard";
-import type { LeaderboardEntry } from "../types/leaderboard";
+import type { Leaderboard } from "../types/leaderboard";
 
 import StatHighlight from "../components/atom/stathighlight";
 import NumberCell from "../components/atom/numbercell";
@@ -11,7 +11,7 @@ import { formatPercent } from "../utils/format";
 interface CompanyStatOverviewProps {
     companyName: string
     wars: War[],
-    leaderboard: LeaderboardEntry[]
+    leaderboard: Leaderboard
 }
 function CompanyStatOverview({ companyName, wars, leaderboard }: CompanyStatOverviewProps): JSX.Element {
     const lbSummary = summarize(leaderboard);

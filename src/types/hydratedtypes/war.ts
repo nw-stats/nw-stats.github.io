@@ -1,6 +1,7 @@
 import type { DateTime } from "luxon";
 import type { CaptureTimes } from "../captures";
 import type { Company } from "../company";
+import type { Status } from "../status";
 
 export interface War {
     id: number;
@@ -13,4 +14,5 @@ export interface War {
     duration: number;
     captures: CaptureTimes;
     hideRoles: boolean;
+    status: Status
 }

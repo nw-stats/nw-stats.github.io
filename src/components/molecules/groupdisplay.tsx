@@ -9,6 +9,7 @@ import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon,
 import type { GroupKey } from '../../types/roster';
 import { formatPercent } from '../../utils/format';
 import { sortRolesStrings } from '../../utils/roster';
+import type { Role } from '../../types/role';
 
 
 interface GroupDisplayProps {
@@ -102,16 +103,24 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
         // Insert role column only if NOT hidden
         if (!hideRoles) {
             baseCols.splice(1, 0, {
-                accessorKey: 'role',
+                accessorKey: 'roleAssignment',
                 header: () => (
                     <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
                 ),
                 sortingFn: (rowA, rowB) => {
-                    const a = rowA.getValue<string>('role');
-                    const b = rowB.getValue<string>('role');
+                    const a = rowA.original.roleAssignment?.role ?? "";
+                    const b = rowB.original.roleAssignment?.role ?? "";
                     return sortRolesStrings(a, b);
                 },
-                cell: info => <>{info.getValue<string>()}</>,
+                cell: info => {
+                    const value = info.getValue<{ role: Role; inferred: boolean }>();
+                    if (!value?.role) return <span className="text-gray-400 italic"></span>;
+                    return (
+                        <span className={value.inferred ? "italic text-gray-600" : ""}>
+                            {value.role}
+                        </span>
+                    );
+                },
             });
         }
 
@@ -131,8 +140,8 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
     const override = splitRoles ? {
         "healing": group.stats
             .filter(s => splitRoles.some(v => {
-                if (s.role) {
-                    return !s.role.toLowerCase().includes(v)
+                if (s.roleAssignment) {
+                    return !s.roleAssignment.role.toLowerCase().includes(v)
                 }
                 return true;
             }))
