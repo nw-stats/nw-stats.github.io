@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import LeaderboardDisplay from "../components/molecules/leaderboarddisplay";
 import { useWarData } from "../hooks/useWarData";
 import Loading from "../components/atom/loading";
 
 import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
-import { useEffect, useRef, useState, type JSX } from "react";
+import { use, useEffect, useRef, useState, type JSX } from "react";
 import NotFound from "./notfound";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
@@ -21,15 +21,18 @@ import { WarListCard } from "../components/molecules/warlistcard";
 
 function WarDetail(): JSX.Element {
     const { warId } = useParams<{ warId: string, slug: string }>();
+    const [searchParams, setSearchParams] = useSearchParams();
     const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
 
     const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
 
     const [ssLoading, setSsLoading] = useState(false);
-    const [innerTabLabel, setInnerTabLabel] = useState<string>("");
-    const [outerTabLabel, setOuterTabLabel] = useState<string>("");
-    const [lastNonAllLabel, setLastNonAllLabel] = useState<string>("");
+
+    const outerTab = searchParams.get("o") ?? "Groups Detail";
+    const innerTab = searchParams.get("i") ?? war?.attacker.name ?? "All";
+
+    const [lbTab, setLbTab] = useState("All");
 
     useEffect(() => {
         if (!war) return;
@@ -50,16 +53,29 @@ function WarDetail(): JSX.Element {
             nextInner = "All";
         }
 
-        setOuterTabLabel(nextOuter);
-        setInnerTabLabel(nextInner);
-        setLastNonAllLabel(nextInner !== "All" ? nextInner : "");
-
+        setOuterTab(nextOuter);
+        setInnerTab(nextInner);
     }, [war, groupDetails]);
+
+    const setOuterTab = (label: string) => {
+        setSearchParams(prev => {
+            const params = new URLSearchParams(prev);
+            params.set("o", label);
+            return params;
+        });
+    };
+
+    const setInnerTab = (label: string) => {
+        setSearchParams(prev => {
+            const params = new URLSearchParams(prev);
+            params.set("i", label);
+            return params;
+        });
+    };
 
     if (loading) return <Loading />;
     if (error) return <NotFound />;
     if (!war) return <NotFound />;
-
 
     const attackerLeaderboard = leaderboard.get(war.attacker.name);
     const defenderLeaderboard = leaderboard.get(war.defender.name);
@@ -113,16 +129,18 @@ function WarDetail(): JSX.Element {
                     <div className="text-sm relative">
                         <CameraButton onClick={handleScreenshot} loading={ssLoading} />
                         <TabbedContent
-                            activeLabel={outerTabLabel}
-                            onChangeLabel={setOuterTabLabel}
+                            activeLabel={outerTab}
+                            onChangeLabel={(label) => {
+                                setOuterTab(label)
+                                if (label === 'Leaderboard') setLbTab("All");
+                            }}
                         >
                             <Tab label="Groups Detail">
                                 <TabbedContent
                                     key={`details-${war.attacker.name}-${war.defender.name}`}
-                                    activeLabel={lastNonAllLabel}
+                                    activeLabel={innerTab}
                                     onChangeLabel={(label) => {
-                                        setInnerTabLabel(label);
-                                        if (label !== "All") setLastNonAllLabel(label);
+                                        setInnerTab(label);
                                     }}
                                 >
                                     <Tab label={war.attacker.name}>
@@ -136,10 +154,9 @@ function WarDetail(): JSX.Element {
                             <Tab label="Groups Summary">
                                 <TabbedContent
                                     key={`summary-${war.attacker.name}-${war.defender.name}`}
-                                    activeLabel={lastNonAllLabel}
+                                    activeLabel={innerTab}
                                     onChangeLabel={(label) => {
-                                        setInnerTabLabel(label);
-                                        if (label !== "All") setLastNonAllLabel(label);
+                                        setInnerTab(label);
                                     }}
                                 >
                                     <Tab label={war.attacker.name}>
@@ -157,10 +174,10 @@ function WarDetail(): JSX.Element {
                             <Tab label="Leaderboard">
                                 <TabbedContent
                                     key={`leaderboard-${war.attacker.name}-${war.defender.name}`}
-                                    activeLabel={innerTabLabel}
+                                    activeLabel={lbTab}
                                     onChangeLabel={(label) => {
-                                        setInnerTabLabel(label);
-                                        if (label !== "All") setLastNonAllLabel(label);
+                                        if (label !== 'All') setInnerTab(label);
+                                        setLbTab(label);
                                     }}
                                 >
                                     <Tab label={"All"}>

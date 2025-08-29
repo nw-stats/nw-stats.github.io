@@ -43,10 +43,8 @@ export function createCharacterDetails(
                 break;
             }
         }
-
         detailEntires.push({ ...lbEntry, date, attacker, defender, roleAssignment, isWinner, duration });
     }
-
     return detailEntires;
 }
 
@@ -62,7 +60,7 @@ export function createPlayerDetailsAndSummary(
     if (characters.length === 0) {
         return details;
     }
-
+    console.log(rosters);
     let allHistory: CharacterDetailsEntry[] = []
     for (const character of characters) {
         const lb = leaderboardEntries.filter(v => v.character === character.name);

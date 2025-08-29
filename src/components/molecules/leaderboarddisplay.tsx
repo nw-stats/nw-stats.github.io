@@ -121,18 +121,27 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         // Insert role column only if NOT hidden
         if (!hideRoles) {
             baseCols.splice(1, 0, {
-                accessorKey: 'role',
+                accessorKey: 'roleAssignment',
                 header: () => (
                     <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
                 ),
                 sortingFn: (rowA, rowB) => {
-                    const a = rowA.getValue<string>('role');
-                    const b = rowB.getValue<string>('role');
+                    const a = rowA.original.roleAssignment?.role ?? "";
+                    const b = rowB.original.roleAssignment?.role ?? "";
                     return sortRolesStrings(a, b);
                 },
-                cell: info => <>{info.getValue<string>()}</>,
+                cell: info => {
+                    const value = info.getValue<{ role: string; inferred: boolean }>();
+                    if (!value?.role) return <span className="text-gray-400 italic"></span>;
+                    return (
+                        <span className={value.inferred ? "italic text-gray-600" : ""}>
+                            {value.role}
+                        </span>
+                    );
+                },
             });
         }
+
 
         return baseCols;
     }, [hideRoles]);

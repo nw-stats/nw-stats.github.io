@@ -20,7 +20,7 @@ interface GroupDisplayProps {
 }
 
 const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, splitRoles }) => {
-    const sort = [hideRoles ? { id: 'score', desc: true } : { id: "role", desc: false }];
+    const sort = [hideRoles ? { id: 'score', desc: true } : { id: "roleAssignment", desc: false }];
 
     const columns = React.useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
         const baseCols: ColumnDef<LeaderboardEntry>[] = [

@@ -4,9 +4,11 @@ import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import NumberCell from "../atom/numbercell";
 import StatsTable from "../atom/statstble";
-import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react";
+import { CheckCircleIcon, GameControllerIcon, XCircleIcon } from "@phosphor-icons/react";
 import { formatDate, formatSeconds } from "../../utils/time";
 import type { DateTime } from "luxon";
+import LabelIcon from "../atom/labelicon";
+import { sortRolesStrings } from "../../utils/roster";
 
 
 export interface CharacterWarHistoryProps {
@@ -40,8 +42,24 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
                 },
             },
             {
-                accessorKey: "role",
-                header: "Role",
+                accessorKey: 'roleAssignment',
+                header: () => (
+                    <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
+                ),
+                sortingFn: (rowA, rowB) => {
+                    const a = rowA.original.roleAssignment?.role ?? "";
+                    const b = rowB.original.roleAssignment?.role ?? "";
+                    return sortRolesStrings(a, b);
+                },
+                cell: info => {
+                    const value = info.getValue<{ role: string; inferred: boolean }>();
+                    if (!value?.role) return <span className="text-gray-400 italic"></span>;
+                    return (
+                        <span className={value.inferred ? "italic text-gray-600" : ""}>
+                            {value.role}
+                        </span>
+                    );
+                },
             },
             {
                 accessorKey: "isWinner",
