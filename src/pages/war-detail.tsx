@@ -4,7 +4,7 @@ import { useWarData } from "../hooks/useWarData";
 import Loading from "../components/atom/loading";
 
 import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
-import { use, useEffect, useRef, useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import NotFound from "./notfound";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";

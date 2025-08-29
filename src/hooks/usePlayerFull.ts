@@ -2,10 +2,9 @@
 import { useAlts } from "./base/useAlts";
 import { useRosters } from "./useRostersById";
 import { createPlayerDetailsAndSummary } from "../utils/player";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
-import { fillRoleAssignment } from "../utils/leaderboard";
 
 export function usePlayerDetails(playerName: string) {
     const { alts, loading: altsLoading, error: altsError } = useAlts(playerName);
