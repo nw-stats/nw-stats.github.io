@@ -154,10 +154,11 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
         })
     }, [group]);
 
+    const label: string = groupId !== 'strong' && groupId !== 'weak' ? `Group ${groupId}` : `${groupId.substring(0, 1).toUpperCase()}${groupId.substring(1)} side QDPS`;
 
     return (
         <div className="text-white">
-            <div className="font-bold p-2 bg-gray-800 rounded-t-lg text-xs">Group {groupId}</div>
+            <div className="font-bold p-2 bg-gray-800 rounded-t-lg text-xs">{label}</div>
             <StatsTable columns={columns} data={combinedData} sort={sort} calc={calcColumns} bottomRowOverride={override} />
         </div >
     );
