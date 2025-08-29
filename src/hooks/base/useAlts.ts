@@ -24,7 +24,7 @@ export function useAlts(player: string) {
                 if (cancelled) return;
 
                 if (names.length > 0) {
-                    const queries = names.map(v => ({ column: 'B', fn: Qop.Eq, value: v, }));
+                    const queries = names.map(v => ({ column: 'C', fn: Qop.Eq, value: v, }));
                     const players = await getPlayers(queries);
                     if (!cancelled) setAlts(players);
                 } else {
