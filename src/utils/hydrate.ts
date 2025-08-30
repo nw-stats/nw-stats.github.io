@@ -1,6 +1,6 @@
 import { PlaceholderCompany } from "../constants/company";
 import type { Company } from "../types/company";
-import type { WarRaw } from "../types/rawtypes/warraw";
+import type { WarRaw } from "../types/db/warraw";
 import type { War } from "../types/hydratedtypes/war";
 
 export function hydrateWars(wars: WarRaw[], companies: Company[]): War[] {

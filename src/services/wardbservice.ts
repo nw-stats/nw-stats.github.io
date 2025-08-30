@@ -5,7 +5,7 @@ import { type Ordering, type QueryParameter } from "../types/queryparameter";
 import { kSheetId } from "../constants/sheets";
 import { kWarColumns, kWarTable } from "../mapping/warmap";
 import { convertBoolean, convertInt, convertString, convertToStatus } from "../utils/sheetconvert";
-import type { WarRaw } from "../types/rawtypes/warraw";
+import type { WarRaw } from "../types/db/warraw";
 
 export async function getWars(params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
     const query = constructQuery([

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getWars } from "../services/wardbservice";
 import { type QueryParameter } from "../types/queryparameter";
-import type { WarRaw } from "../types/rawtypes/warraw";
+import type { WarRaw } from "../types/db/warraw";
 
 export function useWarsById(withIds: number[]) {
     const [wars, setWars] = useState<WarRaw[]>([]);

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Qop, type QueryParameter } from "../../types/queryparameter";
 import { kWarColumns } from "../../mapping/warmap";
-import type { WarRaw } from "../../types/rawtypes/warraw";
+import type { WarRaw } from "../../types/db/warraw";
 import { getWars } from "../../services/wardbservice";
 import type { UseWarsOptions } from "../options/waroptions";
 
