@@ -14,21 +14,25 @@ export async function fetchTableFromGoogleSheets(
     sheetName: string,
     query: string
 ): Promise<DataType[][]> {
-    ''
+    let text = '';
     try {
-        const encodedQuery = encodeURI(query);
+        const encodedQuery = encodeURIComponent(query);
         const fullurl = kBaseUrl
             .replace(kSheetId, sheetId)
             .replace(kSheetName, sheetName)
             .replace(kQuery, encodedQuery);
+        console.log(fullurl);
         const response = await fetch(fullurl);
-        const text = await response.text();
+        text = await response.text();
         const json = JSON.parse(text.substring(47).slice(0, -2));
         const rows: DataType[][] = json.table.rows.map((row: any) =>
             row.c.map((cell: any) => cell?.v ?? null)
         );
         return rows;
     } catch (err) {
+        console.log(query);
+        console.log(text);
+        console.error("there was an error", err)
         return [];
     }
 }

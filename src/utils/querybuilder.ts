@@ -9,7 +9,7 @@ export function joinCondition(values: string[], operator: Operator, column: stri
 
 export function sanitizeForGoogleSheetsQuery(value: DataType): string {
     if (typeof value === "string") {
-        return `'${value}'`;
+        return `'${sanatizeSingleQuoteInString(value)}'`;
     } else if (value instanceof Date) {
         const year = value.getFullYear();
         const month = String(value.getMonth() + 1).padStart(2, "0"); // +1 because months are zero-based
@@ -49,4 +49,8 @@ export function constructQuery(columns: string[], params?: QueryParameter[], ord
     const orderBy = order ? ` ORDER BY ${order.column} ${order.direction.toUpperCase()}` : '';
     const select = columns.sort().map(v => v.toUpperCase()).join(', ');
     return `SELECT ${select}${conditions}${orderBy}${limitStr}`;
+}
+
+export function sanatizeSingleQuoteInString(value: string) {
+    return value.replaceAll("'", "''");
 }

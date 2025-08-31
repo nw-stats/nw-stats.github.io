@@ -18,7 +18,6 @@ function CharacterCard({ player }: PlayerCardProps): JSX.Element {
                 <div className="flex flex-col">
                     <div className="flex items-end text-white gap-2">
                         <div className="text-3xl font-semibold ">{player.name}</div>
-                        <div>{player.role}</div>
                     </div>
                     <div className="flex gap-2 items-end text-white ">
                         <div>{player.faction !== 'Gray' && player.faction}</div>

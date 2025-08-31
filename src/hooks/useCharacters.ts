@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlayers } from "../services/characterservice";
+import { getCharacters } from "../services/characterservice";
 import type { Character } from "../types/character";
 
 export function useCharacters() {
@@ -15,7 +15,7 @@ export function useCharacters() {
                 setLoading(true);
 
 
-                const p = await getPlayers();
+                const p = await getCharacters();
 
                 if (cancelled) return;
                 setPlayers(p)

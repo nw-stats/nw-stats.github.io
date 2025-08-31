@@ -1,9 +1,10 @@
 // src/hooks/useAlts.ts
 import { useEffect, useState } from 'react';
 import { getAlts } from '../../services/altservice';
-import { getPlayers } from '../../services/characterservice';
+import { getCharacters } from '../../services/characterservice';
 import { Qop } from '../../types/queryparameter';
 import type { Character } from '../../types/character';
+import { kCharacterColumns } from '../../mapping/charactersmap';
 
 export function useAlts(player: string) {
     const [alts, setAlts] = useState<Character[]>([]);
@@ -24,9 +25,9 @@ export function useAlts(player: string) {
                 if (cancelled) return;
 
                 if (names.length > 0) {
-                    const queries = names.map(v => ({ column: 'C', fn: Qop.Eq, value: v, }));
-                    const players = await getPlayers(queries);
-                    if (!cancelled) setAlts(players);
+                    const queries = names.map(v => ({ column: kCharacterColumns.character, fn: Qop.Eq, value: v }));
+                    const players = await getCharacters(queries);
+                    setAlts(players);
                 } else {
                     setAlts([]);
                 }

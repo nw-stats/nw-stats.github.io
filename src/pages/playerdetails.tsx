@@ -17,7 +17,6 @@ function PlayerDetails() {
     if (!characterName) return <ErrorPage error={characterName} />;
     const { loading: loadingPlayerName, error: errorPlayerName, playerName } = usePlayerNameFromAlt(characterName);
     const { loading, error, details } = usePlayerDetails(playerName);
-
     if (loading || loadingPlayerName) return <Loading />;
     if (error || errorPlayerName || !playerName || !details) return <NotFound />;
 

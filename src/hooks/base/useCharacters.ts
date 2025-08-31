@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Character } from "../../types/character";
 import { kCharacterColumns } from "../../mapping/charactersmap";
 import { Qop } from "../../types/queryparameter";
-import { getPlayers } from "../../services/characterservice";
+import { getCharacters } from "../../services/characterservice";
 
 
 export interface UseCharactersOptions {
@@ -20,7 +20,7 @@ export function useCharacters(options?: UseCharactersOptions) {
                 setLoading(true);
                 let m: Character[] = [];
                 if (options?.comapny) {
-                    m = await getPlayers([{ column: kCharacterColumns.company, fn: Qop.Eq, value: options?.comapny }]);
+                    m = await getCharacters([{ column: kCharacterColumns.company, fn: Qop.Eq, value: options?.comapny }]);
                 }
                 if (cancelled) return;
                 setMemebrs(m);

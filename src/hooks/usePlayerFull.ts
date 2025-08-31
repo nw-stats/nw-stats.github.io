@@ -9,7 +9,6 @@ import { useWarsHydrated } from "./composite/useWarsHydrated";
 export function usePlayerDetails(playerName: string) {
     const { alts, loading: altsLoading, error: altsError } = useAlts(playerName);
     const altNames = alts.map(v => v.name) || [playerName];
-
     const { leaderboards, loading: lbLoading, error: lbError } = useLeaderboards({ characters: altNames });
 
     const warIds = useMemo(() => leaderboards.map(v => v.warid), [leaderboards]);

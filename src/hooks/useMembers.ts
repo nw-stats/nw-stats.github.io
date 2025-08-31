@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlayers as getCharacters } from "../services/characterservice";
+import { getCharacters as getCharacters } from "../services/characterservice";
 import { Qop } from "../types/queryparameter";
 import type { Character } from "../types/character";
 import { kCharacterColumns } from "../mapping/charactersmap";

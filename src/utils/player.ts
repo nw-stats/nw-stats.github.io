@@ -60,7 +60,6 @@ export function createPlayerDetailsAndSummary(
     if (characters.length === 0) {
         return details;
     }
-    console.log(rosters);
     let allHistory: CharacterDetailsEntry[] = []
     for (const character of characters) {
         const lb = leaderboardEntries.filter(v => v.character === character.name);
@@ -80,8 +79,6 @@ export function createPlayerDetailsAndSummary(
 }
 
 export function combineCharacters(characters: Character[]): Character {
-    const roleSet = new Set(characters.map(c => c.role));
-    const role = roleSet.size === 1 ? [...roleSet.values()][0] : 'Many';
     const factionSet = new Set(characters.map(c => c.faction));
     const faction = factionSet.size === 1 ? characters[0].faction : 'Many';
     const serverSet = new Set(characters.map(c => c.server).join(', '));
@@ -93,7 +90,6 @@ export function combineCharacters(characters: Character[]): Character {
         id: -1,
         name: characters.map(c => c.name).join(', '),
         server: server,
-        role: role,
         faction: faction,
         company: companies,
     }
