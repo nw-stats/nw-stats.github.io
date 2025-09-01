@@ -33,7 +33,6 @@ function WarDetail(): JSX.Element {
     const innerTab = searchParams.get("i") ?? war?.attacker.name ?? "All";
 
     const [lbTab, setLbTab] = useState("All");
-
     useEffect(() => {
         if (!war) return;
 
@@ -43,14 +42,17 @@ function WarDetail(): JSX.Element {
         const hasAttacker = attackerGroups && attackerGroups.size > 0;
         const hasDefender = defenderGroups && defenderGroups.size > 0;
 
-        let nextOuter = "Groups Detail";
-        let nextInner = war.attacker.name;
+        const currentInner = searchParams.get("i");
+        const currentOuter = searchParams.get("o");
+
+        let nextOuter = currentOuter || "Groups Detail";
+        let nextInner = currentInner || war.attacker.name;
 
         if (!hasAttacker && hasDefender) {
-            nextInner = war.defender.name;
+            nextInner = currentInner || war.defender.name;
         } else if (!hasAttacker && !hasDefender) {
-            nextOuter = "Leaderboard";
-            nextInner = "All";
+            nextOuter = currentOuter || "Leaderboard";
+            nextInner = currentInner || "All";
         }
 
         setOuterTab(nextOuter);
@@ -135,42 +137,6 @@ function WarDetail(): JSX.Element {
                                 if (label === 'Leaderboard') setLbTab("All");
                             }}
                         >
-                            <Tab label="Groups Detail">
-                                <TabbedContent
-                                    key={`details-${war.attacker.name}-${war.defender.name}`}
-                                    activeLabel={innerTab}
-                                    onChangeLabel={(label) => {
-                                        setInnerTab(label);
-                                    }}
-                                >
-                                    <Tab label={war.attacker.name}>
-                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
-                                    </Tab>
-                                    <Tab label={war.defender.name}>
-                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
-                                    </Tab>
-                                </TabbedContent>
-                            </Tab>
-                            <Tab label="Groups Summary">
-                                <TabbedContent
-                                    key={`summary-${war.attacker.name}-${war.defender.name}`}
-                                    activeLabel={innerTab}
-                                    onChangeLabel={(label) => {
-                                        setInnerTab(label);
-                                    }}
-                                >
-                                    <Tab label={war.attacker.name}>
-
-                                        <GroupsSummary groups={attackerGroups} />
-                                    </Tab>
-                                    <Tab label={war.defender.name}>
-                                        <GroupsSummary groups={defenderGroups} />
-                                    </Tab>
-                                </TabbedContent>
-                            </Tab>
-                            <Tab label="Healer">
-                                <HealerCompare attackerName={war.attacker.name} defenderName={war.defender.name} attackerHealers={attackerHealer} defenderHealers={defenderHealer} />
-                            </Tab>
                             <Tab label="Leaderboard">
                                 <TabbedContent
                                     key={`leaderboard-${war.attacker.name}-${war.defender.name}`}
@@ -203,7 +169,43 @@ function WarDetail(): JSX.Element {
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
+                            <Tab label="Groups Summary">
+                                <TabbedContent
+                                    key={`summary-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={innerTab}
+                                    onChangeLabel={(label) => {
+                                        setInnerTab(label);
+                                    }}
+                                >
+                                    <Tab label={war.attacker.name}>
 
+                                        <GroupsSummary groups={attackerGroups} />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <GroupsSummary groups={defenderGroups} />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
+                            <Tab label="Groups Detail">
+                                <TabbedContent
+                                    key={`details-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={innerTab}
+                                    onChangeLabel={(label) => {
+                                        setInnerTab(label);
+                                    }}
+                                >
+                                    <Tab label={war.attacker.name}>
+                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
+
+                            <Tab label="Healer">
+                                <HealerCompare attackerName={war.attacker.name} defenderName={war.defender.name} attackerHealers={attackerHealer} defenderHealers={defenderHealer} />
+                            </Tab>
                         </TabbedContent>
                     </div>
                 )}
