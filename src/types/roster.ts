@@ -1,11 +1,42 @@
-import type { WarPlayer } from "./warplayer";
+import { getOrCreate } from "../utils/map";
+import type { CharacterName } from "./character";
+import type { Company, CompanyName } from "./company";
 
-export type GroupKey = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | string;
+export interface RosterCharacter {
+    id: number;
+    warId: number;
+    company: Company;
+    character: string;
+    group: number;
+    role?: string;
+    qdps?: string;
+    player?: string;
+}
 
+export type Group = RosterCharacter[];
+export type GroupKey = number;
 
-export type Group = WarPlayer[];
+export class Roster {
+    groups = new Map<GroupKey, Group>();
+    characters = new Map<CharacterName, RosterCharacter>();
+    getGroup(key: GroupKey) {
+        return getOrCreate(this.groups, key, () => []);
+    }
 
-export interface Roster {
-    warid: number;
-    groups: Map<GroupKey, Group>;
+    addCharacter(toGroup: GroupKey, character: RosterCharacter) {
+        this.getGroup(toGroup).push(character);
+        this.characters.set(character.character, character);
+    }
+
+    getCharacter(name: CharacterName): RosterCharacter | undefined {
+        return this.characters.get(name) ?? undefined;
+    }
+}
+
+export class WarRosters {
+    teams = new Map<CompanyName, Roster>();
+
+    getCompany(name: CompanyName) {
+        return getOrCreate(this.teams, name, () => new Roster());
+    }
 }

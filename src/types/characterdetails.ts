@@ -1,10 +1,11 @@
-import type { Character } from "./character";
-import type { CharacterDetailsEntry, StatTotals } from "./leaderboard"
+import type { CharacterProfile } from "../utils/characterProfile";
+import type { CharacterDetailsEntry } from "./leaderboard"
+import type { Stats } from "./stats";
 
 
 export interface CharacterDetails {
-    character: Character;
-    totals: StatTotals;
-    normalized: StatTotals;
+    profile: CharacterProfile;
+    totals: Stats;
+    normalized: Stats;
     history: CharacterDetailsEntry[];
 }

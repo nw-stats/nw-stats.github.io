@@ -1,11 +1,11 @@
 
-import { type StatTotals, type MapStat, type WarsSummary, type Leaderboard } from "../types/leaderboard"
-import type { War } from "../types/hydratedtypes/war";
+import { type MapStat, type WarsSummary, type Leaderboard } from "../types/leaderboard"
 import { kThirtyMinutesInSeconds } from "./constants";
-import type { Roster } from "../types/roster";
+import type { WarRosters } from "../types/roster";
+import type { War } from "../types/war";
+import type { CompositeStats } from "../types/stats";
 
-export function normalize(toNormalize: Leaderboard, wars: War[]): StatTotals {
-    let name = '';
+export function normalizePlayerStats(toNormalize: Leaderboard, wars: War[]): CompositeStats {
     let score = 0;
     let kills = 0;
     let deaths = 0;
@@ -13,13 +13,11 @@ export function normalize(toNormalize: Leaderboard, wars: War[]): StatTotals {
     let healing = 0;
     let damage = 0;
     let count = 0;
-    let kpar = 0;
     for (const entry of toNormalize) {
         const war = wars.find(v => v.id === entry.warid);
         if (!war) continue;
 
-        const normalizeFactor = kThirtyMinutesInSeconds / war.duration;
-        name = entry.character;
+        const normalizeFactor = kThirtyMinutesInSeconds / (war.duration ?? 1800);
         score += entry.score * normalizeFactor;
         kills += entry.kills * normalizeFactor;
         deaths += entry.deaths * normalizeFactor;
@@ -36,36 +34,10 @@ export function normalize(toNormalize: Leaderboard, wars: War[]): StatTotals {
         healing /= count;
         damage /= count;
     }
-    return { name, score, kills, deaths, assists, healing, damage, count, kpar }
+    return { score, kills, deaths, assists, healing, damage, count }
 }
-export function summarize(toSummarize: Leaderboard): StatTotals {
-    const summary = {
-        name: '',
-        score: 0,
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-        healing: 0,
-        damage: 0,
-        kpar: 0,
-        count: toSummarize.length,
-    }
 
-    for (const entry of toSummarize) {
-        summary.score += entry.score;
-        summary.kills += entry.kills;
-        summary.deaths += entry.deaths;
-        summary.assists += entry.assists;
-        summary.healing += entry.healing;
-        summary.damage += entry.damage;
-        summary.kpar += entry.kpar;
-    }
-    if (toSummarize.length > 0) {
-        summary.kpar /= toSummarize.length;
-    }
 
-    return summary;
-}
 
 export function summarizeWars(toSummarize: War[], forCompany: string): WarsSummary {
     const summary: WarsSummary = {
@@ -80,10 +52,10 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
     const mapStats = new Map<string, MapStat>();
 
     for (const war of toSummarize) {
-        let stat = mapStats.get(war.map);
+        let stat = mapStats.get(war.territory);
         if (!stat) {
             stat = { played: 0, win: 0 };
-            mapStats.set(war.map, stat);
+            mapStats.set(war.territory, stat);
         }
 
         stat.played += 1;
@@ -139,15 +111,6 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
     return summary;
 }
 
-export function fillKpar(leaderboard: Leaderboard, summaries: Map<string, StatTotals>) {
-    for (const entry of leaderboard) {
-        const company = entry.company;
-        if (!summaries.has(company)) { continue; }
-        const summary = summaries.get(company)!;
-        const kpar = (entry.kills + entry.assists) / summary.kills;
-        entry.kpar = kpar;
-    }
-}
 
 export function splitLeaderboards(leaderboard: Leaderboard): Map<string, Leaderboard> {
     const allLb = new Map<string, Leaderboard>();
@@ -155,28 +118,20 @@ export function splitLeaderboards(leaderboard: Leaderboard): Map<string, Leaderb
 
     for (const entry of leaderboard) {
         allLb.get("All")!.push(entry);
-        let split = allLb.get(entry.company);
+        let split = allLb.get(entry.company.name);
         if (!split) {
             split = [];
-            allLb.set(entry.company, split);
+            allLb.set(entry.company.name, split);
         }
         split.push(entry);
     }
     return allLb;
 }
 
-export function fillRoleAssignment(leaderboard: Leaderboard, rosters: Map<string, Roster>) {
+export function fillRoleAssignment(leaderboard: Leaderboard, rosters: WarRosters) {
     for (const entry of leaderboard) {
-        const companyRoster = rosters.get(entry.company);
-        if (companyRoster) {
-            for (const [_, group] of companyRoster.groups) {
-                for (const wp of group) {
-                    if (wp.name === entry.character) {
-                        entry.roleAssignment = { role: wp.role }
-                    }
-                }
-            }
-        }
+        const companyRoster = rosters.getCompany(entry.company.name);
+        entry.role = { name: companyRoster.getCharacter(entry.character)?.role ?? '' };
     }
 }
 
@@ -192,17 +147,17 @@ function inferHealers(leaderboard: Leaderboard) {
     // const maxHealing = leaderboard.reduce((a, b) => a.healing > b.healing ? a : b);
 
     // Highest healing is probably aoe healer
-    healersFirst[0].roleAssignment = { role: "Healer AOE", inferred: true };
-    healersFirst[1].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[2].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[3].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[4].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[5].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[6].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[7].roleAssignment = { role: "Healer MB", inferred: true };
-    healersFirst[8].roleAssignment = { role: "Healer KS", inferred: true };
-    healersFirst[9].roleAssignment = { role: "Healer KS", inferred: true };
-    healersFirst[10].roleAssignment = { role: "Healer KS", inferred: true };
+    healersFirst[0].role = { name: "Healer AOE", inferred: true };
+    healersFirst[1].role = { name: "Healer MB", inferred: true };
+    healersFirst[2].role = { name: "Healer MB", inferred: true };
+    healersFirst[3].role = { name: "Healer MB", inferred: true };
+    healersFirst[4].role = { name: "Healer MB", inferred: true };
+    healersFirst[5].role = { name: "Healer MB", inferred: true };
+    healersFirst[6].role = { name: "Healer MB", inferred: true };
+    healersFirst[7].role = { name: "Healer MB", inferred: true };
+    healersFirst[8].role = { name: "Healer KS", inferred: true };
+    healersFirst[9].role = { name: "Healer KS", inferred: true };
+    healersFirst[10].role = { name: "Healer KS", inferred: true };
 
     return healersFirst;
 }

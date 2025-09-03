@@ -1,1 +1,9 @@
-export type Status = 'pending' | 'complete' | 'cancelled' | 'given' | 'not started';
+export const validStatus = [
+    'not started',
+    'pending',
+    'complete',
+    'cancelled',
+    'given',
+] as const;
+
+export type Status = (typeof validStatus)[number];

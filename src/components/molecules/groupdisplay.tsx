@@ -108,8 +108,8 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                     <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
                 ),
                 sortingFn: (rowA, rowB) => {
-                    const a = rowA.original.roleAssignment?.role ?? "";
-                    const b = rowB.original.roleAssignment?.role ?? "";
+                    const a = rowA.original.role?.name ?? "";
+                    const b = rowB.original.role?.name ?? "";
                     return sortRolesStrings(a, b);
                 },
                 cell: info => {
@@ -140,8 +140,8 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
     const override = splitRoles ? {
         "healing": group.stats
             .filter(s => splitRoles.some(v => {
-                if (s.roleAssignment) {
-                    return !s.roleAssignment.role.toLowerCase().includes(v)
+                if (s.role) {
+                    return !s.role.name.toLowerCase().includes(v)
                 }
                 return true;
             }))

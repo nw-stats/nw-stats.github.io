@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logging } from '../utils/logging';
 
 export function useLocalStorage<T>(key: string, defaultValue: T) {
     const [value, setValue] = useState<T>(() => {
@@ -16,7 +17,9 @@ export function useLocalStorage<T>(key: string, defaultValue: T) {
     useEffect(() => {
         try {
             localStorage.setItem(key, JSON.stringify(value));
-        } catch { }
+        } catch (err) {
+            logging(err);
+        }
     }, [key, value]);
 
     return [value, setValue] as const;

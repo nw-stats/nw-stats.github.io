@@ -1,10 +1,11 @@
-import type { RoleAssignment } from "./role";
+import type { Role } from "./role";
 import type { GroupKey } from "./roster";
 
 export interface HealerStats {
     character: string;
-    roleAssignment: RoleAssignment;
+    role: Role;
     group: GroupKey;
+    deaths: number;
     healing: number;
     groupDeaths: number;
     qdpsDeaths: number;

@@ -76,3 +76,9 @@ export function factionText(faction: Faction): string {
     }
     return 'text-gray-700';
 }
+
+
+const validFactions: Faction[] = ["Marauder", "Syndicate", "Covenant", "Gray"];
+export function toFaction(value: string): Faction {
+    return (validFactions.includes(value as Faction) ? value : "Gray") as Faction;
+}

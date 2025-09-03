@@ -47,8 +47,8 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
                     <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
                 ),
                 sortingFn: (rowA, rowB) => {
-                    const a = rowA.original.roleAssignment?.role ?? "";
-                    const b = rowB.original.roleAssignment?.role ?? "";
+                    const a = rowA.original.role?.name ?? "";
+                    const b = rowB.original.role?.name ?? "";
                     return sortRolesStrings(a, b);
                 },
                 cell: info => {

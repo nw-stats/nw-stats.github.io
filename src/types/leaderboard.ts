@@ -1,24 +1,26 @@
 import type { DateTime } from "luxon";
-import type { RoleAssignment } from "./role";
+import type { Role } from "./role";
 import type { Company } from "./company";
+import type { Stats } from "./stats";
 
-export interface LeaderboardEntry {
+export interface LeaderboardEntry extends Stats {
+    id: number;
     warid: number;
     character: string;
-    roleAssignment: RoleAssignment;
-    score: number;
-    kills: number;
-    deaths: number;
-    assists: number;
-    healing: number;
-    damage: number;
-    kpar: number;
-    company: string;
+    role: Role;
+    company: Company;
 }
+
+export interface DisplayLeaderboardEntry extends LeaderboardEntry {
+    kpar: number;
+}
+
+
 
 export interface GroupsEntry extends LeaderboardEntry {
     qpds: boolean;
 }
+
 export interface CharacterDetailsEntry extends LeaderboardEntry {
     date: DateTime;
     attacker: Company;
@@ -37,22 +39,6 @@ export interface GroupStats {
     damage: number;
     kpar: number;
 }
-
-export interface StatTotals {
-    name: string;
-    score: number;
-    kills: number;
-    deaths: number;
-    assists: number;
-    healing: number;
-    damage: number;
-    count: number;
-    kpar: number;
-}
-
-
-export interface StatDiff extends StatTotals { }
-
 
 export interface GroupPerformance {
     stats: GroupsEntry[];
@@ -73,3 +59,4 @@ export interface WarsSummary {
 }
 
 export type Leaderboard = LeaderboardEntry[];
+export type DisplayLeaderboard = DisplayLeaderboardEntry[];

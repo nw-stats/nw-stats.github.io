@@ -34,7 +34,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
 
     const filtered = useMemo(() => {
         if (leaderboard) {
-            return leaderboard.filter(v => selectedRole === 'All Roles' || selectedRole === v.roleAssignment.role);
+            return leaderboard.filter(v => selectedRole === 'All Roles' || selectedRole === v.role.name);
         } else {
             return [];
         }
@@ -126,8 +126,8 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                     <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
                 ),
                 sortingFn: (rowA, rowB) => {
-                    const a = rowA.original.roleAssignment?.role ?? "";
-                    const b = rowB.original.roleAssignment?.role ?? "";
+                    const a = rowA.original.role?.name ?? "";
+                    const b = rowB.original.role?.name ?? "";
                     return sortRolesStrings(a, b);
                 },
                 cell: info => {
@@ -150,8 +150,8 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         const rolesSet = new Set<string>();
         if (leaderboard) {
             for (const entry of leaderboard) {
-                if (typeof entry.roleAssignment.role === "string") {
-                    rolesSet.add(entry.roleAssignment.role);
+                if (typeof entry.role.name === "string") {
+                    rolesSet.add(entry.role.name);
                 }
             }
         }

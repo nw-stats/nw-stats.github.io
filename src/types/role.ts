@@ -1,4 +1,4 @@
-export const kRoles = [
+export const validRoles = [
     "Healer MB",
     "Healer AOE",
     "Bruiser",
@@ -16,9 +16,8 @@ export const kRoles = [
     "",
 ] as const;
 
-export type Role = typeof kRoles[number];
 
-export interface RoleAssignment {
-    role: Role;
+export interface Role {
+    name: string;
     inferred?: boolean;
 };

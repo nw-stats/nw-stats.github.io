@@ -115,8 +115,8 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
         if (splitRoles) {
             for (const [gk, group] of filteredGroups) {
                 for (const stat of group.stats) {
-                    if (stat.roleAssignment.role) {
-                        if (splitRoles.some(v => stat.roleAssignment.role.toLowerCase().includes(v))) {
+                    if (stat.role.name) {
+                        if (splitRoles.some(v => stat.role.name.toLowerCase().includes(v))) {
                             summary.get(gk)!.healing -= stat.healing;
                         }
                     }

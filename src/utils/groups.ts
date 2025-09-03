@@ -1,6 +1,5 @@
-import type { GroupPerformance, Leaderboard, StatDiff, StatTotals } from "../types/leaderboard";
-import type { GroupKey, Roster } from "../types/roster";
-import { isQpdsGroup } from "./roster";
+import type { Leaderboard, GroupPerformance } from "../types/leaderboard";
+import type { Roster, GroupKey } from "../types/roster";
 
 export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, Roster>): Map<string, Map<GroupKey, GroupPerformance>> {
     const performance = new Map<string, Map<GroupKey, GroupPerformance>>();
