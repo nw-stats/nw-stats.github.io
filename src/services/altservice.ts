@@ -31,7 +31,7 @@ export async function getAlts(playerName: string): Promise<string[]> {
 
 export async function getPlayerNameFromAlt(characterName: string): Promise<string | null> {
     const params = [{ column: kCharacterColumns.character, fn: Qop.Eq, value: characterName }];
-    const query = constructQuery([kCharacterColumns.character], params);
+    const query = constructQuery([kCharacterColumns.player], params);
     let data: DataType[][] = [];
     try {
         data = await fetchTableFromGoogleSheets(kSheetId, 'characters', query);
