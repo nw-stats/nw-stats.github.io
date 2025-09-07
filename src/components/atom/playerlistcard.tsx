@@ -25,7 +25,7 @@ function PlayerListCard({ player }: PlayerListCardProps): JSX.Element {
                         <div className="flex flex-row gap-2 items-end text-white text-xs">
                             <div>{player.faction !== 'Gray' && player.faction}</div>
                             {player.faction !== 'Gray' && player.company && <div>|</div>}
-                            <div>{player.company}</div>
+                            <div>{player.company?.name}</div>
                         </div>
                     </div>
                 </div>

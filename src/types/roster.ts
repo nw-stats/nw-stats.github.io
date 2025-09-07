@@ -1,6 +1,6 @@
-import { getOrCreate } from "../utils/map";
-import type { CharacterName } from "./character";
 import type { Company, CompanyName } from "./company";
+
+export type RosterSplit = 'jonied' | 'split' | 'both';
 
 export interface RosterCharacter {
     id: number;
@@ -14,29 +14,7 @@ export interface RosterCharacter {
 }
 
 export type Group = RosterCharacter[];
-export type GroupKey = number;
-
-export class Roster {
-    groups = new Map<GroupKey, Group>();
-    characters = new Map<CharacterName, RosterCharacter>();
-    getGroup(key: GroupKey) {
-        return getOrCreate(this.groups, key, () => []);
-    }
-
-    addCharacter(toGroup: GroupKey, character: RosterCharacter) {
-        this.getGroup(toGroup).push(character);
-        this.characters.set(character.character, character);
-    }
-
-    getCharacter(name: CharacterName): RosterCharacter | undefined {
-        return this.characters.get(name) ?? undefined;
-    }
-}
-
-export class WarRosters {
-    teams = new Map<CompanyName, Roster>();
-
-    getCompany(name: CompanyName) {
-        return getOrCreate(this.teams, name, () => new Roster());
-    }
-}
+export type Army = RosterCharacter[];
+export type GroupNumber = number;
+export type GroupKey = GroupNumber | string;
+export type Rosters = Map<CompanyName, Army>;

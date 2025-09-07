@@ -1,6 +1,5 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import LeaderboardDisplay from "../components/molecules/leaderboarddisplay";
-import { useWarData } from "../hooks/useWarData";
 import Loading from "../components/atom/loading";
 
 import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
@@ -12,8 +11,6 @@ import { toPng } from "html-to-image";
 import { formatDateTimeSlug } from "../utils/time";
 import { CameraButton } from "../components/atom/camerabutton";
 import { Tab, TabbedContent } from "../components/molecules/tabbedcontent";
-import { GroupsSummary } from "../components/molecules/groupssummary";
-import GroupsDetail from "../components/molecules/groupsdetails";
 import { HealerCompare } from "../components/organisms/healercompare";
 import { WarListCard } from "../components/molecules/warlistcard";
 
@@ -25,7 +22,7 @@ function WarDetail(): JSX.Element {
     const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
 
-    const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
+    const { loading, error, war, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
 
     const [ssLoading, setSsLoading] = useState(false);
 
@@ -149,21 +146,18 @@ function WarDetail(): JSX.Element {
                                     <Tab label={"All"}>
                                         <LeaderboardDisplay
                                             leaderboard={combinedLeaderboard}
-                                            companies={companies}
                                             hideRoles={war.hideRoles}
                                         />
                                     </Tab>
                                     <Tab label={war.attacker.name}>
                                         <LeaderboardDisplay
                                             leaderboard={attackerLeaderboard}
-                                            companies={companies}
                                             hideRoles={war.hideRoles}
                                         />
                                     </Tab>
                                     <Tab label={war.defender.name}>
                                         <LeaderboardDisplay
                                             leaderboard={defenderLeaderboard}
-                                            companies={companies}
                                             hideRoles={war.hideRoles}
                                         />
                                     </Tab>
@@ -177,13 +171,13 @@ function WarDetail(): JSX.Element {
                                         setInnerTab(label);
                                     }}
                                 >
-                                    <Tab label={war.attacker.name}>
+                                    {/* <Tab label={war.attacker.name}>
 
                                         <GroupsSummary groups={attackerGroups} />
                                     </Tab>
                                     <Tab label={war.defender.name}>
                                         <GroupsSummary groups={defenderGroups} />
-                                    </Tab>
+                                    </Tab> */}
                                 </TabbedContent>
                             </Tab>
                             <Tab label="Groups Detail">
@@ -194,12 +188,12 @@ function WarDetail(): JSX.Element {
                                         setInnerTab(label);
                                     }}
                                 >
-                                    <Tab label={war.attacker.name}>
+                                    {/* <Tab label={war.attacker.name}>
                                         <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
                                     </Tab>
                                     <Tab label={war.defender.name}>
                                         <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
-                                    </Tab>
+                                    </Tab> */}
                                 </TabbedContent>
                             </Tab>
 

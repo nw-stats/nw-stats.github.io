@@ -4,12 +4,12 @@ import StatWithIcon from "./statwithicon";
 import NumberCell from "../atom/numbercell";
 import type { Character } from "../../types/character";
 import { factionBgSecondary } from "../../utils/factions";
-import type { StatTotals } from "../../types/leaderboard";
+import type { CompositeStats } from "../../types/stats";
 
 interface CharacterSummaryProps {
     character: Character;
-    summary: StatTotals;
-    averages: StatTotals;
+    summary: CompositeStats;
+    averages: CompositeStats;
 }
 function CharacterSummary({ character, summary, averages }: CharacterSummaryProps): JSX.Element {
 

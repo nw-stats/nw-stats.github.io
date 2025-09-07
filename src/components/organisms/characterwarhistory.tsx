@@ -8,7 +8,7 @@ import { CheckCircleIcon, GameControllerIcon, XCircleIcon } from "@phosphor-icon
 import { formatDate, formatSeconds } from "../../utils/time";
 import type { DateTime } from "luxon";
 import LabelIcon from "../atom/labelicon";
-import { sortRolesStrings } from "../../utils/roster";
+import { sortRoleStrings } from "../../utils/roles";
 
 
 export interface CharacterWarHistoryProps {
@@ -49,7 +49,7 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
                 sortingFn: (rowA, rowB) => {
                     const a = rowA.original.role?.name ?? "";
                     const b = rowB.original.role?.name ?? "";
-                    return sortRolesStrings(a, b);
+                    return sortRoleStrings(a, b);
                 },
                 cell: info => {
                     const value = info.getValue<{ role: string; inferred: boolean }>();

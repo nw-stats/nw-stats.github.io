@@ -1,6 +1,6 @@
 import type { RosterRow } from "../../schemas/roster";
-import type { Company } from "../../types/company";
-import { WarRosters } from "../../types/roster";
+import type { Company, CompanyName } from "../../types/company";
+import type { Army, Rosters } from "../../types/roster";
 import type { WarId } from "../../types/warId";
 import { getOrCreate } from "../../utils/map";
 import { getCompanyOrStub } from "../companies/util";
@@ -10,8 +10,8 @@ import { getCompanyOrStub } from "../companies/util";
 export function hydrateRosters(
     rows: RosterRow[],
     companies: Company[]
-): Map<WarId, WarRosters> {
-    const rosters = new Map<WarId, WarRosters>;
+): Map<WarId, Rosters> {
+    const rosters = new Map<WarId, Rosters>;
 
     for (const row of rows) {
         const company = getCompanyOrStub(row.company, companies);
@@ -26,10 +26,9 @@ export function hydrateRosters(
             player: row.player ?? undefined,
         }
 
-        const warRoster = getOrCreate(rosters, row.warId, () => new WarRosters());
-        const companyRoster = warRoster.getCompany(company.name);
-        const group = companyRoster.getGroup(row.group)
-        group.push(character);
+        const warRoster = getOrCreate(rosters, row.warId, () => new Map<CompanyName, Army>());
+        const companyArmy = getOrCreate(warRoster, row.company, () => []);
+        companyArmy.push(character);
     }
     return rosters;
 }

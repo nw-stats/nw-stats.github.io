@@ -1,19 +1,20 @@
 import StatWithIcon from "./statwithicon";
-import type { StatTotals } from "../../types/leaderboard";
 import type { Faction } from "../../types/faction";
 import NumberCell from "../atom/numbercell";
 import { Link } from "react-router-dom";
 import { CrownIcon, FireIcon, FirstAidIcon, HandshakeIcon, SkullIcon, SwordIcon } from "@phosphor-icons/react";
+import type { Stats } from "../../types/stats";
 
 
 interface WarResultsSummaryProp {
-    summary: StatTotals,
-    faction: Faction,
-    isAttacker: boolean,
-    isWinner: boolean
+    name: string;
+    summary: Stats;
+    faction: Faction;
+    isAttacker: boolean;
+    isWinner: boolean;
 }
 
-const WarResultsCompany: React.FC<WarResultsSummaryProp> = ({ summary, faction, isAttacker, isWinner }) => {
+const WarResultsCompany: React.FC<WarResultsSummaryProp> = ({ name, summary, faction, isAttacker, isWinner }) => {
     let color = 'bg-gray-700';
     let accent = 'bg-gray-800';
     if (faction === 'Marauder') {
@@ -33,8 +34,8 @@ const WarResultsCompany: React.FC<WarResultsSummaryProp> = ({ summary, faction, 
             <div className="flex w-full text-white p-2 justify-center items-center drop-shadow-lg font-bold"> {isWinner && <CrownIcon weight={"fill"} className="text-yellow-500 drop-shadow-lg" />} {label}</div>
             <div className={`rounded-b-lg ${color} text-center text-white p-1`}>
                 <div className="text-3xl font-bold drop-shadow-lg">
-                    <Link to={`/companies/${summary.name}`}>
-                        <span className="hover:underline">{summary.name}</span>
+                    <Link to={`/companies/${name}`}>
+                        <span className="hover:underline">{name}</span>
                     </Link>
                 </div>
                 <div className="drop-shadow-lg">{faction}</div>

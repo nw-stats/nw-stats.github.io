@@ -12,9 +12,7 @@ export const validRoles = [
     "Firestaff",
     "Ranged",
     "Blunderbuss",
-    "Many",
-    "",
-] as const;
+];
 
 
 export interface Role {

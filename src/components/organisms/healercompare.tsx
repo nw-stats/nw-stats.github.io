@@ -1,5 +1,4 @@
 import { useMemo, type JSX } from "react";
-import type { HealerStats } from "../../types/healerstats";
 import type { ColumnDef } from "@tanstack/react-table";
 import StatsTable from "../atom/statstble";
 import { Link } from "react-router-dom";
@@ -7,6 +6,7 @@ import NumberCell from "../atom/numbercell";
 import { FirstAidIcon, SkullIcon, UsersIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import LabelIcon from "../atom/labelicon";
 import { NoData } from "../atom/nodata";
+import type { HealerStats } from "../../types/healerStats";
 
 interface HealerCompareProps {
     attackerName: string;

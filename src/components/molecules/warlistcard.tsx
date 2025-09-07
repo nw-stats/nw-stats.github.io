@@ -1,10 +1,10 @@
 import { CrownIcon, ShieldIcon, SwordIcon } from "@phosphor-icons/react";
-import type { War } from "../../types/hydratedtypes/war";
 import { formatDate, formatTime } from "../../utils/time";
 import { Link } from "react-router-dom";
 import { factionBgPrimary } from "../../utils/factions";
 import type { JSX } from "react";
 import { Skeleton } from "../atom/skeleton";
+import type { War } from "../../types/war";
 
 export interface WarListCardProp {
     war: War,
@@ -53,11 +53,11 @@ export function WarListCard({ war }: WarListCardProp): JSX.Element {
                     </span>
                     <span className="text-sm text-gray-400">
                         <span className="hidden sm:block">
-                            {war.map} • {war.server}
+                            {war.territory} • {war.server}
                         </span>
                         <span className="flex flex-col sm:hidden">
                             <span>
-                                {war.map}
+                                {war.territory}
                             </span>
                             <span>
                                 {war.server}

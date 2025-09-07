@@ -22,7 +22,7 @@ function CharacterCard({ player }: PlayerCardProps): JSX.Element {
                     <div className="flex gap-2 items-end text-white ">
                         <div>{player.faction !== 'Gray' && player.faction}</div>
                         {player.faction !== 'Gray' && player.company && <div>|</div>}
-                        <div>{player.company}</div>
+                        <div>{player.company?.name}</div>
                     </div>
                 </div>
             </div>

@@ -13,20 +13,18 @@ import NumberCell from "../atom/numbercell";
 import LabelIcon from "../atom/labelicon";
 import { Link } from "react-router-dom";
 import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from "@phosphor-icons/react";
-import type { Company } from "../../types/company";
 import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
 import { NoData } from "../atom/nodata";
-import { sortRolesStrings } from "../../utils/roster";
+import { sortRoleStrings } from "../../utils/roles";
 
 type LeaderboardProps = {
-    companies: Map<string, Company>,
     hideRoles: boolean,
     leaderboard?: Leaderboard,
 };
 
-export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: LeaderboardProps): JSX.Element {
+export function LeaderboardDisplay({ leaderboard, hideRoles }: LeaderboardProps): JSX.Element {
     const [selectedRole, setSelectedRole] = useState<string>('All Roles');
     const [sorting, setSorting] = useState<SortingState>([
         { id: 'score', desc: true },
@@ -38,7 +36,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         } else {
             return [];
         }
-    }, [selectedRole]);
+    }, [selectedRole, leaderboard]);
 
     const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
         const baseCols: ColumnDef<LeaderboardEntry>[] = [
@@ -128,7 +126,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 sortingFn: (rowA, rowB) => {
                     const a = rowA.original.role?.name ?? "";
                     const b = rowB.original.role?.name ?? "";
-                    return sortRolesStrings(a, b);
+                    return sortRoleStrings(a, b);
                 },
                 cell: info => {
                     const value = info.getValue<{ role: string; inferred: boolean }>();
@@ -155,7 +153,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 }
             }
         }
-        return [...rolesSet].sort(sortRolesStrings);
+        return [...rolesSet].sort(sortRoleStrings);
     }, [leaderboard]);
 
     const table = useReactTable({
@@ -210,7 +208,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                     </thead >
                     <tbody>
                         {table.getRowModel().rows.map((row, index) => {
-                            const faction = companies.get(row.original.company)?.faction || 'Gray';
+                            const faction = row.original.company.faction;
 
                             const rowClass = index % 2 === 0 ? factionBgSecondary(faction) : factionBgTertiary(faction);
 

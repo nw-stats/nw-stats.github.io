@@ -7,7 +7,7 @@ interface CompanyDetailCardProps {
     company: Company;
 }
 function CompanyDetailCard({ company }: CompanyDetailCardProps): JSX.Element {
-
+    const consuls = company.consuls ?? [];
     const color = factionBgPrimary(company.faction);
     return (
         <div className="flex flex-row">
@@ -29,10 +29,10 @@ function CompanyDetailCard({ company }: CompanyDetailCardProps): JSX.Element {
                         <div className="pr-2">|</div>
                         <div>{company.governor}</div>
                     </div>
-                    <div className={`flex flex-row text-xl ${company.consuls.length > 0 ? 'visible' : 'invisible'}`}>
+                    <div className={`flex flex-row text-xl ${consuls.length > 0 ? 'visible' : 'invisible'}`}>
                         <div className="min-w-[100px]">Consuls</div>
                         <div className="pr-2">|</div>
-                        <div>{company.consuls.join(', ')}</div>
+                        <div>{consuls.join(', ')}</div>
                     </div>
                 </div>
             </div>

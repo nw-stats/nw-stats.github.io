@@ -1,6 +1,6 @@
 import type { JSX } from "react";
-import type { War } from "../../types/hydratedtypes/war";
 import { Link } from "react-router-dom";
+import type { War } from "../../types/war";
 
 interface CompanyWarTileProps {
     companyName: string

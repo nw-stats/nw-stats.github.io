@@ -1,7 +1,6 @@
 
 import { type MapStat, type WarsSummary, type Leaderboard } from "../types/leaderboard"
 import { kThirtyMinutesInSeconds } from "./constants";
-import type { WarRosters } from "../types/roster";
 import type { War } from "../types/war";
 import type { CompositeStats } from "../types/stats";
 
@@ -64,9 +63,17 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
         if (won) stat.win += 1;
 
         if (war.attacker.name === forCompany) {
-            won ? summary.attack.win++ : summary.attack.loss++;
+            if (won) {
+                summary.attack.win++
+            } else {
+                summary.attack.loss++
+            }
         } else {
-            won ? summary.defense.win++ : summary.defense.loss++;
+            if (won) {
+                summary.defense.win++;
+            } else {
+                summary.defense.loss++
+            }
         }
     }
 
@@ -126,38 +133,4 @@ export function splitLeaderboards(leaderboard: Leaderboard): Map<string, Leaderb
         split.push(entry);
     }
     return allLb;
-}
-
-export function fillRoleAssignment(leaderboard: Leaderboard, rosters: WarRosters) {
-    for (const entry of leaderboard) {
-        const companyRoster = rosters.getCompany(entry.company.name);
-        entry.role = { name: companyRoster.getCharacter(entry.character)?.role ?? '' };
-    }
-}
-
-export function inferRoles(leaderboard: Leaderboard) {
-    inferHealers(leaderboard);
-}
-
-function inferHealers(leaderboard: Leaderboard) {
-    if (leaderboard.length === 0) return [];
-    const healersFirst = leaderboard.sort((a, b) => b.healing - a.healing);
-
-    // const minHealing = leaderboard.reduce((a, b) => a.healing < b.healing ? a : b);
-    // const maxHealing = leaderboard.reduce((a, b) => a.healing > b.healing ? a : b);
-
-    // Highest healing is probably aoe healer
-    healersFirst[0].role = { name: "Healer AOE", inferred: true };
-    healersFirst[1].role = { name: "Healer MB", inferred: true };
-    healersFirst[2].role = { name: "Healer MB", inferred: true };
-    healersFirst[3].role = { name: "Healer MB", inferred: true };
-    healersFirst[4].role = { name: "Healer MB", inferred: true };
-    healersFirst[5].role = { name: "Healer MB", inferred: true };
-    healersFirst[6].role = { name: "Healer MB", inferred: true };
-    healersFirst[7].role = { name: "Healer MB", inferred: true };
-    healersFirst[8].role = { name: "Healer KS", inferred: true };
-    healersFirst[9].role = { name: "Healer KS", inferred: true };
-    healersFirst[10].role = { name: "Healer KS", inferred: true };
-
-    return healersFirst;
 }

@@ -1,27 +1,27 @@
 import type { JSX } from "react";
 import type { Faction } from "../../types/faction";
-import type { StatTotals } from "../../types/leaderboard";
 import NumberCell from "../atom/numbercell";
 import { FireIcon, FirstAidIcon, HandshakeIcon, ShieldIcon, SkullIcon, SwordIcon } from "@phosphor-icons/react";
 import { factionBgPrimary, factionBgSecondary, factionBorder } from "../../utils/factions";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import FitTextToCell from "../atom/fittexttocell";
+import type { Stats } from "../../types/stats";
 
 interface WarResultsSummaryProp {
     attacker: string,
     defender: string,
     factions: Faction[],
-    summaries?: (StatTotals | undefined)[],
+    summaries?: (Stats | undefined)[],
 }
 
 export function WarResultsCompanyCombined({ attacker, defender, summaries, factions }: WarResultsSummaryProp): JSX.Element {
-    let attackerColor = factionBgPrimary(factions[0]);
-    let attackerAccent = factionBgSecondary(factions[0]);
-    let attackerBorder = factionBorder(factions[0]);
-    let defenderColor = factionBgPrimary(factions[1]);
-    let defenderAccent = factionBgSecondary(factions[1]);
-    let defenderBorder = factionBorder(factions[1]);
+    const attackerColor = factionBgPrimary(factions[0]);
+    const attackerAccent = factionBgSecondary(factions[0]);
+    const attackerBorder = factionBorder(factions[0]);
+    const defenderColor = factionBgPrimary(factions[1]);
+    const defenderAccent = factionBgSecondary(factions[1]);
+    const defenderBorder = factionBorder(factions[1]);
 
 
     const attackerSummary = summaries?.[0] ? summaries?.[0] : undefined;

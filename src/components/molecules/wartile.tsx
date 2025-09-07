@@ -1,7 +1,7 @@
 import { type JSX } from "react";
-import type { War } from "../../types/hydratedtypes/war";
 import { Link } from "react-router-dom";
 import { formatDatetime } from "../../utils/time";
+import type { War } from "../../types/war";
 
 export interface WarTileProps {
     war: War;
@@ -15,7 +15,7 @@ function WarTile({ war }: WarTileProps): JSX.Element {
                     <div className="font-semibold">{war.attacker.name}</div>
                     <div className="text-sm text-gray-400">vs</div>
                     <div className="font-semibold">{war.defender.name}</div>
-                    <div className="text-sm text-gray-400">{war.map}</div>
+                    <div className="text-sm text-gray-400">{war.territory}</div>
                     <div className="text-sm text-gray-400">{formatDatetime(war.date)}</div>
                 </div>
                 {/* <div className="absolute bottom-1 left-1/2 -translate-x-1/2 text-sm text-gray-400">

@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import * as v from 'valibot'
 import type { QueryParameter, Ordering } from './googlesheets/queryparameter';
 import { constructQuery } from './googlesheets/querybuilder';
 import { fetchTableFromGoogleSheets } from './googlesheets/googlesheets';

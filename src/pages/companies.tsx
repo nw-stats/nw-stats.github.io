@@ -1,16 +1,16 @@
 
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import Loading from "../components/atom/loading";
 
-import { useCompanies } from "../hooks2/useCompaniesNew";
 import { CompanyListCard } from "../components/molecules/companylistcard";
+import { useHydratedCompanies } from "../hooks/companies/useHydratedCompanies";
 
-const Companies: React.FC = () => {
-    const { loading, err, companies } = useCompanies();
+export function Companies(): JSX.Element {
+    const { data: companies, isLoading, isError } = useHydratedCompanies();
     const [search, setSearch] = useState("");
 
-    if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
-    if (err) return <div className="text-white">Problem loading companies</div>
+    if (isLoading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
+    if (isError || !companies) return <div className="text-white">Problem loading companies</div>
 
     companies.sort((a, b) => a.faction.toLocaleLowerCase().localeCompare(b.faction.toLocaleLowerCase()))
 
@@ -30,8 +30,4 @@ const Companies: React.FC = () => {
             </div>
         </div>
     );
-
-
 }
-
-export default Companies;

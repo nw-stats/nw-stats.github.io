@@ -15,10 +15,8 @@ export interface DisplayLeaderboardEntry extends LeaderboardEntry {
     kpar: number;
 }
 
-
-
-export interface GroupsEntry extends LeaderboardEntry {
-    qpds: boolean;
+export interface GroupLeaderboardEntry extends DisplayLeaderboardEntry {
+    qdps: boolean;
 }
 
 export interface CharacterDetailsEntry extends LeaderboardEntry {
@@ -40,9 +38,6 @@ export interface GroupStats {
     kpar: number;
 }
 
-export interface GroupPerformance {
-    stats: GroupsEntry[];
-}
 
 export interface MapStat {
     played: number;
