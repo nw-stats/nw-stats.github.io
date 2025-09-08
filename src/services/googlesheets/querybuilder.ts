@@ -43,11 +43,22 @@ export function constructQuery<T extends v.ObjectSchema<any, any>>(
 ): string {
     const columns = generateColumnLetters(schema);
 
-    const where = params && params.length
-        ? ' WHERE ' + params
-            .map(p => `${columns[p.field]} ${p.operator} ${formatValue(p.value)}`)
-            .join(' AND ')
-        : '';
+    let where = "";
+    if (params && params.length) {
+        const grouped = params.reduce<Record<string, QueryParameter<T>[]>>((acc, p) => {
+            (acc[p.field as string] ??= []).push(p);
+            return acc;
+        }, {});
+
+        const fieldClauses = Object.values(grouped).map((group) => {
+            const clause = group
+                .map((p) => `${columns[p.field]} ${p.operator} ${formatValue(p.value)}`)
+                .join(" OR ");
+            return `(${clause})`;
+        });
+
+        where = " WHERE " + fieldClauses.join(" AND ");
+    }
 
     const orderBy = order ? ` ORDER BY ${columns[order.column]} ${order.direction.toUpperCase()}` : '';
     const limitStr = limit ? ` LIMIT ${limit}` : '';

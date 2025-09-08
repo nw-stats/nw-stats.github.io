@@ -6,7 +6,7 @@ export const RosterSchema = v.object({
     company: v.string(),
     character: v.string(),
     role: v.nullable(v.string()),
-    group: v.number(),
+    group: v.nullable(v.number()),
     qdps: v.nullable(v.string()),
     player: v.nullable(v.string()),
 });

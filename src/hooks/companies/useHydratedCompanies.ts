@@ -1,26 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCompanies } from "../../services/companies/companiesservice";
-import { hydrateCompanies } from "../../services/companies/hydrateCompanies";
 import { RETRY, STALE_TIME } from '../../constants/query';
 import type { Company } from "../../types/company";
-import { Qop } from "../../services/googlesheets/queryparameter";
 import type { UseCompanyOptions } from "./companyOptions";
+import { useCompanyRows } from "./useCompanyRows";
+import { hydrateCompanies } from "../../services/companies/hydrateCompanies";
 
 export function useHydratedCompanies({ companyNames, enabled }: UseCompanyOptions = {}) {
-    return useQuery<Company[], Error>({
+    const {
+        data: rows,
+    } = useCompanyRows({ companyNames, enabled });
+
+    const {
+        data: companies,
+        isError,
+        isLoading
+    } = useQuery<Company[], Error>({
         queryKey: ['hydratedCompanies', companyNames],
         queryFn: async () => {
-            const queryParameters = companyNames ? companyNames.map(item => ({
-                field: 'name' as const,
-                operator: Qop.Eq,
-                value: item,
-            })) : undefined;
-            const rawCompanies = await getCompanies(queryParameters);
-            const companies = hydrateCompanies(rawCompanies);
+            if (!rows) throw new Error("Company rows is empty");
+            const companies = hydrateCompanies(rows);
             return companies;
         },
         staleTime: STALE_TIME,
         retry: RETRY,
-        enabled: enabled ?? true,
+        enabled: !!rows && rows.length > 0,
     });
+
+    return { data: companies, isError, isLoading };
 }

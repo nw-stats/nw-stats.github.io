@@ -15,7 +15,11 @@ export function useHydratedWars({ warIds, companyNames, enabled }: UseWarsOption
         return Array.from(new Set(wars.flatMap(w => [w.attacker, w.defender])));
     }, [companyNames, wars]);
 
-    const { data: companies, } = useHydratedCompanies({
+    const {
+        data: companies,
+        isLoading: isLoadingCompanies,
+        isError: isErrorCompanies,
+    } = useHydratedCompanies({
         companyNames: chainedCompanyNames,
         enabled: !!chainedCompanyNames
     });

@@ -8,6 +8,7 @@ import type { LeaderboardEntry } from "../../types/leaderboard";
 import { RETRY, STALE_TIME } from "../../constants/query";
 import { getUniqueValuesOrUndefined } from "../../utils/getUniqueValuesOrUndefined";
 import { useMemo } from "react";
+import { logging } from "../../utils/logging";
 
 export function useHydratedLeaderboard({ warIds, characters, companyNames, enabled }: UseLeaderOptions = {}) {
     const {
@@ -25,6 +26,7 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         () => getUniqueValuesOrUndefined(leaderboardRows?.map(r => r.company)),
         [leaderboardRows]
     );
+
     const {
         data: companies,
         isLoading: isLoadingCompanies,
@@ -38,6 +40,7 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         () => getUniqueValuesOrUndefined(leaderboardRows?.map(r => r.warId)),
         [leaderboardRows]
     );
+
     const {
         data: rosters,
         isLoading: isLoadingRosters,
@@ -65,7 +68,12 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         },
         staleTime: STALE_TIME,
         retry: RETRY,
-        enabled: leaderboardRows && companies && rosters && rosters && leaderboardRows.length > 0 && companies.length > 0,
+        enabled: (!!leaderboardRows
+            && !!companies
+            && !!rosters
+            && leaderboardRows.length > 0
+            && companies.length > 0
+            && rosters.size > 0),
     })
 
     return {

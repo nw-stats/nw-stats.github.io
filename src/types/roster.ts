@@ -7,7 +7,7 @@ export interface RosterCharacter {
     warId: number;
     company: Company;
     character: string;
-    group: number;
+    group?: number;
     role?: string;
     qdps?: string;
     player?: string;

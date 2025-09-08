@@ -11,6 +11,9 @@ export async function getWars(
     if (!params) {
         params = []
     }
-    params.push({ field: 'id', operator: Qop.Not, value: null });
-    return getService(SHEET_ID, WAR_SHEET_NAME, WarSchema, params, limit, order);
+    if (params.findIndex(item => item.field === 'id') === -1) {
+        params.push({ field: 'id', operator: Qop.Not, value: null });
+    }
+    const validated = await getService(SHEET_ID, WAR_SHEET_NAME, WarSchema, params, limit, order);
+    return validated;
 }

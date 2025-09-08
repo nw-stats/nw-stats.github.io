@@ -20,7 +20,7 @@ export function hydrateRosters(
             warId: row.warId,
             company: company,
             character: row.character,
-            group: row.group,
+            group: row.group ?? undefined,
             role: row.role ?? undefined,
             qdps: row.qdps ?? undefined,
             player: row.player ?? undefined,

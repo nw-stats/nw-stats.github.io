@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
-import type { CharacterRow } from "../schemas/character"
-import { getCharacters } from "../services/characters/characterservice"
-import { Qop } from "../services/googlesheets/queryparameter"
-import { RETRY, STALE_TIME } from "../constants/query"
+import type { CharacterRow } from "../../schemas/character";
+import { Qop } from "../../services/googlesheets/queryparameter";
+import { getCharacters } from "../../services/characters/characterservice";
+import { RETRY, STALE_TIME } from "../../constants/query";
+
 
 interface UseCharacterRowOptions {
     names?: string[];

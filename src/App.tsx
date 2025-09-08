@@ -2,7 +2,6 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/organisms/navbar';
 
 
-import WarDetail from './pages/war-detail'
 import NotFound from './pages/notfound';
 import Home from './pages/home';
 import Feedback from './pages/feedback';
@@ -11,6 +10,7 @@ import Inaccuracy from './pages/inaccuracy';
 import { Footer } from './components/organisms/footer';
 import { Wars } from './pages/wars';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WarDetail } from './pages/war-detail';
 
 const queryClient = new QueryClient();
 
