@@ -14,6 +14,7 @@ export function useHydratedRoster({ warIds, enabled }: UseRosterOptions) {
         data: rosterRows,
         isLoading: isLoadingRosters,
         isError: isErrorRosters,
+        error: errorRosters,
     } = useRosterRows({ warIds, enabled });
 
     const companyNames = useMemo(
@@ -24,6 +25,7 @@ export function useHydratedRoster({ warIds, enabled }: UseRosterOptions) {
         data: companies,
         isLoading: isLoadingCompanies,
         isError: isErrorCompanies,
+        error: errorCompanies,
     } = useHydratedCompanies({
         companyNames,
         enabled: !!companyNames,
@@ -33,6 +35,7 @@ export function useHydratedRoster({ warIds, enabled }: UseRosterOptions) {
         data: rosters,
         isLoading: isLoadingHydrated,
         isError: isErrorHydrated,
+        error: errorHydrated,
     } = useQuery<Map<WarId, Rosters>, Error>({
         queryKey: ['hydratedRosters', warIds],
         queryFn: async () => {
@@ -47,9 +50,11 @@ export function useHydratedRoster({ warIds, enabled }: UseRosterOptions) {
             && rosterRows.length > 0
             && companies.length > 0),
     });
+
     return {
         data: rosters,
         isLoading: (isLoadingRosters || isLoadingCompanies || isLoadingHydrated),
         isError: (isErrorRosters || isErrorCompanies || isErrorHydrated),
+        error: (errorRosters || errorCompanies || errorHydrated),
     }
 }

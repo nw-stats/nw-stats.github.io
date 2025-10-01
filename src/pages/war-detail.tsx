@@ -224,13 +224,15 @@ import { useWarDetail } from "../hooks/useWarDetail";
 import { logging } from "../utils/logging";
 import { WarListCard } from "../components/molecules/warlistcard";
 import LeaderboardDisplay from "../components/molecules/leaderboarddisplay";
+import { WarSummary } from "../components/molecules/warSummary";
+import { GroupsDetails } from "../components/molecules/groupsdetails";
 
 export function WarDetail(): JSX.Element {
-    const { warId: warIdParam } = useParams<{ warId: string, slug: string }>();
+    const { warId: warIdParam } = useParams<{ warId: string }>();
     const warId = Number(warIdParam);
 
     const {
-        data: { war, leaderboard },
+        data: { war, leaderboard, summaries },
         isLoading,
         isError
     } = useWarDetail({ warId });
@@ -238,6 +240,8 @@ export function WarDetail(): JSX.Element {
     logging('WarDetail:IsError', isError);
     logging('WarDetail:IsLoading', isLoading);
     logging('WarDetail:War', war);
+    logging('WarDetail:Leaderboard', leaderboard);
+    logging('WarDetail:Summaries', summaries);
 
     if (isLoading) return <Loading />;
     if (isError) return <NotFound />;
@@ -245,6 +249,12 @@ export function WarDetail(): JSX.Element {
     return (
         <>
             <WarListCard war={war} />
+            <WarSummary
+                attacker={war.attacker}
+                defender={war.defender}
+                attackerSummary={summaries?.get(war.attacker.name)}
+                defenderSummary={summaries?.get(war.defender.name)} />
+            <GroupsDetails />
             <LeaderboardDisplay leaderboard={leaderboard} hideRoles={war.hideRoles} />
         </>
     );

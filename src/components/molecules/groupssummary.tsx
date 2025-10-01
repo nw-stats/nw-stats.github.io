@@ -11,6 +11,8 @@
 // import type { DisplayLeaderboardEntry } from '../../types/leaderboard';
 // import type { Stats } from '../../types/stats';
 
+import type { JSX } from "react";
+
 // interface GroupsSummaryProps {
 //     groups?: Map<GroupNumber, DisplayLeaderboardEntry>;
 // }
@@ -178,3 +180,12 @@
 //         </div >
 //     );
 // };
+
+interface GroupsSummaryProps {
+
+}
+export function GroupsSummary(): JSX.Element {
+    return (
+        <></>
+    );
+}

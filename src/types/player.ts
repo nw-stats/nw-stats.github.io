@@ -6,5 +6,5 @@ export interface Player {
     discord?: string;
     twitch?: string;
     picture?: string;
-    characters: Character[];
+    characters?: Character[];
 }

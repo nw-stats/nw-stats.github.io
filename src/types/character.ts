@@ -8,4 +8,5 @@ export interface Character {
     server: string;
     faction: Faction;
     company?: Company;
+    player?: string,
 }

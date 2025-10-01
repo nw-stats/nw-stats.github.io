@@ -15,7 +15,7 @@ function toRole(role: string): Role {
 export function hydrateLeaderboards(
     rows: LeaderboardRow[],
     rosters: Map<WarId, Rosters>,
-    companies: Company[]
+    companies: Company[],
 ): LeaderboardEntry[] {
     const companyMap = new Map(companies.map(c => [c.name, c]));
     const characterLookup = createCharacterLookupMap(rosters);
@@ -30,7 +30,7 @@ export function hydrateLeaderboards(
             id: row.id,
             warid: row.warId,
             character: row.character,
-            role: toRole(rosterChar?.role ?? "unknown"),
+            role: toRole(rosterChar?.role ?? ""),
             score: row.score,
             kills: row.kills,
             deaths: row.deaths,

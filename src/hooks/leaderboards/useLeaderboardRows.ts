@@ -43,7 +43,7 @@ export function useLeaderboardRows({
     enabled
 }: UseLeaderOptions) {
     return useQuery<LeaderboardRow[], Error>({
-        queryKey: ['leaderboardRows'],
+        queryKey: ['leaderboardRows', warIds, characters, companyNames],
         queryFn: async () => {
             if (warIds) {
                 return await fetLeaderboardsByWarId(warIds);

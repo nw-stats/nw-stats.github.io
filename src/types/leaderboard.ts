@@ -11,12 +11,12 @@ export interface LeaderboardEntry extends Stats {
     company: Company;
 }
 
-export interface DisplayLeaderboardEntry extends LeaderboardEntry {
+export interface LeaderboardEntryKp extends LeaderboardEntry {
     kpar: number;
 }
 
-export interface GroupLeaderboardEntry extends DisplayLeaderboardEntry {
-    qdps: boolean;
+export interface CompanySummary extends Stats {
+    company: Company
 }
 
 export interface CharacterDetailsEntry extends LeaderboardEntry {
@@ -54,4 +54,3 @@ export interface WarsSummary {
 }
 
 export type Leaderboard = LeaderboardEntry[];
-export type DisplayLeaderboard = DisplayLeaderboardEntry[];

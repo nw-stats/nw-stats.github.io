@@ -3,32 +3,50 @@ import type { CharacterRow } from "../../schemas/character";
 import { Qop } from "../../services/googlesheets/queryparameter";
 import { getCharacters } from "../../services/characters/characterservice";
 import { RETRY, STALE_TIME } from "../../constants/query";
+import type { UseCharacterRowOptions } from "./characterOptions";
 
 
-interface UseCharacterRowOptions {
-    names?: string[];
-    fromCompanies?: string[];
-    enabled?: boolean;
+function fetchByNames(names: string[]) {
+    return getCharacters(names.map(item => ({
+        field: "name" as const,
+        operator: Qop.Eq,
+        value: item,
+    })));
 }
-export function useCharacterRows({ names, fromCompanies, enabled }: UseCharacterRowOptions = {}) {
+
+function fetchByPlayers(players: string[]) {
+    return getCharacters(players.map(item => ({
+        field: 'player' as const,
+        operator: Qop.Eq,
+        value: item,
+    })))
+}
+
+function fetchByCompanies(companyNames: string[]) {
+    return getCharacters(companyNames.map(item => ({
+        field: 'company' as const,
+        operator: Qop.Eq,
+        value: item,
+    })));
+}
+
+function fetchAll() {
+    return getCharacters();
+}
+
+export function useCharacterRows({
+    names,
+    players,
+    companyNames,
+    enabled
+}: UseCharacterRowOptions = {}) {
     return useQuery<CharacterRow[], Error>({
         queryKey: ['characterRows', names],
         queryFn: async () => {
-            const queryParameter = (
-                names
-                    ? names.map(item => ({
-                        field: 'name' as const,
-                        operator: Qop.Eq,
-                        value: item,
-                    }))
-                    : fromCompanies
-                        ? fromCompanies.map(item => ({
-                            field: 'company' as const,
-                            operator: Qop.Eq,
-                            value: item
-                        }))
-                        : undefined)
-            return getCharacters(queryParameter);
+            if (names) return await fetchByNames(names);
+            if (players) return await fetchByPlayers(players);
+            if (companyNames) return await fetchByCompanies(companyNames);
+            return await fetchAll();
         },
         staleTime: STALE_TIME,
         retry: RETRY,

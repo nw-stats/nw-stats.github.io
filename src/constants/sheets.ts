@@ -8,3 +8,4 @@ export const LEADERBOARD_SHEET_NAME = "leaderboards";
 export const COMPANIES_SHEET_NAME = "companies";
 export const CHARACTER_SHEET_NAME = "characters";
 export const WORLD_SHEET_NAME = "worlds";
+export const PLAYER_SHEET_NAME = "players";

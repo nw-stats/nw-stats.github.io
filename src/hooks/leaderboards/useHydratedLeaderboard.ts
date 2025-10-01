@@ -15,6 +15,7 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         data: leaderboardRows,
         isLoading: isLoadingLeaderboards,
         isError: isErrorLeaderboards,
+        error: errorLeaderboards,
     } = useLeaderboardRows({
         warIds,
         characters,
@@ -31,6 +32,7 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         data: companies,
         isLoading: isLoadingCompanies,
         isError: isErrorCompanies,
+        error: errorCompanies,
     } = useHydratedCompanies({
         companyNames: companiesToFetch,
         enabled: companiesToFetch && companiesToFetch.length > 0,
@@ -45,6 +47,7 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         data: rosters,
         isLoading: isLoadingRosters,
         isError: isErrorRosters,
+        error: errorRosters,
     } = useHydratedRoster({
         warIds: warIdsToFetch,
         enabled: warIdsToFetch && warIdsToFetch.length > 0,
@@ -54,6 +57,7 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
         data: leaderboard,
         isError: isError,
         isLoading: isLoading,
+        error: error,
     } = useQuery<LeaderboardEntry[], Error>({
         queryKey: ["hydratedLeaderboard", warIdsToFetch, companiesToFetch, characters],
         queryFn: async () => {
@@ -76,6 +80,8 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
             && rosters.size > 0),
     })
 
+    logging("useHydratedLeaderboards", leaderboard);
+
     return {
         data: leaderboard,
         isLoading: (isLoading
@@ -86,5 +92,10 @@ export function useHydratedLeaderboard({ warIds, characters, companyNames, enabl
             || isErrorLeaderboards
             || isErrorCompanies
             || isErrorRosters),
+        error: (error
+            || errorLeaderboards
+            || errorCompanies
+            || errorRosters
+        ),
     }
 }

@@ -1,5 +1,4 @@
 import type { JSX } from "react";
-import type { Faction } from "../../types/faction";
 import NumberCell from "../atom/numbercell";
 import { FireIcon, FirstAidIcon, HandshakeIcon, ShieldIcon, SkullIcon, SwordIcon } from "@phosphor-icons/react";
 import { factionBgPrimary, factionBgSecondary, factionBorder } from "../../utils/factions";
@@ -7,25 +6,22 @@ import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import FitTextToCell from "../atom/fittexttocell";
 import type { Stats } from "../../types/stats";
+import type { Company } from "../../types/company";
 
 interface WarResultsSummaryProp {
-    attacker: string,
-    defender: string,
-    factions: Faction[],
-    summaries?: (Stats | undefined)[],
+    attacker: Company;
+    defender: Company;
+    attackerSummary: Stats | undefined;
+    defenderSummary: Stats | undefined;
 }
 
-export function WarResultsCompanyCombined({ attacker, defender, summaries, factions }: WarResultsSummaryProp): JSX.Element {
-    const attackerColor = factionBgPrimary(factions[0]);
-    const attackerAccent = factionBgSecondary(factions[0]);
-    const attackerBorder = factionBorder(factions[0]);
-    const defenderColor = factionBgPrimary(factions[1]);
-    const defenderAccent = factionBgSecondary(factions[1]);
-    const defenderBorder = factionBorder(factions[1]);
-
-
-    const attackerSummary = summaries?.[0] ? summaries?.[0] : undefined;
-    const defenderSummary = summaries?.[1] ? summaries?.[1] : undefined;
+export function WarSummary({ attacker, defender, attackerSummary, defenderSummary }: WarResultsSummaryProp): JSX.Element {
+    const attackerColor = factionBgPrimary(attacker.faction);
+    const attackerAccent = factionBgSecondary(attacker.faction);
+    const attackerBorder = factionBorder(attacker.faction);
+    const defenderColor = factionBgPrimary(defender.faction);
+    const defenderAccent = factionBgSecondary(defender.faction);
+    const defenderBorder = factionBorder(defender.faction);
 
     // const isAttackerWinner = attackerSummary?.name === winner;
     const isSmall = useMediaQuery({ maxWidth: 768 })
@@ -48,7 +44,7 @@ export function WarResultsCompanyCombined({ attacker, defender, summaries, facti
                         <div className={`${attackerColor} flex items-center justify-center font-bold  md:text-3xl p-2 w-full h-full border-b-2 ${attackerBorder} relative`}>
                             {/* {isAttackerWinner && <CrownIcon weight="fill" size={16} className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-[1px] text-yellow-500 drop-shadow-lg" />} */}
                             <Link to={`/companies/${attacker}`}>
-                                <span className="hover:underline"><FitTextToCell text={attacker} /></span>
+                                <span className="hover:underline"><FitTextToCell text={attacker.name} /></span>
                             </Link>
                         </div>
                         <div className="bg-gray-700 text-center text-3xl p-2 border-b-2 border-gray-900">vs</div>
@@ -60,7 +56,7 @@ export function WarResultsCompanyCombined({ attacker, defender, summaries, facti
                                     className="absolute top-0 left-1/2 -translate-x-1/2 translate-y-[1px] text-yellow-500 drop-shadow-lg" />
                             } */}
                             <Link to={`/companies/${defender}`}>
-                                <span className="hover:underline"><FitTextToCell text={defender} /></span>
+                                <span className="hover:underline"><FitTextToCell text={defender.name} /></span>
                             </Link>
                         </div>
                     </div>
@@ -111,7 +107,7 @@ export function WarResultsCompanyCombined({ attacker, defender, summaries, facti
     }
     else {
         return (
-            <table className="table-fixed border-collapse w-full h-full  text-center text-white font-semibold rounded-lg overflow-hidden">
+            <table className="table-fixed border-collapse w-full  text-center text-white font-semibold rounded-lg overflow-hidden">
                 <thead>
                     <tr className="bg-gray-700">
                         <th className="w-[4%] border-r-gray-900"></th>
@@ -160,7 +156,7 @@ export function WarResultsCompanyCombined({ attacker, defender, summaries, facti
                             <div className="flex w-full h-full items-center justify-center relative text-nowrap">
                                 {/* {isAttackerWinner && <CrownIcon weight="fill" size={24} className="absolute -top-3 text-yellow-400 drop-shadow-lg" />} */}
                                 <Link to={`/companies/${attacker}`}>
-                                    <span className="hover:underline"><FitTextToCell text={attacker} /></span>
+                                    <span className="hover:underline"><FitTextToCell text={attacker.name} /></span>
                                 </Link>
                             </div>
                         </td>
@@ -180,7 +176,7 @@ export function WarResultsCompanyCombined({ attacker, defender, summaries, facti
                             <div className="flex w-full h-full items-center justify-center relative text-nowrap">
                                 {/* {!isAttackerWinner && <CrownIcon weight="fill" size={24} className="absolute -top-3 text-yellow-400 drop-shadow-lg" />} */}
                                 <Link to={`/companies/${defender}`}>
-                                    <span className="hover:underline"><FitTextToCell text={defender} /></span>
+                                    <span className="hover:underline"><FitTextToCell text={defender.name} /></span>
                                 </Link>
                             </div>
                         </td>

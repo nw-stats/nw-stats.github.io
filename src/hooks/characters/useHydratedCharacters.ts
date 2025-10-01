@@ -12,7 +12,7 @@ interface UseHydratedCharactersOptions {
     enabled?: boolean;
 }
 export function useHydratedCharacters({ names, fromCompanies, enabled }: UseHydratedCharactersOptions = {}) {
-    const { data: rows, isLoading: rowsLoading } = useCharacterRows({ names, fromCompanies, enabled });
+    const { data: rows, isLoading: rowsLoading } = useCharacterRows({ names, companyNames: fromCompanies, enabled });
     const companyNames = rows?.map(r => r.company).filter(Boolean) as string[] || undefined;
     const {
         data: companies,

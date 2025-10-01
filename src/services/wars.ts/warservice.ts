@@ -7,7 +7,8 @@ import { getService } from "../service";
 export async function getWars(
     params?: QueryParameter<typeof WarSchema>[],
     limit?: number,
-    order?: Ordering<typeof WarSchema>): Promise<WarRow[]> {
+    order?: Ordering<typeof WarSchema>
+): Promise<WarRow[]> {
     if (!params) {
         params = []
     }

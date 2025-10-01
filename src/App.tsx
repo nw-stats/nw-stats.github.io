@@ -11,6 +11,8 @@ import { Footer } from './components/organisms/footer';
 import { Wars } from './pages/wars';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WarDetail } from './pages/war-detail';
+import { Players } from './pages/players';
+import { PlayerDetails } from './pages/playerdetails';
 
 const queryClient = new QueryClient();
 
@@ -20,12 +22,12 @@ const App: React.FC = () => {
     <HashRouter>
       <div className="flex flex-col h-screen">
         <Navbar />
-        <main className="flex-grow  pt-16">
+        <main className="flex-grow  pt-24">
           <QueryClientProvider client={queryClient} >
             <Routes>
               <Route path="/" element={<Home />} />
-              {/* <Route path="/players" element={<Players />} /> */}
-              {/* <Route path="/players/:characterName/:mode?" element={<PlayerDetails />} /> */}
+              <Route path="/players" element={<Players />} />
+              <Route path="/players/:name" element={<PlayerDetails />} />
               {/* <Route path="/companies" element={<Companies />} /> */}
               {/* <Route path="/companies/:companyName" element={<CompanyDetail />} /> */}
               <Route path="/wars" element={<Wars />} />

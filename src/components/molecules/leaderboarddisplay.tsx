@@ -1,4 +1,4 @@
-import type { Leaderboard, LeaderboardEntry } from "../../types/leaderboard";
+import type { Leaderboard, LeaderboardEntry, LeaderboardEntryKp } from "../../types/leaderboard";
 import { useMemo, useState, type JSX } from 'react';
 import {
     useReactTable,
@@ -18,10 +18,11 @@ import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
 import { NoData } from "../atom/nodata";
 import { sortRoleStrings } from "../../utils/roles";
+import { logging } from "../../utils/logging";
 
 type LeaderboardProps = {
     hideRoles: boolean,
-    leaderboard?: Leaderboard,
+    leaderboard?: LeaderboardEntryKp[],
 };
 
 export function LeaderboardDisplay({ leaderboard, hideRoles }: LeaderboardProps): JSX.Element {
@@ -42,7 +43,7 @@ export function LeaderboardDisplay({ leaderboard, hideRoles }: LeaderboardProps)
         const baseCols: ColumnDef<LeaderboardEntry>[] = [
             {
                 accessorKey: 'character',
-                header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
+                header: () => (<LabelIcon text={"Character"} icon={<UsersIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-left hover:underline">
                         <Link to={`/players/${info.getValue<string>()}`}>
@@ -119,7 +120,8 @@ export function LeaderboardDisplay({ leaderboard, hideRoles }: LeaderboardProps)
         // Insert role column only if NOT hidden
         if (!hideRoles) {
             baseCols.splice(1, 0, {
-                accessorKey: 'roleAssignment',
+                accessorFn: row => row.role.name,
+                id: "role", // needed when using accessorFn
                 header: () => (
                     <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
                 ),
@@ -129,11 +131,11 @@ export function LeaderboardDisplay({ leaderboard, hideRoles }: LeaderboardProps)
                     return sortRoleStrings(a, b);
                 },
                 cell: info => {
-                    const value = info.getValue<{ role: string; inferred: boolean }>();
-                    if (!value?.role) return <span className="text-gray-400 italic"></span>;
+                    const role = info.row.original.role;
+                    if (!role?.name) return <span className="text-gray-400 italic"></span>;
                     return (
-                        <span className={value.inferred ? "italic text-gray-600" : ""}>
-                            {value.role}
+                        <span className={role.inferred ? "italic text-gray-600" : ""}>
+                            {role.name}
                         </span>
                     );
                 },
@@ -155,6 +157,9 @@ export function LeaderboardDisplay({ leaderboard, hideRoles }: LeaderboardProps)
         }
         return [...rolesSet].sort(sortRoleStrings);
     }, [leaderboard]);
+
+    logging('leaderboardDisplay', filtered);
+    logging('leaderboardDisplay', leaderboard);
 
     const table = useReactTable({
         data: filtered,

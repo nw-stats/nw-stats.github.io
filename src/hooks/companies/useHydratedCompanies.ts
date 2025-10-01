@@ -13,7 +13,8 @@ export function useHydratedCompanies({ companyNames, enabled }: UseCompanyOption
     const {
         data: companies,
         isError,
-        isLoading
+        isLoading,
+        error,
     } = useQuery<Company[], Error>({
         queryKey: ['hydratedCompanies', companyNames],
         queryFn: async () => {
@@ -26,5 +27,5 @@ export function useHydratedCompanies({ companyNames, enabled }: UseCompanyOption
         enabled: !!rows && rows.length > 0,
     });
 
-    return { data: companies, isError, isLoading };
+    return { data: companies, isError, isLoading, error };
 }

@@ -17,8 +17,6 @@ export function useHydratedWars({ warIds, companyNames, enabled }: UseWarsOption
 
     const {
         data: companies,
-        isLoading: isLoadingCompanies,
-        isError: isErrorCompanies,
     } = useHydratedCompanies({
         companyNames: chainedCompanyNames,
         enabled: !!chainedCompanyNames

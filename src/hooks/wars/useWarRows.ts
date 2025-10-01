@@ -4,7 +4,6 @@ import { getWars } from "../../services/wars.ts/warservice";
 import { Qop } from "../../services/googlesheets/queryparameter";
 import { RETRY, STALE_TIME } from "../../constants/query";
 import type { UseWarsOptions } from "./warOptions";
-import { logging } from "../../utils/logging";
 
 async function fetchWarsById(warIds: number[]): Promise<WarRow[]> {
     const params = warIds.map(id => ({

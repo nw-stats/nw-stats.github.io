@@ -1,4 +1,8 @@
-import { useHydratedLeaderboard } from "./leaderboards/useHydratedLeaderboard";
+import { logging } from "../utils/logging";
+import { useGroups } from "./groups/useGroups";
+import { useDerivedLeaderboard } from "./leaderboards/useDerivedLeaderboard";
+// import { useHydratedLeaderboard } from "./leaderboards/useHydratedLeaderboard";
+import { useLeaderboardSummary } from "./leaderboards/useLeaderboardSummary";
 import { useHydratedWars } from "./wars/useHydratedWars";
 
 interface UseWarDetailOptions {
@@ -17,15 +21,29 @@ export function useWarDetail({ warId }: UseWarDetailOptions) {
         data: leaderboard,
         isLoading: isLoadingLeaderboards,
         isError: isErrorLeaderboards,
-    } = useHydratedLeaderboard({ warIds: [warId] });
+    } = useDerivedLeaderboard({ warIds: [warId] });
 
+    const {
+        data: summaries,
+        isLoading: isLoadingSummaries,
+        isError: isErrorSummaries,
+    } = useLeaderboardSummary({ warIds: [warId] });
+
+    const { data: groups,
+        isLoading: isLoadingGroups,
+        isError: isErrorGruops,
+    } = useGroups({ warId, })
     const WAR = war && war.length > 0 ? war[0] : undefined;
+
+    logging('useWarDetail:leaderboard', leaderboard);
+
     return {
         data: {
             war: WAR,
-            leaderboard
+            summaries,
+            leaderboard,
         },
-        isLoading: isLoadingLeaderboards || isLoadingWars,
-        isError: isErrorLeaderboards || isErrorWars,
+        isLoading: isLoadingLeaderboards || isLoadingWars || isLoadingSummaries,
+        isError: isErrorLeaderboards || isErrorWars || isErrorSummaries,
     };
 }
