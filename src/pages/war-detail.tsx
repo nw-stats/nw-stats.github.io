@@ -16,6 +16,8 @@ import { GroupsSummary } from "../components/molecules/groupssummary";
 import GroupsDetail from "../components/molecules/groupsdetails";
 import { HealerCompare } from "../components/organisms/healercompare";
 import { WarListCard } from "../components/molecules/warlistcard";
+import { GroupsSummaryGraph } from "../components/molecules/groupssummarygraphy";
+
 
 
 
@@ -111,6 +113,15 @@ function WarDetail(): JSX.Element {
         }
     };
 
+    // let compareAttackers = [];
+    // for (const [k, v] of attackerGroups) {
+    //     compareAttackers.push({
+    //         name: k,
+    //         value: v.stats.entries
+    //     })
+    // }
+    // const compareAttackers = attackerGroups?.forEach((v, k, m) => ({ name: k, value: 0 }));
+    // const compareDefenders = defenderGroups?.forEach((v, k, m) => ({ name: k, value: 0 }));
     return (
         <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
             <div className="flex flex-col gap-4 p-2" ref={screenshotRef}>
@@ -160,11 +171,25 @@ function WarDetail(): JSX.Element {
                                     }}
                                 >
                                     <Tab label={war.attacker.name}>
-
                                         <GroupsSummary groups={attackerGroups} />
                                     </Tab>
                                     <Tab label={war.defender.name}>
                                         <GroupsSummary groups={defenderGroups} />
+                                    </Tab>
+                                </TabbedContent>
+                            </Tab>
+                            <Tab label="Graphs">
+                                <TabbedContent
+                                    key={`graphs-${war.attacker.name}-${war.defender.name}`}
+                                    activeLabel={innerTab}
+                                    onChangeLabel={(label) => {
+                                        setInnerTab(label);
+                                    }}>
+                                    <Tab label={war.attacker.name}>
+                                        <GroupsSummaryGraph groups={attackerGroups} />
+                                    </Tab>
+                                    <Tab label={war.defender.name}>
+                                        <GroupsSummaryGraph groups={defenderGroups} />
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
