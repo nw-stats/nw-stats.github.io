@@ -232,7 +232,7 @@ export function WarDetail(): JSX.Element {
     const warId = Number(warIdParam);
 
     const {
-        data: { war, leaderboard, summaries },
+        data: { war, leaderboard, summaries, groups },
         isLoading,
         isError
     } = useWarDetail({ warId });
@@ -242,6 +242,7 @@ export function WarDetail(): JSX.Element {
     logging('WarDetail:War', war);
     logging('WarDetail:Leaderboard', leaderboard);
     logging('WarDetail:Summaries', summaries);
+    logging('WarDetaik:Groups', groups);
 
     if (isLoading) return <Loading />;
     if (isError) return <NotFound />;

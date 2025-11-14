@@ -98,7 +98,9 @@ interface GroupsDetailsProps {
 }
 
 export function GroupsDetails({ groups }: GroupsDetailsProps): JSX.Element {
-    return (<></>);
+    return (
+        <>test</>
+    );
     //     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
     //     const [aoeSplit, setAoeSplit] = useLocalStorage<'Include' | 'Exclude'>('aoeSplit', 'Include');
 

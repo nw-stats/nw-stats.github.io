@@ -42,6 +42,7 @@ export function useWarDetail({ warId }: UseWarDetailOptions) {
             war: WAR,
             summaries,
             leaderboard,
+            groups,
         },
         isLoading: isLoadingLeaderboards || isLoadingWars || isLoadingSummaries,
         isError: isErrorLeaderboards || isErrorWars || isErrorSummaries,
