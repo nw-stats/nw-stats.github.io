@@ -66,7 +66,6 @@ export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element 
             .map(key => summary.get(key))
             .filter((item): item is StatTotals => item !== undefined);
     }, [groups, qdpsSplit, splitRoles]);
-    console.log(shownGraphs);
 
     return (
         <>

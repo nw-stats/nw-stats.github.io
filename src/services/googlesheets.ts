@@ -21,7 +21,7 @@ export async function fetchTableFromGoogleSheets(
             .replace(kSheetId, sheetId)
             .replace(kSheetName, sheetName)
             .replace(kQuery, encodedQuery);
-        console.log(fullurl);
+        // console.log(fullurl);
         const response = await fetch(fullurl);
         text = await response.text();
         const json = JSON.parse(text.substring(47).slice(0, -2));
@@ -30,8 +30,8 @@ export async function fetchTableFromGoogleSheets(
         );
         return rows;
     } catch (err) {
-        console.log(query);
-        console.log(text);
+        // console.log(query);
+        // console.log(text);
         console.error("there was an error", err)
         return [];
     }
