@@ -31,7 +31,7 @@ export async function fetchTableFromGoogleSheets(
         return rows;
     } catch (err) {
         // console.log(query);
-        // console.log(text);
+        console.log(text);
         console.error("there was an error", err)
         return [];
     }

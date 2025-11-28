@@ -60,20 +60,24 @@ function WarDetail(): JSX.Element {
     }, [war, groupDetails]);
 
     const setOuterTab = (label: string) => {
+        if (outerTab === label) return; // skip if no change
         setSearchParams(prev => {
             const params = new URLSearchParams(prev);
             params.set("o", label);
             return params;
-        });
+        }, { replace: true });
     };
 
     const setInnerTab = (label: string) => {
+        if (innerTab === label) return; // skip if no change
         setSearchParams(prev => {
             const params = new URLSearchParams(prev);
             params.set("i", label);
             return params;
-        });
+        }, { replace: true });
     };
+
+
 
     if (loading) return <Loading />;
     if (error) return <NotFound />;

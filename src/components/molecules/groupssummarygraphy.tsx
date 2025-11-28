@@ -1,12 +1,14 @@
-import { useMemo, useState, type JSX } from "react";
+import { useMemo, type JSX } from "react";
 import type { GroupKey } from "../../types/roster";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { companyGroupSummary, joinedRoster, splitRoster } from "../../utils/groups";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { GroupPerformance, StatTotals } from "../../types/leaderboard";
 import { MultiselectDropdown } from "../atom/multiselectdropdown";
+import { NWayToggle } from "../atom/nwaytoggle";
+import { numberOrNLetters } from "../../utils/format";
+import { BarGraph } from "../atom/bargraph";
 
-const labels = ["Kills", "Deaths", "Assists", "Healing", "Damage", "Score"];
+const labels = ["Kills", "Deaths", "Assists", "Healing", "Damage", "KPar", "Score"];
 
 interface GroupsSummaryProps {
     groups?: Map<GroupKey, GroupPerformance>;
@@ -69,6 +71,28 @@ export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element 
 
     return (
         <>
+            <div className='flex flex-row items-center h-full mb-2 gap-2'>
+                <span className="">QDPS arrangement</span>
+                <NWayToggle
+                    className="text-small px-2 py-1"
+                    defaultValue={qdpsSplit}
+                    options={['Joined', 'Split', 'Both']}
+                    onChange={(value) =>
+                        setQdpsSplit(value as 'Joined' | 'Split' | 'Both')
+                    }
+                    disabled={!hasQdps}
+                />
+                <span className="">AoE healing</span>
+                <NWayToggle
+                    className="text-small px-2 py-1"
+                    defaultValue={aoeSplit}
+                    options={['Include', 'Exclude']}
+                    onChange={(value) => {
+                        setAoeSplit(value as 'Include' | 'Exclude')
+                    }}
+                    disabled={false}
+                />
+            </div>
             <div className="w-32">
                 <MultiselectDropdown
                     name="graphs"
@@ -77,102 +101,41 @@ export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element 
                     onChange={setShowGraphs}
                 />
             </div >
-            <div className="grid grid-cols-3 w-full"> {/* full width, fixed height */}
+            <div className="grid grid-cols-1 md:grid-cols-3 w-full"> {/* full width, fixed height */}
                 {shownGraphs.includes("Kills") && <div>
-                    <h3 className="text-center">Kills</h3>
-                    < ResponsiveContainer width="100%" height={256}>
-                        <BarChart data={data.map((v, i) => ({ name: `G${i + 1}`, value: v.kills }))}>
-                            <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />
-                            <YAxis tick={{ fill: '#fff', fontSize: 12 }} tickFormatter={(value) => {
-                                if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-                                if (value >= 1_000) return (value / 1_000).toFixed(1) + "K";
-                                return value;
-                            }} />
-                            <Tooltip />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Bar dataKey="value" fill="#c70036" />
-                        </BarChart>
-                    </ResponsiveContainer >
-                </div >}
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.kills }
+                    ))} />
+                </div>}
                 {shownGraphs.includes("Deaths") && <div>
-                    <h3 className="text-center">Deaths</h3>
-                    <ResponsiveContainer width="100%" height={256}>
-                        <BarChart data={data.map((v, i) => ({ name: `G${i + 1}`, value: v.deaths }))}>
-                            <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />
-                            <YAxis tick={{ fill: '#fff', fontSize: 12 }} tickFormatter={(value) => {
-                                if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-                                if (value >= 1_000) return (value / 1_000).toFixed(1) + "K";
-                                return value;
-                            }} />
-                            <Tooltip />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Bar dataKey="value" fill="#c70036" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.deaths }
+                    ))} />
                 </div>}
                 {shownGraphs.includes("Assists") && <div>
-                    <h3 className="text-center">Assists</h3>
-                    <ResponsiveContainer width="100%" height={256}>
-                        <BarChart data={data.map((v, i) => ({ name: `G${i + 1}`, value: v.assists }))}>
-                            <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />
-                            <YAxis tick={{ fill: '#fff', fontSize: 12 }} tickFormatter={(value) => {
-                                if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-                                if (value >= 1_000) return (value / 1_000).toFixed(1) + "K";
-                                return value;
-                            }} />
-                            <Tooltip />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Bar dataKey="value" fill="#c70036" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.assists }
+                    ))} />
                 </div>}
                 {shownGraphs.includes("Healing") && <div>
-                    <h3 className="text-center">Healing</h3>
-                    <ResponsiveContainer width="100%" height={256}>
-                        <BarChart data={data.map((v, i) => ({ name: `G${i + 1}`, value: v.healing }))}>
-                            <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />
-                            <YAxis tick={{ fill: '#fff', fontSize: 12 }} tickFormatter={(value) => {
-                                if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-                                if (value >= 1_000) return (value / 1_000).toFixed(1) + "K";
-                                return value;
-                            }} />
-                            <Tooltip />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Bar dataKey="value" fill="#c70036" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.healing }
+                    ))} />
                 </div>}
                 {shownGraphs.includes("Damage") && <div>
-                    <h3 className="text-center">Damage</h3>
-                    <ResponsiveContainer width="100%" height={256}>
-                        <BarChart data={data.map((v, i) => ({ name: `G${i + 1}`, value: v.damage }))}>
-                            <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />
-                            <YAxis tick={{ fill: '#fff', fontSize: 12 }} tickFormatter={(value) => {
-                                if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-                                if (value >= 1_000) return (value / 1_000).toFixed(1) + "K";
-                                return value;
-                            }} />
-                            <Tooltip />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Bar dataKey="value" fill="#c70036" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.damage }
+                    ))} />
+                </div>}
+                {shownGraphs.includes("KPar") && <div>
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.kpar }
+                    ))} style="percent" />
                 </div>}
                 {shownGraphs.includes("Score") && <div>
-                    <h3 className="text-center">Score</h3>
-                    <ResponsiveContainer width="100%" height={256}>
-                        <BarChart data={data.map((v, i) => ({ name: `G${i + 1}`, value: v.score }))}>
-                            <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />
-                            <YAxis tick={{ fill: '#fff', fontSize: 12 }} tickFormatter={(value) => {
-                                if (value >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-                                if (value >= 1_000) return (value / 1_000).toFixed(1) + "K";
-                                return value;
-                            }} />
-                            <Tooltip />
-                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                            <Bar dataKey="value" fill="#c70036" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <BarGraph data={data.map((v) => (
+                        { name: numberOrNLetters(v.name), value: v.score }
+                    ))} />
                 </div>}
             </div >
         </>

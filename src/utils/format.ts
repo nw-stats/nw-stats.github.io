@@ -8,7 +8,7 @@ export function formatThousands(value: number, figures?: number): string {
             minimumFractionDigits: figures,
             maximumFractionDigits: figures,
         });
-    } catch (err) {
+    } catch {
         return "";
     }
 }
@@ -17,4 +17,9 @@ export function formatPercent(value: number, figures?: number): string {
     const pct = value * 100;
     const fixed = pct.toFixed(figures);
     return `${fixed}%`;
+}
+
+export function numberOrNLetters(value: string, limit?: number): string {
+    const _limit = limit ? limit : 1;
+    return isNaN(Number(value)) ? value.slice(0, _limit) : value;
 }
