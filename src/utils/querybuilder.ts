@@ -44,7 +44,7 @@ export function constructQuery(columns: string[], params?: QueryParameter[], ord
     if (limit && limit <= 0) {
         throw new Error(`Limit must be greater than 0. limit=${limit}`);
     }
-    const conditions = params ? ` WHERE ${makeConditions(params)}` : '';
+    const conditions = params && params.length > 0 ? ` WHERE ${makeConditions(params)}` : '';
     const limitStr = limit ? ` LIMIT ${limit}` : '';
     const orderBy = order ? ` ORDER BY ${order.column} ${order.direction.toUpperCase()}` : '';
     const select = columns.sort().map(v => v.toUpperCase()).join(', ');
