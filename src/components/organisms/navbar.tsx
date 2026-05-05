@@ -98,9 +98,9 @@
 
 // export default Navbar;
 import React, { useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { kWebsiteName } from '../../constants/name';
-import { DiscordLogoIcon } from '@phosphor-icons/react';
+import { DiscordLogoIcon, RadioactiveIcon } from '@phosphor-icons/react';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -109,8 +109,8 @@ const Navbar: React.FC = () => {
     const toggleMenu = () => setIsOpen(!isOpen);
     const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
 
-    const location = useLocation();
-    const fromPath = encodeURIComponent(location.pathname);
+
+
     return (
         <nav className="bg-gray-800 p-4 text-white w-full top-0 z-10 fixed shadow-md">
             <div className="container mx-auto flex justify-between items-center">
@@ -158,7 +158,15 @@ const Navbar: React.FC = () => {
                             isActive ? 'px-3 py-2 bg-gray-700 rounded' : 'px-3 py-2 hover:bg-gray-600 rounded'
                         }
                     >
-                        Rankings
+                        Company Rankings
+                    </NavLink>
+                    <NavLink
+                        to="/character-rankings"
+                        className={({ isActive }) =>
+                            isActive ? 'px-3 py-2 bg-gray-700 rounded' : 'px-3 py-2 hover:bg-gray-600 rounded'
+                        }
+                    >
+                        <RadioactiveIcon size={24} />
                     </NavLink>
                     {/* <NavLink
                         to={`/inaccuracy?from=${fromPath}`}
@@ -260,7 +268,15 @@ const Navbar: React.FC = () => {
                     }
                     onClick={toggleMenu}
                 >
-                    Rankings
+                    Company Rankings
+                </NavLink>
+                <NavLink
+                    to="/character-rankings"
+                    className={({ isActive }) =>
+                        isActive ? 'block px-3 py-2 bg-gray-700 rounded mb-2' : 'block px-3 py-2 rounded mb-2 hover:bg-gray-600'
+                    }
+                >
+                    <RadioactiveIcon size={24} />
                 </NavLink>
                 {/* <NavLink
                     to="/inaccuracy"

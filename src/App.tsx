@@ -15,7 +15,7 @@ import PlayerDetails from './pages/playerdetails';
 import { Footer } from './components/organisms/footer';
 import { Wars } from './pages/wars';
 import Rankings from './pages/rankings';
-
+import PlayerRankings from './pages/playerrankings';
 const App: React.FC = () => {
   return (
 
@@ -34,6 +34,7 @@ const App: React.FC = () => {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/inaccuracy" element={<Inaccuracy />} />
             <Route path="/rankings" element={<Rankings />} />
+            <Route path="/character-rankings" element={<PlayerRankings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -1,5 +1,5 @@
 
-import { type StatTotals, type MapStat, type WarsSummary, type Leaderboard } from "../types/leaderboard"
+import { type StatTotals, type MapStat, type WarsSummary, type Leaderboard, type LeaderboardEntry } from "../types/leaderboard"
 import type { War } from "../types/hydratedtypes/war";
 import { kThirtyMinutesInSeconds } from "./constants";
 import type { Roster } from "../types/roster";
@@ -147,6 +147,18 @@ export function fillKpar(leaderboard: Leaderboard, summaries: Map<string, StatTo
         const kpar = (entry.kills + entry.assists) / summary.kills;
         entry.kpar = kpar;
     }
+}
+
+export function fillKpars(leaderboard: LeaderboardEntry[], summaries: Map<number, Map<string, StatTotals>>): LeaderboardEntry[] {
+    const results: LeaderboardEntry[] = []
+    for (const row of leaderboard) {
+        const warSummary = summaries.get(row.warid);
+        if (!warSummary) continue;
+        const companysummary = warSummary.get(row.company);
+        if (!companysummary) continue;
+        results.push({ ...row, kpar: (row.kills + row.assists) / companysummary.kills })
+    }
+    return results;
 }
 
 export function splitLeaderboards(leaderboard: Leaderboard): Map<string, Leaderboard> {

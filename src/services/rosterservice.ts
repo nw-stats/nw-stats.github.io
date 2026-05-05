@@ -1,5 +1,6 @@
 import { kSheetId } from "../constants/sheets";
 import { kRosterColumns } from "../mapping/rostermap";
+import type { RosterRow } from "../types/db/rosterrow";
 import { type QueryParameter } from "../types/queryparameter";
 import type { Group, GroupKey, Roster } from "../types/roster";
 import { constructQuery } from "../utils/querybuilder";
@@ -69,4 +70,45 @@ export async function getRosters(params: QueryParameter[]): Promise<Map<number, 
     }
 
     return allRosters;
+}
+
+export async function getRosterTable(): Promise<RosterRow[]> {
+    const query = constructQuery([
+        kRosterColumns.id,
+        kRosterColumns.war,
+        kRosterColumns.company,
+        kRosterColumns.character,
+        kRosterColumns.role,
+        kRosterColumns.group,
+        kRosterColumns.qpds
+    ]);
+    let data: DataType[][] = [];
+    try {
+        data = await fetchTableFromGoogleSheets(kSheetId, 'rosters', query);
+    } catch {
+        return [];
+    }
+    return data.map((row: DataType[]) => ({
+        id: convertInt(row[0]),
+        warid: convertInt(row[1]),
+        company: convertString(row[2]),
+        character: convertString(row[3]),
+        role: convertString(row[4]),
+        group: convertGroupKey(row[5]),
+        qdps: convertString(row[6]),
+    })) as RosterRow[];
+}
+
+export function GroupRosterByWarId(rosters: RosterRow[]): Map<number, RosterRow[]> {
+    const grouped = new Map<number, RosterRow[]>;
+
+    for (const row of rosters) {
+        if (!grouped.has(row.warid)) {
+            grouped.set(row.warid, []);
+        }
+        const g = grouped.get(row.warid);
+
+        g!.push(row);
+    }
+    return grouped;
 }

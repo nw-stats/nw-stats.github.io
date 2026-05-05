@@ -1,55 +1,54 @@
-import type { Leaderboard, LeaderboardEntry } from "../../types/leaderboard";
-import { useMemo, useState, type JSX } from 'react';
-import {
-    useReactTable,
-    getCoreRowModel,
-    getSortedRowModel,
-    flexRender,
-    type ColumnDef,
-    type SortingState,
-} from '@tanstack/react-table';
-
-import NumberCell from "../atom/numbercell";
-import LabelIcon from "../atom/labelicon";
+import { useMemo, useState, type JSX } from "react";
+import { useCharacterRankings } from "../hooks/useCharacterRankings";
+import NotFound from "./notfound";
+import Loading from "../components/atom/loading";
+import { factionBgSecondary, factionBgTertiary } from "../utils/factions";
+import { type ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable, type SortingState, flexRender } from "@tanstack/react-table";
+import LabelIcon from "../components/atom/labelicon";
+import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon, UsersThreeIcon } from "@phosphor-icons/react";
+import { formatPercent } from "../utils/format";
+import NumberCell from "../components/atom/numbercell";
 import { Link } from "react-router-dom";
-import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from "@phosphor-icons/react";
-import type { Company } from "../../types/company";
-import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
-import { formatPercent } from "../../utils/format";
-import Dropdown from "../atom/dropdown";
-import { NoData } from "../atom/nodata";
-import { sortRolesStrings } from "../../utils/roster";
+import type { PlayerRolePerformance } from "../types/characterperformance";
+import { sortRolesStrings } from "../utils/roster";
+import Dropdown from "../components/atom/dropdown";
 
-type LeaderboardProps = {
-    companies: Map<string, Company>,
-    hideRoles: boolean,
-    leaderboard?: Leaderboard,
-};
-
-export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: LeaderboardProps): JSX.Element {
+export default function PlayerRankings(): JSX.Element {
+    const { loading, error, rankings } = useCharacterRankings();
     const [selectedRole, setSelectedRole] = useState<string>('All Roles');
     const [sorting, setSorting] = useState<SortingState>([
         { id: 'score', desc: true },
     ]);
 
     const filtered = useMemo(() => {
-        if (leaderboard) {
-            return leaderboard.filter(v => selectedRole === 'All Roles' || selectedRole === v.roleAssignment.role);
+        if (rankings) {
+            return rankings.filter(v => selectedRole === 'All Roles' || selectedRole === v.role.role);
         } else {
             return [];
         }
-    }, [selectedRole]);
+    }, [selectedRole, rankings]);
 
-    const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
-        const baseCols: ColumnDef<LeaderboardEntry>[] = [
+    const columns = useMemo<ColumnDef<PlayerRolePerformance>[]>(() => {
+        const baseCols: ColumnDef<PlayerRolePerformance>[] = [
             {
                 accessorKey: 'name',
                 header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
+                sortingFn: 'basic',
                 cell: info => (
                     <div className="text-left hover:underline">
                         <Link to={`/players/${info.getValue<string>()}`}>
                             {info.getValue<string>()}
                         </Link>
+                    </div>
+                )
+            },
+            {
+                id: 'role',
+                accessorFn: (row) => row.role.role,
+                header: () => (<LabelIcon text='Role' icon={<UsersThreeIcon weight="fill" />} />),
+                cell: info => (
+                    <div>
+                        {info.getValue<string>()}
                     </div>
                 )
             },
@@ -118,45 +117,8 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
             },
         ];
 
-        // Insert role column only if NOT hidden
-        if (!hideRoles) {
-            baseCols.splice(1, 0, {
-                accessorKey: 'roleAssignment',
-                header: () => (
-                    <LabelIcon text={'Role'} icon={<GameControllerIcon weight="fill" />} />
-                ),
-                sortingFn: (rowA, rowB) => {
-                    const a = rowA.original.roleAssignment?.role ?? "";
-                    const b = rowB.original.roleAssignment?.role ?? "";
-                    return sortRolesStrings(a, b);
-                },
-                cell: info => {
-                    const value = info.getValue<{ role: string; inferred: boolean }>();
-                    if (!value?.role) return <span className="text-gray-400 italic"></span>;
-                    return (
-                        <span className={value.inferred ? "italic text-gray-600" : ""}>
-                            {value.role}
-                        </span>
-                    );
-                },
-            });
-        }
-
-
         return baseCols;
-    }, [hideRoles]);
-
-    const roleOptions = useMemo(() => {
-        const rolesSet = new Set<string>();
-        if (leaderboard) {
-            for (const entry of leaderboard) {
-                if (typeof entry.roleAssignment.role === "string") {
-                    rolesSet.add(entry.roleAssignment.role);
-                }
-            }
-        }
-        return [...rolesSet].sort(sortRolesStrings);
-    }, [leaderboard]);
+    }, []);
 
     const table = useReactTable({
         data: filtered,
@@ -169,14 +131,34 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
         getSortedRowModel: getSortedRowModel(),
     });
 
+    const roleOptions = useMemo(() => {
+        const roleSet = new Set<string>();
+        if (rankings) {
+            for (const row of rankings) {
+                if (row.role.role) {
+                    roleSet.add(row.role.role);
+                }
+            }
+        }
+        return [...roleSet].sort(sortRolesStrings);
+    }, [rankings]);
+
+    if (error) return <NotFound />;
+    if (loading) return <Loading />;
+
     return (
-        <div className="flex flex-col gap-2 bg-gray-800 rounded-lg shadow-lg text-white">
-            <h2 className="text-xl font-bold p-2">Leaderboard</h2>
-            <div className="pl-2 pb-2">
-                <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
-            </div>
-            <div className="overflow-x-auto">
-                <table className="min-w-full table-auto border-collapse">
+        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-white">
+            <div className="w-full pt-8 max-w-6xl mx-auto gap-4">
+                <div className="bg-gray-800 rounded-t-lg">
+                    <h1 className="text-white font-semibold text-xl p-2">Player Rankings</h1>
+                    <div className="pl-2">
+                        <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
+                    </div>
+                </div>
+            </div >
+
+            <div className="w-full text-white bg-gray-800 " >
+                <table className="w-full table-fixed border-collapse text-sm">
                     <thead className="bg-gray-700" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
@@ -210,8 +192,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                     </thead >
                     <tbody>
                         {table.getRowModel().rows.map((row, index) => {
-                            const faction = companies.get(row.original.company)?.faction || 'Gray';
-
+                            const faction = 'Gray';
                             const rowClass = index % 2 === 0 ? factionBgSecondary(faction) : factionBgTertiary(faction);
 
                             return (
@@ -227,21 +208,15 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                                 </tr>
                             );
                         })}
-                        {table.getRowModel().rows.length === 0 && (
-                            <tr>
-                                <td
-                                    colSpan={columns.length}
-                                    className="text-center p-4 text-gray-400"
-                                >
-                                    <NoData />
-                                </td>
-                            </tr>
-                        )}
                     </tbody>
                 </table>
             </div>
-        </div >
-    );
-};
 
-export default LeaderboardDisplay
+            {rankings.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                    No rankings data available yet.
+                </div>
+            )}
+        </div>
+    );
+}
