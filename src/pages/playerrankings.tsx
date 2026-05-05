@@ -8,17 +8,53 @@ import LabelIcon from "../components/atom/labelicon";
 import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { formatPercent } from "../utils/format";
 import NumberCell from "../components/atom/numbercell";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import type { PlayerRolePerformance } from "../types/characterperformance";
 import { sortRolesStrings } from "../utils/roster";
 import Dropdown from "../components/atom/dropdown";
 
 export default function PlayerRankings(): JSX.Element {
     const { loading, error, rankings } = useCharacterRankings();
-    const [selectedRole, setSelectedRole] = useState<string>('All Roles');
-    const [sorting, setSorting] = useState<SortingState>([
-        { id: 'score', desc: true },
-    ]);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const selectedRole = searchParams.get("role") ?? "All Roles";
+    const setSelectedRole = (role: string) => {
+        setSearchParams(prev => {
+            const next = new URLSearchParams(prev);
+            next.set("role", role);
+            return next;
+        });
+    };
+
+    const sorting: SortingState = useMemo(() => {
+        const sortParam = searchParams.get("sort");
+        if (!sortParam) return [{ id: "score", desc: true }];
+
+        const [id, dir] = sortParam.split("_");
+
+        return [
+            {
+                id,
+                desc: dir === "desc",
+            },
+        ];
+    }, [searchParams]);
+    const setSorting = (updater: SortingState | ((old: SortingState) => SortingState)) => {
+        const nextSorting =
+            typeof updater === "function" ? updater(sorting) : updater;
+
+        const next = new URLSearchParams(searchParams);
+
+        if (!nextSorting.length) {
+            next.delete("sort");
+        } else {
+            const { id, desc } = nextSorting[0];
+            next.set("sort", `${id}_${desc ? "desc" : "asc"}`);
+        }
+
+        setSearchParams(next);
+    };
+
 
     const filtered = useMemo(() => {
         if (rankings) {
@@ -150,7 +186,7 @@ export default function PlayerRankings(): JSX.Element {
         <div className="flex flex-col pt-8 max-w-6xl mx-auto text-white">
             <div className="w-full pt-8 max-w-6xl mx-auto gap-4">
                 <div className="bg-gray-800 rounded-t-lg">
-                    <h1 className="text-white font-semibold text-xl p-2">Player Rankings</h1>
+                    <h1 className="text-white font-semibold text-xl p-2">Character Totals</h1>
                     <div className="pl-2">
                         <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
                     </div>

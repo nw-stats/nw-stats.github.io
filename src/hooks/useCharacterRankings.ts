@@ -11,14 +11,11 @@ export function useCharacterRankings() {
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable();
 
     const rankings = useMemo(() => {
-        console.log("UseCharacterRankigns");
         const groupedRosters = GroupRosterByWarId(rosterTable);
         const leaderboardEntires = HydrateLeaderboardTable(lbTable, groupedRosters);
         const summaries = summarizeLeaderboards(leaderboardEntires);
         const enriched = fillKpars(leaderboardEntires, summaries);
         const performance = new Map<string, PlayerRolePerformance>();
-
-        console.log(enriched);
 
         for (const row of enriched) {
             const key = playerPerformanceKey(row.character, row.roleAssignment.role);
