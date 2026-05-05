@@ -153,12 +153,20 @@ const Navbar: React.FC = () => {
                         Players
                     </NavLink>
                     <NavLink
+                        to="/rankings"
+                        className={({ isActive }) =>
+                            isActive ? 'px-3 py-2 bg-gray-700 rounded' : 'px-3 py-2 hover:bg-gray-600 rounded'
+                        }
+                    >
+                        Rankings
+                    </NavLink>
+                    {/* <NavLink
                         to={`/inaccuracy?from=${fromPath}`}
                         className="block px-4 py-2 hover:bg-gray-600 text-red-300"
                         onClick={() => setDropdownOpen(false)}
                     >
                         Report Bad Data
-                    </NavLink>
+                    </NavLink> */}
                     {/* Dropdown */}
                     <div className="relative">
                         <button
@@ -246,6 +254,15 @@ const Navbar: React.FC = () => {
                     Player Stats
                 </NavLink>
                 <NavLink
+                    to="/rankings"
+                    className={({ isActive }) =>
+                        isActive ? 'block px-3 py-2 bg-gray-700 rounded mb-2' : 'block px-3 py-2 rounded mb-2 hover:bg-gray-600'
+                    }
+                    onClick={toggleMenu}
+                >
+                    Rankings
+                </NavLink>
+                {/* <NavLink
                     to="/inaccuracy"
                     state={{ from: location.pathname }}
                     className={({ isActive }) =>
@@ -254,7 +271,7 @@ const Navbar: React.FC = () => {
                     onClick={toggleMenu}
                 >
                     Report Bad Data
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                     to="/feedback"
                     className={({ isActive }) =>

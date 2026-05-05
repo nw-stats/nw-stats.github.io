@@ -68,12 +68,9 @@ function Rankings(): JSX.Element {
 
     return (
         <div className="flex flex-col pt-8 max-w-6xl mx-auto gap-4">
-            <div className="flex max-w-40">
-                <button onClick={() => setLeague("M")} className={`text-white ${league === "M" ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-600 hover:bg-gray-700"} rounded-l-lg w-full pt-2 pb-2`}>Main</button>
-                <button onClick={() => setLeague("G")} className={`text-white ${league === "G" ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-600 hover:bg-gray-700"} rounded-r-lg w-full pt-2 pb-2`} >G</button>
-            </div>
+
             <div className="bg-gray-800 rounded-lg">
-                <h1 className="text-white font-semibold text-xl p-2">{kLeageNames[league]} League</h1>
+                <h1 className="text-white font-semibold text-xl p-2">Split Wars</h1>
                 <RankingsDisplay rankings={entries} />
             </div>
         </div >
