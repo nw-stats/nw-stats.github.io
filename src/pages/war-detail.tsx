@@ -4,7 +4,6 @@ import { useWarData } from "../hooks/useWarData";
 import Loading from "../components/atom/loading";
 
 import { WarResultsCompanyCombined } from "../components/molecules/warresultscompanycombined";
-import { useEffect, useRef, useState, type JSX } from "react";
 import NotFound from "./notfound";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
@@ -17,6 +16,7 @@ import GroupsDetail from "../components/molecules/groupsdetails";
 import { HealerCompare } from "../components/organisms/healercompare";
 import { WarListCard } from "../components/molecules/warlistcard";
 import { GroupsSummaryGraph } from "../components/molecules/groupssummarygraphy";
+import { useRef, useState, type JSX } from "react";
 
 
 
@@ -39,10 +39,10 @@ function WarDetail(): JSX.Element {
         });
     };
     const innerTab = searchParams.get("i") ?? war?.attacker.name ?? "All";
-    const setInnerTab = (outter: string) => {
+    const setInnerTab = (inner: string) => {
         setSearchParams(prev => {
             const next = new URLSearchParams(prev);
-            next.set("o", outter);
+            next.set("i", inner);
             return next;
         });
     };
@@ -50,29 +50,6 @@ function WarDetail(): JSX.Element {
     const [lbTab, setLbTab] = useState("All");
 
     const goldStar = searchParams.has("weenie") ?? false;
-
-    useEffect(() => {
-        if (!war) return;
-
-        const attackerGroups = groupDetails.get(war.attacker.name);
-        const defenderGroups = groupDetails.get(war.defender.name);
-
-        const hasAttacker = attackerGroups && attackerGroups.size > 0;
-        const hasDefender = defenderGroups && defenderGroups.size > 0;
-
-        let nextOuter = "Groups Detail";
-        let nextInner = war.attacker.name;
-
-        if (!hasAttacker && hasDefender) {
-            nextInner = war.defender.name;
-        } else if (!hasAttacker && !hasDefender) {
-            nextOuter = "Leaderboard";
-            nextInner = "All";
-        }
-
-        setOuterTab(nextOuter);
-        setInnerTab(nextInner);
-    }, [war, groupDetails]);
 
     if (loading) return <Loading />;
     if (error) return <NotFound />;
@@ -195,14 +172,6 @@ function WarDetail(): JSX.Element {
                                         setLbTab(label);
                                     }}
                                 >
-                                    <Tab label={"All"}>
-                                        <LeaderboardDisplay
-                                            leaderboard={combinedLeaderboard}
-                                            companies={companies}
-                                            hideRoles={war.hideRoles}
-                                            goldStar={goldStar}
-                                        />
-                                    </Tab>
                                     <Tab label={war.attacker.name}>
                                         <LeaderboardDisplay
                                             leaderboard={attackerLeaderboard}
@@ -214,6 +183,14 @@ function WarDetail(): JSX.Element {
                                     <Tab label={war.defender.name}>
                                         <LeaderboardDisplay
                                             leaderboard={defenderLeaderboard}
+                                            companies={companies}
+                                            hideRoles={war.hideRoles}
+                                            goldStar={goldStar}
+                                        />
+                                    </Tab>
+                                    <Tab label={"All"}>
+                                        <LeaderboardDisplay
+                                            leaderboard={combinedLeaderboard}
                                             companies={companies}
                                             hideRoles={war.hideRoles}
                                             goldStar={goldStar}
