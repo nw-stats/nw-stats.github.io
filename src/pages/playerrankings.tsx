@@ -1,11 +1,11 @@
-import { useMemo, useState, type JSX } from "react";
+import { useMemo, type JSX } from "react";
 import { useCharacterRankings } from "../hooks/useCharacterRankings";
 import NotFound from "./notfound";
 import Loading from "../components/atom/loading";
 import { factionBgSecondary, factionBgTertiary } from "../utils/factions";
 import { type ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable, type SortingState, flexRender } from "@tanstack/react-table";
 import LabelIcon from "../components/atom/labelicon";
-import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon, UsersThreeIcon } from "@phosphor-icons/react";
+import { FireIcon, FirstAidIcon, HandshakeIcon, HashIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { formatPercent } from "../utils/format";
 import NumberCell from "../components/atom/numbercell";
 import { Link, useSearchParams } from "react-router-dom";
@@ -28,7 +28,7 @@ export default function PlayerRankings(): JSX.Element {
 
     const sorting: SortingState = useMemo(() => {
         const sortParam = searchParams.get("sort");
-        if (!sortParam) return [{ id: "score", desc: true }];
+        if (!sortParam) return [{ id: "kpar", desc: true }];
 
         const [id, dir] = sortParam.split("_");
 
@@ -85,6 +85,15 @@ export default function PlayerRankings(): JSX.Element {
                 cell: info => (
                     <div>
                         {info.getValue<string>()}
+                    </div>
+                )
+            },
+            {
+                accessorKey: 'count',
+                header: () => (<LabelIcon text='Wars' icon={<HashIcon weight="fill" />} />),
+                cell: info => (
+                    <div className="text-center">
+                        <NumberCell value={info.getValue<number>()} />
                     </div>
                 )
             },
@@ -187,7 +196,7 @@ export default function PlayerRankings(): JSX.Element {
             <div className="w-full pt-8 max-w-6xl mx-auto gap-4">
                 <div className="bg-gray-800 rounded-t-lg">
                     <h1 className="text-white font-semibold text-xl p-2">Character Totals</h1>
-                    <div className="pl-2">
+                    <div className="pl-2 pb-2">
                         <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
                     </div>
                 </div>

@@ -26,15 +26,30 @@ function WarDetail(): JSX.Element {
     const [searchParams, setSearchParams] = useSearchParams();
     const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
-
     const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
 
     const [ssLoading, setSsLoading] = useState(false);
 
     const outerTab = searchParams.get("o") ?? "Groups Detail";
+    const setOuterTab = (outter: string) => {
+        setSearchParams(prev => {
+            const next = new URLSearchParams(prev);
+            next.set("o", outter);
+            return next;
+        });
+    };
     const innerTab = searchParams.get("i") ?? war?.attacker.name ?? "All";
+    const setInnerTab = (outter: string) => {
+        setSearchParams(prev => {
+            const next = new URLSearchParams(prev);
+            next.set("o", outter);
+            return next;
+        });
+    };
 
     const [lbTab, setLbTab] = useState("All");
+
+    const goldStar = searchParams.has("weenie") ?? false;
 
     useEffect(() => {
         if (!war) return;
@@ -58,26 +73,6 @@ function WarDetail(): JSX.Element {
         setOuterTab(nextOuter);
         setInnerTab(nextInner);
     }, [war, groupDetails]);
-
-    const setOuterTab = (label: string) => {
-        if (outerTab === label) return; // skip if no change
-        setSearchParams(prev => {
-            const params = new URLSearchParams(prev);
-            params.set("o", label);
-            return params;
-        }, { replace: true });
-    };
-
-    const setInnerTab = (label: string) => {
-        if (innerTab === label) return; // skip if no change
-        setSearchParams(prev => {
-            const params = new URLSearchParams(prev);
-            params.set("i", label);
-            return params;
-        }, { replace: true });
-    };
-
-
 
     if (loading) return <Loading />;
     if (error) return <NotFound />;
@@ -117,24 +112,15 @@ function WarDetail(): JSX.Element {
         }
     };
 
-    // let compareAttackers = [];
-    // for (const [k, v] of attackerGroups) {
-    //     compareAttackers.push({
-    //         name: k,
-    //         value: v.stats.entries
-    //     })
-    // }
-    // const compareAttackers = attackerGroups?.forEach((v, k, m) => ({ name: k, value: 0 }));
-    // const compareDefenders = defenderGroups?.forEach((v, k, m) => ({ name: k, value: 0 }));
     return (
         <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
             <div className="flex flex-col gap-4 p-2" ref={screenshotRef}>
                 <div className="pt-8">
                     {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
-                    <WarListCard war={war} />
+                    <WarListCard war={war} goldStar={goldStar} />
                 </div>
                 <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">
-                    <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[war.attacker.faction, war.defender.faction]} attacker={war.attacker.name} defender={war.defender.name} />
+                    <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[war.attacker.faction, war.defender.faction]} attacker={war.attacker.name} defender={war.defender.name} goldStar={goldStar} />
                     <CaptureTimes captures={war.captures} />
                 </div>
 
@@ -159,10 +145,10 @@ function WarDetail(): JSX.Element {
                                     }}
                                 >
                                     <Tab label={war.attacker.name}>
-                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} />
+                                        <GroupsDetail groups={attackerGroups} hideRoles={war.hideRoles} goldStar={goldStar} />
                                     </Tab>
                                     <Tab label={war.defender.name}>
-                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} />
+                                        <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} goldStar={goldStar} />
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
@@ -175,10 +161,10 @@ function WarDetail(): JSX.Element {
                                     }}
                                 >
                                     <Tab label={war.attacker.name}>
-                                        <GroupsSummary groups={attackerGroups} />
+                                        <GroupsSummary groups={attackerGroups} goldStar={goldStar} />
                                     </Tab>
                                     <Tab label={war.defender.name}>
-                                        <GroupsSummary groups={defenderGroups} />
+                                        <GroupsSummary groups={defenderGroups} goldStar={goldStar} />
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
@@ -214,6 +200,7 @@ function WarDetail(): JSX.Element {
                                             leaderboard={combinedLeaderboard}
                                             companies={companies}
                                             hideRoles={war.hideRoles}
+                                            goldStar={goldStar}
                                         />
                                     </Tab>
                                     <Tab label={war.attacker.name}>
@@ -221,6 +208,7 @@ function WarDetail(): JSX.Element {
                                             leaderboard={attackerLeaderboard}
                                             companies={companies}
                                             hideRoles={war.hideRoles}
+                                            goldStar={goldStar}
                                         />
                                     </Tab>
                                     <Tab label={war.defender.name}>
@@ -228,6 +216,7 @@ function WarDetail(): JSX.Element {
                                             leaderboard={defenderLeaderboard}
                                             companies={companies}
                                             hideRoles={war.hideRoles}
+                                            goldStar={goldStar}
                                         />
                                     </Tab>
                                 </TabbedContent>

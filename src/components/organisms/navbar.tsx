@@ -186,11 +186,18 @@ const Navbar: React.FC = () => {
                         {isDropdownOpen && (
                             <div className="absolute right-0 mt-2 w-64 bg-gray-700 rounded shadow-lg z-20">
                                 <NavLink
-                                    to="/feedback"
+                                    to="/orphans"
                                     className="block px-4 py-2 hover:bg-gray-600"
                                     onClick={() => setDropdownOpen(false)}
                                 >
-                                    Feedback
+                                    Orphans
+                                </NavLink>
+                                <NavLink
+                                    to="/groupless"
+                                    className="block px-4 py-2 hover:bg-gray-600"
+                                    onClick={() => setDropdownOpen(false)}
+                                >
+                                    Groupless
                                 </NavLink>
                                 <a
                                     href="https://discord.gg/jfhRyNSHvD"
@@ -288,15 +295,6 @@ const Navbar: React.FC = () => {
                 >
                     Report Bad Data
                 </NavLink> */}
-                <NavLink
-                    to="/feedback"
-                    className={({ isActive }) =>
-                        isActive ? 'block px-3 py-2 bg-gray-700 rounded' : 'block px-3 py-2 rounded hover:bg-gray-600'
-                    }
-                    onClick={toggleMenu}
-                >
-                    Feedback
-                </NavLink>
                 <a
                     href="https://discord.gg/jfhRyNSHvD"
                     className="flex items-center gap-2 px-4 py-2 hover:bg-gray-600"

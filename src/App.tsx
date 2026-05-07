@@ -16,6 +16,8 @@ import { Footer } from './components/organisms/footer';
 import { Wars } from './pages/wars';
 import Rankings from './pages/rankings';
 import PlayerRankings from './pages/playerrankings';
+import { OrphanedCharacters } from './pages/orphaned-characters';
+import Groupless from './pages/groupless';
 const App: React.FC = () => {
   return (
 
@@ -26,7 +28,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/players" element={<Players />} />
-            <Route path="/players/:characterName/:mode?" element={<PlayerDetails />} />
+            <Route path="/players/:playerName" element={<PlayerDetails />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/:companyName" element={<CompanyDetail />} />
             <Route path="/wars" element={<Wars />} />
@@ -35,6 +37,8 @@ const App: React.FC = () => {
             <Route path="/inaccuracy" element={<Inaccuracy />} />
             <Route path="/rankings" element={<Rankings />} />
             <Route path="/character-rankings" element={<PlayerRankings />} />
+            <Route path="/orphans" element={<OrphanedCharacters />} />
+            <Route path="groupless" element={<Groupless />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

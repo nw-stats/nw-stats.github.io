@@ -12,7 +12,7 @@ export interface UseLeaderboardsOptions {
 
 export function useLeaderboards(options?: UseLeaderboardsOptions) {
     const [leaderboards, setLeaderboards] = useState<Leaderboard>([]);
-    const [loading, setLoading] = useState<Boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
     const warIdsKey = useMemo(() => (options?.warIds || []).sort().join(','), [options?.warIds]);

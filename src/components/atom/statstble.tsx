@@ -95,7 +95,7 @@ function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTa
         const rowCells: JSX.Element[] = [];
         for (const cell of row.getVisibleCells()) {
             rowCells.push(
-                <td key={cell.id} className={`p-1 border border-gray-700 ${sortedIndex % 2 === 0 ? "bg-gray-800" : "bg-gray-900"} text-white text-nowrap`}>
+                <td key={cell.id} className={`p-1 border border-gray-700 ${sortedIndex % 2 === 0 ? "bg-gray-800" : "bg-gray-900"} text-white`}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
             );

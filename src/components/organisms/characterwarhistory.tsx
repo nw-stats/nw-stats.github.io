@@ -10,7 +10,8 @@ import type { DateTime } from "luxon";
 import LabelIcon from "../atom/labelicon";
 import { sortRolesStrings } from "../../utils/roster";
 
-
+const cardBase =
+    "rounded-lg bg-gray-800 shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
 export interface CharacterWarHistoryProps {
     history: CharacterDetailsEntry[];
 }
@@ -137,9 +138,22 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
 
 
     return (
-        <div className="bg-gray-700">
-            <h1 className="text-white font-semibold p-2">War History</h1>
-            {history.length > 0 ? (< StatsTable columns={columns} data={history} sort={sort} />) : (<div className='text-gray-500 p-2'>No data</div>)}
+        <div className={`${cardBase}`}>
+            <div className="p-3 border-b border-gray-700">
+                <h1 className="text-white font-semibold">
+                    War History
+                </h1>
+            </div>
+
+            {history.length > 0 ? (
+                <div className="pb-2">
+                    <StatsTable columns={columns} data={history} sort={sort} />
+                </div>
+            ) : (
+                <div className="p-3 text-gray-500">
+                    No data
+                </div>
+            )}
         </div>
     );
 }

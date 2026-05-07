@@ -6,6 +6,7 @@ export interface HealerStats {
     roleAssignment: RoleAssignment;
     group: GroupKey;
     healing: number;
+    healerDeaths: number;
     groupDeaths: number;
     qdpsDeaths: number;
 }

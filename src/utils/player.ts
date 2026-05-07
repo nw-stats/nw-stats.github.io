@@ -87,8 +87,8 @@ export function combineCharacters(characters: Character[]): Character {
     const companies = [...companySet].join(', ');
 
     return {
-        id: -1,
         name: characters.map(c => c.name).join(', '),
+        player: '',
         server: server,
         faction: faction,
         company: companies,

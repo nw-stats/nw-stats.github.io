@@ -5,23 +5,30 @@ import { useLeaderboardtable } from "./tables/useLeaderboardTable";
 import { useRosterTable } from "./tables/userRosterTable";
 import { fillKpars } from "../utils/leaderboard";
 import { playerPerformanceKey, type PlayerRolePerformance } from "../types/characterperformance";
+import { useCharactersTable } from "./tables/useCharactersTable";
+import { createCharacterToPlayerMap } from "../services/characterservice";
 
 export function useCharacterRankings() {
     const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable();
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable();
+    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable();
 
     const rankings = useMemo(() => {
+        const charPlayerMap = createCharacterToPlayerMap(characterTable);
+
         const groupedRosters = GroupRosterByWarId(rosterTable);
         const leaderboardEntires = HydrateLeaderboardTable(lbTable, groupedRosters);
         const summaries = summarizeLeaderboards(leaderboardEntires);
         const enriched = fillKpars(leaderboardEntires, summaries);
-        const performance = new Map<string, PlayerRolePerformance>();
+        const characterPerf = new Map<string, PlayerRolePerformance>();
 
         for (const row of enriched) {
-            const key = playerPerformanceKey(row.character, row.roleAssignment.role);
-            if (!performance.has(key)) {
-                performance.set(key, {
-                    name: row.character,
+            let player = charPlayerMap.get(row.character)
+            if (!player) player = row.character;
+            const key = playerPerformanceKey(player, row.roleAssignment.role);
+            if (!characterPerf.has(key)) {
+                characterPerf.set(key, {
+                    name: player,
                     role: row.roleAssignment,
                     score: 0,
                     kills: 0,
@@ -34,7 +41,7 @@ export function useCharacterRankings() {
                 });
             }
 
-            const totals = performance.get(key);
+            const totals = characterPerf.get(key);
             if (!totals) continue;
 
             totals.score += row.score;
@@ -46,14 +53,14 @@ export function useCharacterRankings() {
             totals.count += 1;
             totals.kpar += row.kpar;
         }
-        for (const perf of performance.values()) {
+        for (const perf of characterPerf.values()) {
             perf.kpar /= perf.count;
         }
-        return Array.from(performance.values());
-    }, [lbTable, rosterTable]); // 👈 critical
+        return Array.from(characterPerf.values());
+    }, [lbTable, rosterTable, characterTable]);
     return {
-        loading: lbLoading || rosterLoading,
-        error: lbError || rosterError,
+        loading: lbLoading || rosterLoading || characterLoading,
+        error: lbError || rosterError || characterError,
         rankings,
     };
 }

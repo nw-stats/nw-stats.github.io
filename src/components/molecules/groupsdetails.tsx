@@ -9,9 +9,10 @@ import { NWayToggle } from '../atom/nwaytoggle';
 interface GroupsDetailProps {
     hideRoles: boolean
     groups?: Map<GroupKey, GroupPerformance>;
+    goldStar?: boolean;
 }
 
-const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups }) => {
+const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups, goldStar }) => {
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
     const [aoeSplit, setAoeSplit] = useLocalStorage<'Include' | 'Exclude'>('aoeSplit', 'Include');
 
@@ -79,7 +80,7 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups }) => {
             <div className="rounded-lg grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {sortedGroups.map((v) => (
                     <div className="w-full overflow-x-auto" key={v[0]}>
-                        <GroupDisplay group={v[1]} groupId={v[0]} hideRoles={hideRoles} splitRoles={splitRoles} />
+                        <GroupDisplay group={v[1]} groupId={v[0]} hideRoles={hideRoles} splitRoles={splitRoles} goldStar={goldStar} />
                     </div>
                 ))}
             </div>

@@ -9,3 +9,7 @@ export interface RosterRow {
     group: GroupKey;
     qdps: string;
 }
+
+export function rosterHasCharacter(roster: RosterRow[], characterName: string): boolean {
+    return roster.some((v) => (v.character === characterName));
+}

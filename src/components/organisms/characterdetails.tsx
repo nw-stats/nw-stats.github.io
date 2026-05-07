@@ -7,14 +7,16 @@ import type { CharacterDetails } from "../../types/characterdetails";
 interface CharacterDetailsProps {
     details: CharacterDetails;
 }
-function CharacterDetailsDisplay({ details }: CharacterDetailsProps): JSX.Element {
+export default function CharacterDetailsDisplay({ details }: CharacterDetailsProps): JSX.Element {
     return (
-        <div className="flex flex-col max-w-6xl mx-auto gap-2s">
+        <div className="flex flex-col max-w-6xl mx-auto gap-3 py-6">
             <CharacterCard player={details.character} />
-            <CharacterSummary character={details.character} summary={details.totals} averages={details.normalized} />
+            <CharacterSummary
+                character={details.character}
+                summary={details.totals}
+                averages={details.normalized}
+            />
             <CharacterWarHistory history={details.history} />
-        </div >
+        </div>
     );
 }
-
-export default CharacterDetailsDisplay;

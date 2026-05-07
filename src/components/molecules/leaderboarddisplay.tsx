@@ -12,21 +12,24 @@ import {
 import NumberCell from "../atom/numbercell";
 import LabelIcon from "../atom/labelicon";
 import { Link } from "react-router-dom";
-import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from "@phosphor-icons/react";
+import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, StarIcon, SwordIcon, UsersIcon } from "@phosphor-icons/react";
 import type { Company } from "../../types/company";
-import { factionBgSecondary, factionBgTertiary } from "../../utils/factions";
+import { factionAccentBar } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
 import { NoData } from "../atom/nodata";
 import { sortRolesStrings } from "../../utils/roster";
+import type { Role } from "../../types/role";
+import RoleText from "../atom/roletext";
 
 type LeaderboardProps = {
     companies: Map<string, Company>,
     hideRoles: boolean,
     leaderboard?: Leaderboard,
+    goldStar?: boolean
 };
 
-export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: LeaderboardProps): JSX.Element {
+export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar }: LeaderboardProps): JSX.Element {
     const [selectedRole, setSelectedRole] = useState<string>('All Roles');
     const [sorting, setSorting] = useState<SortingState>([
         { id: 'score', desc: true },
@@ -43,7 +46,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
     const columns = useMemo<ColumnDef<LeaderboardEntry>[]>(() => {
         const baseCols: ColumnDef<LeaderboardEntry>[] = [
             {
-                accessorKey: 'name',
+                accessorKey: 'character',
                 header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-left hover:underline">
@@ -58,7 +61,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => (<LabelIcon text={'Score'} icon={<PlusCircleIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -67,7 +70,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => <LabelIcon text='Kills' icon={<SwordIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -76,7 +79,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -85,7 +88,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => <LabelIcon text='Assists' icon={<HandshakeIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -94,7 +97,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -103,7 +106,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => <LabelIcon text='Damage' icon={<FireIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -112,7 +115,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                 header: () => <LabelIcon text='KPAR' icon={<PercentIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {formatPercent(info.getValue<number>())}
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
                     </div>
                 ),
             },
@@ -131,11 +134,11 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                     return sortRolesStrings(a, b);
                 },
                 cell: info => {
-                    const value = info.getValue<{ role: string; inferred: boolean }>();
+                    const value = info.getValue<{ role: Role; inferred: boolean }>();
                     if (!value?.role) return <span className="text-gray-400 italic"></span>;
                     return (
                         <span className={value.inferred ? "italic text-gray-600" : ""}>
-                            {value.role}
+                            <RoleText role={value.role} />
                         </span>
                     );
                 },
@@ -209,29 +212,53 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles }: Leader
                         }
                     </thead >
                     <tbody>
-                        {table.getRowModel().rows.map((row, index) => {
-                            const faction = companies.get(row.original.company)?.faction || 'Gray';
-
-                            const rowClass = index % 2 === 0 ? factionBgSecondary(faction) : factionBgTertiary(faction);
+                        {table.getRowModel().rows.map((row) => {
+                            const faction =
+                                companies.get(row.original.company)?.faction || "Gray";
 
                             return (
-                                <tr key={row.id} className={rowClass}>
-                                    {row.getVisibleCells().map(cell => (
+                                <tr
+                                    key={row.id}
+                                    className="
+                                    border-b border-gray-700
+                                    bg-gray-800
+                                    transition
+                                    hover:bg-gray-700/40"
+                                >
+                                    {row.getVisibleCells().map((cell, index) => (
                                         <td
                                             key={cell.id}
-                                            className="p-3 border-b border-gray-700 text-sm text-nowrap"
+                                            className={`
+                            p-3 text-sm
+
+                            ${index === 0
+                                                    ? `relative pl-5
+                                before:absolute
+                                before:left-0
+                                before:top-0
+                                before:h-full
+                                before:w-1
+                                before:rounded-r
+                                ${factionAccentBar(faction)}`
+                                                    : ""
+                                                }
+                        `}
                                         >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </td>
                                     ))}
                                 </tr>
                             );
                         })}
+
                         {table.getRowModel().rows.length === 0 && (
                             <tr>
                                 <td
                                     colSpan={columns.length}
-                                    className="text-center p-4 text-gray-400"
+                                    className="p-4 text-center text-gray-400"
                                 >
                                     <NoData />
                                 </td>

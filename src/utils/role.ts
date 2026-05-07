@@ -11,3 +11,7 @@ export function isRoleFuzzy(role: Role, compare: string): boolean {
 export function isHealer(role: Role): boolean {
     return role === "Healer AOE" || role === "Healer MB" || role === "Healer KS";
 }
+
+export function isAoeHealer(role: Role): boolean {
+    return role.toLowerCase().includes("aoe")
+}

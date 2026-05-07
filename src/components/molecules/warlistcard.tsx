@@ -8,8 +8,9 @@ import { Skeleton } from "../atom/skeleton";
 
 export interface WarListCardProp {
     war: War,
+    goldStar?: boolean
 }
-export function WarListCard({ war }: WarListCardProp): JSX.Element {
+export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
     const attackerWins = war.attacker.name === war.winner;
     const defenderWins = war.defender.name === war.winner;
 
@@ -21,7 +22,7 @@ export function WarListCard({ war }: WarListCardProp): JSX.Element {
                 {/* Attacker */}
                 <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
                     <div className={`absolute inset-0 ${attackerColor} w-1/12 rounded-l-lg`}></div>
-                    {attackerWins && (
+                    {(goldStar || attackerWins) && (
                         <CrownIcon
                             className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-yellow-400"
                             weight="fill"
@@ -69,7 +70,7 @@ export function WarListCard({ war }: WarListCardProp): JSX.Element {
 
                 {/* Defender */}
                 <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
-                    <div className={`absolute right-0 top-0 h-full w-1/12 ${defenderColor} rounded-r-lg`} />                    {defenderWins && (
+                    <div className={`absolute right-0 top-0 h-full w-1/12 ${defenderColor} rounded-r-lg`} />                    {(goldStar || defenderWins) && (
                         <CrownIcon
                             className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-yellow-400"
                             weight="fill"

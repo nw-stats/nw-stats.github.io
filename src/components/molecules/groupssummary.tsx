@@ -4,7 +4,7 @@ import type { GroupPerformance, StatTotals } from '../../types/leaderboard';
 import NumberCell from '../atom/numbercell';
 import LabelIcon from '../atom/labelicon';
 import StatsTable from '../atom/statstble';
-import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon } from '@phosphor-icons/react';
+import { FireIcon, FirstAidIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, StarIcon, SwordIcon, UsersIcon } from '@phosphor-icons/react';
 import type { GroupKey } from '../../types/roster';
 import { formatPercent } from '../../utils/format';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
@@ -13,8 +13,9 @@ import { companyGroupSummary, joinedRoster, splitRoster } from '../../utils/grou
 
 interface GroupsSummaryProps {
     groups?: Map<GroupKey, GroupPerformance>;
+    goldStar?: boolean;
 }
-export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
+export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Element {
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
     const [aoeSplit, setAoeSplit] = useLocalStorage<'Include' | 'Exclude'>('aoeSplit', 'Include');
     const hasQdps = useMemo(() => {
@@ -37,7 +38,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 header: () => (<LabelIcon text={'Score'} icon={<PlusCircleIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -46,7 +47,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 header: () => <LabelIcon text='Kills' icon={<SwordIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -55,7 +56,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -64,7 +65,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 header: () => <LabelIcon text='Assists' icon={<HandshakeIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -74,7 +75,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 } />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -83,7 +84,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 header: () => <LabelIcon text='Damage' icon={<FireIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -92,7 +93,7 @@ export function GroupsSummary({ groups }: GroupsSummaryProps): JSX.Element {
                 header: () => <LabelIcon text='KPAR' icon={<PercentIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {formatPercent(info.getValue<number>())}
+                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
                     </div>
                 ),
             },

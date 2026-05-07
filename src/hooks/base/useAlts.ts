@@ -1,53 +1,71 @@
-// src/hooks/useAlts.ts
-import { useEffect, useState } from 'react';
-import { getAlts } from '../../services/altservice';
-import { getCharacters } from '../../services/characterservice';
-import { Qop } from '../../types/queryparameter';
-import type { Character } from '../../types/character';
-import { kCharacterColumns } from '../../mapping/charactersmap';
+import { useEffect, useState } from 'react'
+import { getAlts } from '../../services/altservice'
+import { getCharacters } from '../../services/characterservice'
+import { Qop } from '../../types/queryparameter'
+import type { Character } from '../../types/character'
+import { kCharacterColumns } from '../../mapping/charactersmap'
 
-export function useAlts(player: string) {
-    const [alts, setAlts] = useState<Character[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
+export function useAlts(player?: string) {
+    const [alts, setAlts] = useState<Character[]>([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<Error | null>(null)
 
     useEffect(() => {
-        let cancelled = false;
-        async function fetchData() {
+        let cancelled = false
+
+        async function fetchAlts() {
+            if (!player) {
+                setAlts([])
+                return
+            }
+
+            setLoading(true)
+            setError(null)
 
             try {
+                const names = await getAlts(player)
 
-                setLoading(true);
-                if (!player) {
-                    setAlts([]);
-                }
-                const names = await getAlts(player);
-                if (cancelled) return;
+                if (cancelled) return
 
-                if (names.length > 0) {
-                    const queries = names.map(v => ({ column: kCharacterColumns.character, fn: Qop.Eq, value: v }));
-                    const players = await getCharacters(queries);
-                    setAlts(players);
-                } else {
-                    setAlts([]);
+                if (names.length === 0) {
+                    setAlts([])
+                    return
                 }
-                setError(null);
+
+                const queries = names.map(name => ({
+                    column: kCharacterColumns.character,
+                    fn: Qop.Eq,
+                    value: name,
+                }))
+
+                const characters = await getCharacters(queries)
+
+                if (cancelled) return
+
+                setAlts(characters)
             } catch (err) {
                 if (!cancelled) {
-                    setError(error);
+                    setError(err instanceof Error
+                        ? err
+                        : new Error('Failed to load alts'))
                 }
             } finally {
                 if (!cancelled) {
-                    setLoading(false);
+                    setLoading(false)
                 }
             }
         }
 
-        fetchData();
-        return () => {
-            cancelled = true;
-        };
-    }, [player]);
+        fetchAlts()
 
-    return { loading, error, alts };
+        return () => {
+            cancelled = true
+        }
+    }, [player])
+
+    return {
+        alts,
+        loading,
+        error,
+    }
 }

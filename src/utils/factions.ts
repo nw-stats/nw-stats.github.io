@@ -76,3 +76,15 @@ export function factionText(faction: Faction): string {
     }
     return 'text-gray-700';
 }
+
+export function factionAccentBar(faction: Faction): string {
+    if (faction === "Marauder") {
+        return "before:bg-green-500";
+    } else if (faction === "Syndicate") {
+        return "before:bg-purple-500";
+    } else if (faction === "Covenant") {
+        return "before:bg-yellow-400";
+    } else {
+        return "before:bg-gray-500";
+    }
+}
