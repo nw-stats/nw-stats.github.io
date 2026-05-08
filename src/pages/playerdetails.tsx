@@ -38,8 +38,8 @@ import { useMemo, type JSX } from "react";
 //     return (
 //         <div>
 //             <div className="mx-auto max-w-6xl pt-6">
-//                 <div className="inline-flex items-center gap-2 bg-gray-700 px-3 py-2 rounded-t-lg">
-//                     <div className="text-white font-bold">Alt</div>
+//                 <div className="inline-flex items-center gap-2 bg-card px-3 py-2 rounded-t-lg">
+//                     <div className="text-foreground font-bold">Alt</div>
 //                     <Dropdown options={options} value={selectedAlt} onChange={setSelectedAlt} />
 //                 </div>
 //             </div>
@@ -88,7 +88,7 @@ export default function PlayerDetails(): JSX.Element {
     return (
         <div className="mx-auto max-w-6xl py-6 space-y-4">
             {/* Header */}
-            <div className="flex items-center justify-between rounded-lg bg-gray-800 px-4 py-3 shadow-sm ring-1 ring-gray-700/50">
+            <div className="flex items-center justify-between rounded-lg bg-background px-4 py-3 shadow-sm ring-1 ring-gray-700/50">
                 <div className="flex items-center gap-3">
                     <div className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
                         Alt

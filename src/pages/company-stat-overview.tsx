@@ -26,8 +26,8 @@ function CompanyStatOverview({ companyName, wars, leaderboard }: CompanyStatOver
         <div className="flex gap-2">
             {/* <div className="flex-1 text-w">
                 <div className="flex flex-col items-center text-left gap-2">
-                    <h1 className="text-white text-xl font-semibold text-left">Win/Loss</h1>
-                    <div className="bg-gray-800 p-4 rounded-lg w-auto h-auto">
+                    <h1 className="text-foreground text-xl font-semibold text-left">Win/Loss</h1>
+                    <div className="bg-background p-4 rounded-lg w-auto h-auto">
                         <ResponsiveContainer width={250} height={180}>
                             <PieChart>
                                 <Pie
@@ -51,7 +51,7 @@ function CompanyStatOverview({ companyName, wars, leaderboard }: CompanyStatOver
                 </div>
             </div > */}
             <div className="flex-2">
-                <div className="flex flex-col gap-6 text-white">
+                <div className="flex flex-col gap-6 text-foreground">
                     <div>
                         <h1 className="text-xl font-semibold mb-2">Win/Loss</h1>
                         <div className="grid grid-cols-3 gap-4">

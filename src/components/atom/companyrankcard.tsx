@@ -12,7 +12,7 @@ function CompanyRankCard({ name, faction }: CompanyRankCardProps): JSX.Element {
     const color = factionBgPrimary(faction);
     return (
         <Link to={`/companies/${name}`}>
-            <div className="flex bg-gray-800 gap-1 hover:scale-105 rounded-lg">
+            <div className="flex bg-background gap-1 hover:scale-105 rounded-lg">
                 <div className={`${color} rounded-l-lg p-4`}>
 
                 </div>
@@ -20,7 +20,7 @@ function CompanyRankCard({ name, faction }: CompanyRankCardProps): JSX.Element {
                     <div>
                         {name}
                     </div>
-                    <div className="text-xs text-gray-200">
+                    <div className="text-xs text-muted">
                         {faction}
                     </div>
                 </div>

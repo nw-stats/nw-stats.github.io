@@ -10,7 +10,7 @@ export interface WarTileProps {
 function WarTile({ war }: WarTileProps): JSX.Element {
     return (
         <Link to={`/wars/${war.id}`}>
-            <div className="bg-gray-800 text-white w-full h-full flex items-center justify-center rounded-lg p-2">
+            <div className="bg-background text-foreground w-full h-full flex items-center justify-center rounded-lg p-2">
                 <div className="text-center">
                     <div className="font-semibold">{war.attacker.name}</div>
                     <div className="text-sm text-gray-400">vs</div>

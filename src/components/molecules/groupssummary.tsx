@@ -38,7 +38,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 header: () => (<LabelIcon text={'Score'} icon={<PlusCircleIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -47,7 +47,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 header: () => <LabelIcon text='Kills' icon={<SwordIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -56,7 +56,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -65,7 +65,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 header: () => <LabelIcon text='Assists' icon={<HandshakeIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -75,7 +75,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 } />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -84,7 +84,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 header: () => <LabelIcon text='Damage' icon={<FireIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -93,7 +93,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 header: () => <LabelIcon text='KPAR' icon={<PercentIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
                     </div>
                 ),
             },
@@ -174,7 +174,7 @@ export function GroupsSummary({ groups, goldStar }: GroupsSummaryProps): JSX.Ele
                 </div>
                 {groups ? (
                     <div className=""><StatsTable columns={columns} data={data} /></div>
-                ) : (<div className='text-gray-500 p-2'>No data</div>)}
+                ) : (<div className='text-muted p-2'>No data</div>)}
             </div>
         </div >
     );

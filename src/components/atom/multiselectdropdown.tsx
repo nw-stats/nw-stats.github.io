@@ -55,12 +55,12 @@ export function MultiselectDropdown({
     }, []);
 
     return (
-        <div ref={dropdownRef} className="relative inline-block w-full text-white">
+        <div ref={dropdownRef} className="relative inline-block w-full text-foreground">
             {/* Dropdown button */}
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between bg-gray-700 text-white px-3 py-2 rounded-lg"
+                className="w-full flex items-center justify-between bg-card text-foreground px-3 py-2 rounded-lg"
             >
                 <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                     {allSelected
@@ -78,15 +78,15 @@ export function MultiselectDropdown({
 
             {/* Dropdown menu */}
             {isOpen && (
-                <div className="absolute mt-2 w-full bg-gray-800 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                <div className="absolute mt-2 w-full bg-background rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
                     {/* Search bar */}
-                    <div className="sticky top-0 bg-gray-800 p-2 border-b border-gray-700">
+                    <div className="sticky top-0 bg-background p-2 border-b border-gray-700">
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search options..."
-                            className="w-full bg-gray-900 text-white px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-rose-400 placeholder-gray-400"
+                            className="w-full bg-gray-900 text-foreground px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-rose-400 placeholder-gray-400"
                         />
                     </div>
 
@@ -94,7 +94,7 @@ export function MultiselectDropdown({
                     <button
                         type="button"
                         onClick={toggleAll}
-                        className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-gray-700 ${allSelected ? "font-semibold text-rose-400" : "text-gray-200"
+                        className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-card ${allSelected ? "font-semibold text-rose-400" : "text-muted"
                             }`}
                     >
                         <span>All</span>
@@ -112,7 +112,7 @@ export function MultiselectDropdown({
                                     key={index}
                                     type="button"
                                     onClick={() => toggleOption(option)}
-                                    className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-gray-700 ${selected ? "font-semibold text-rose-400" : "text-gray-200"
+                                    className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-card ${selected ? "font-semibold text-rose-400" : "text-muted"
                                         }`}
                                 >
                                     <span>{option}</span>

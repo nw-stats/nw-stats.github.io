@@ -54,7 +54,7 @@ const GroupsComponent: React.FC<GroupsSummaryProps> = ({
     const selectedTeamHasQpds = company === 1 ? attackerHasQdps : defenderHasQdps;
 
     return (
-        <div className='text-white'>
+        <div className='text-foreground'>
             <div className="flex w-full p-2">
                 <div className="flex flex-row justify-between items-start w-full">
                     {/* Left controls */}

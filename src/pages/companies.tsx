@@ -9,8 +9,8 @@ const Companies: React.FC = () => {
     const { loading, err, companies } = useCompanies();
     const [search, setSearch] = useState("");
 
-    if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
-    if (err) return <div className="text-white">Problem loading companies</div>
+    if (loading) return <div className="flex w-full justify-center text-foreground p-8" ><Loading /></div >;
+    if (err) return <div className="text-foreground">Problem loading companies</div>
 
     companies.sort((a, b) => a.faction.toLocaleLowerCase().localeCompare(b.faction.toLocaleLowerCase()))
 
@@ -21,9 +21,9 @@ const Companies: React.FC = () => {
                 placeholder="Search companies..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 w-full"
+                className="p-2 rounded-lg bg-card text-foreground placeholder-gray-400 w-full"
             />
-            <div className="flex flex-col gap-2 text-white w-full mx-auto">
+            <div className="flex flex-col gap-2 text-foreground w-full mx-auto">
                 {companies.filter(v => v.name.toLocaleLowerCase().includes(search)).map((c, i) => (
                     <CompanyListCard company={c} key={i} />
                 ))}

@@ -13,13 +13,13 @@
 //     return (
 //         <div className="flex flex-row">
 //             <div className={`${color} p-4`}></div>
-//             <div className={`flex items-center bg-gray-700 rounded-tr-lg p-2 gap-2 w-full`}>
+//             <div className={`flex items-center bg-card rounded-tr-lg p-2 gap-2 w-full`}>
 //                 <ProfilePicture pictureUrl="https://dqzvgunkova5o.cloudfront.net/statics/2025-06-20/images/NW-bug.svg" size={32} />
 //                 <div className="flex flex-col">
-//                     <div className="flex items-end text-white gap-2">
+//                     <div className="flex items-end text-foreground gap-2">
 //                         <div className="text-3xl font-semibold ">{player.name}</div>
 //                     </div>
-//                     <div className="flex gap-2 items-end text-white ">
+//                     <div className="flex gap-2 items-end text-foreground ">
 //                         <div>{player.faction !== 'Gray' && player.faction}</div>
 //                         {player.faction !== 'Gray' && player.company && <div>|</div>}
 //                         <div>{player.company}</div>
@@ -42,7 +42,7 @@ export interface PlayerCardProps {
     player: Character;
 }
 const cardBase =
-    "rounded-lg bg-gray-800 shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
+    "rounded-lg bg-background shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
 export default function CharacterCard({ player }: PlayerCardProps): JSX.Element {
     const color = factionBgPrimary(player.faction);
 
@@ -58,7 +58,7 @@ export default function CharacterCard({ player }: PlayerCardProps): JSX.Element 
                 />
 
                 <div className="flex flex-col leading-tight">
-                    <div className="text-xl font-semibold text-white">
+                    <div className="text-xl font-semibold text-foreground">
                         {player.name}
                     </div>
 

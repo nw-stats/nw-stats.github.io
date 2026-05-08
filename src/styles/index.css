@@ -1,10 +1,160 @@
 @import "tailwindcss";
 
+:root {
+  --bg: oklch(98.5% 0.002 247.839);
+  --card: oklch(87.2% 0.01 258.338);
+  --surface: oklch(87.2% 0.01 258.338);
+  --surface-2: oklch(70.7% 0.022 261.325);
+  --surface-hover:  oklch(92.9% 0.013 255.508);
+  --surface-active: oklch(92.8% 0.006 264.531);
+  --fg: oklch(13% 0.028 261.692);
+  --border:oklch(70.7% 0.022 261.325);
+  --ring:oklch(54.6% 0.245 262.881);
+  --muted: oklch(37.3% 0.034 259.733);
+  --positive: oklch(44.8% 0.119 151.328);
+  --negative :oklch(44.4% 0.177 26.899);
+  --winner:  oklch(68.1% 0.162 75.834);
+
+  --marauder-primary:oklch(87.1% 0.15 154.449);
+  --marauder-secondary:oklch(79.2% 0.209 151.711);
+  --marauder-tertiary:oklch(72.3% 0.219 149.579);
+
+  --covenant-primary:oklch(90.5% 0.182 98.111);
+  --covenant-secondary:oklch(85.2% 0.199 91.936);
+  --covenant-tertiary:oklch(79.5% 0.184 86.047);
+
+  --syndicate-primary: oklch(82.7% 0.119 306.383);
+  --syndicate-secondary:oklch(71.4% 0.203 305.504);
+  --syndicate-tertiary:oklch(62.7% 0.265 303.9);
+
+  --gray-primary: oklch(87.2% 0.01 258.338);
+  --gray-secondary:oklch(70.7% 0.022 261.325);
+  --gray-tertiary: oklch(55.1% 0.027 264.364);
+
+  --title: oklch(37.9% 0.146 265.522);
+
+  --role-healer-mb: oklch(62% 0.12 155);
+  --role-healer-aoe: oklch(60% 0.11 150);
+  --role-healer-ks: oklch(64% 0.13 140);
+
+  --role-bruiser: oklch(62% 0.14 65);
+  --role-tank: oklch(55% 0.02 240);
+  --role-flail: oklch(68% 0.12 85);
+
+  --role-qdps: oklch(60% 0.18 25);
+  --role-vg-ig: oklch(62% 0.16 300);
+  --role-disruptor: oklch(66% 0.18 330);
+  --role-firestaff: oklch(64% 0.20 10);
+  --role-ranged: oklch(58% 0.15 230);
+  --role-blunderbuss: oklch(70% 0.14 90);
+
+  --role-shotcaller: oklch(60% 0.14 200);
+
+  --role-many: oklch(55% 0.01 240);
+  --role-empty: oklch(60% 0.01 240);
+}
+
+.dark {
+  --bg: oklch(16% 0.02 260);
+  --card: oklch(20% 0.025 260);
+
+  --surface: oklch(22% 0.025 260);
+  --surface-2: oklch(26% 0.03 260);
+  --surface-hover: oklch(30% 0.035 260);
+  --surface-active: oklch(34% 0.04 260);
+
+  --fg: oklch(92% 0.02 255);
+  --muted: oklch(72% 0.02 255);
+
+  --border: oklch(32% 0.02 260);
+  --ring: oklch(65% 0.18 262);
+  --title: oklch(88% 0.06 265);
+
+  --marauder-primary: oklch(62% 0.14 150);
+  --marauder-secondary: oklch(54% 0.12 150);
+  --marauder-tertiary: oklch(46% 0.10 150);
+
+  --covenant-primary: oklch(68% 0.14 85);
+  --covenant-secondary: oklch(60% 0.12 85);
+  --covenant-tertiary: oklch(52% 0.10 85);
+
+  --syndicate-primary: oklch(64% 0.18 300);
+  --syndicate-secondary: oklch(56% 0.16 300);
+  --syndicate-tertiary: oklch(48% 0.14 300);
+
+  --role-healer-mb: oklch(72% 0.12 155);
+  --role-healer-aoe: oklch(70% 0.11 150);
+  --role-healer-ks: oklch(74% 0.13 140);
+
+  --role-bruiser: oklch(70% 0.14 65);
+  --role-tank: oklch(78% 0.02 240);
+  --role-flail: oklch(74% 0.12 85);
+
+  --role-qdps: oklch(72% 0.18 25);
+  --role-vg-ig: oklch(70% 0.16 300);
+  --role-disruptor: oklch(74% 0.18 330);
+  --role-firestaff: oklch(72% 0.20 10);
+  --role-ranged: oklch(70% 0.16 230);
+  --role-blunderbuss: oklch(76% 0.14 90);
+
+  --role-shotcaller: oklch(72% 0.14 200);
+
+  --role-many: oklch(74% 0.01 240);
+  --role-empty: oklch(70% 0.01 240);
+}
+
+@theme {
+  --color-title: var(--title);
+  --color-background: var(--bg);
+  --color-card: var(--card);
+  --color-surface:var(--surface);
+  --color-surface-active: var(--surface-active);
+  --color-surface-hover: var(--surface-hover);
+  --color-foreground: var(--fg);
+  --color-border:var(--border);
+  --color-ring:var(--ring);
+  --color-muted: var(--muted);
+  --color-positive:var(--positive);
+  --color-negative:var(--negative);
+  --color-winner:var(--winner);
+
+  --color-marauder-primary: var(--marauder-primary);
+  --color-marauder-secondary: var(--marauder-secondary);
+  --color-marauder-tertiary: var(--marauder-tertiary);
+
+  --color-covenant-primary: var(--covenant-primary);
+  --color-covenant-secondary: var(--covenant-secondary);
+  --color-covenant-tertiary: var(--covenant-tertiary);
+
+  --color-syndicate-primary: var(--syndicate-primary);
+  --color-syndicate-secondary: var(--syndicate-secondary);
+  --color-syndicate-tertiary: var(--syndicate-tertiary);
+
+  --color-role-healer-mb: var(--role-healer-mb);
+  --color-role-healer-aoe: var(--role-healer-aoe);
+  --color-role-healer-ks: var(--role-healer-ks);
+
+  --color-role-bruiser: var(--role-bruiser);
+  --color-role-tank: var(--role-tank);
+  --color-role-flail: var(--role-flail);
+
+  --color-role-qdps: var(--role-qdps);
+  --color-role-vg-ig: var(--role-vg-ig);
+  --color-role-disruptor: var(--role-disruptor);
+  --color-role-firestaff: var(--role-firestaff);
+  --color-role-ranged: var(--role-ranged);
+  --color-role-blunderbuss: var(--role-blunderbuss);
+
+  --color-role-shotcaller: var(--role-shotcaller);
+
+  --color-role-many: var(--role-many);
+  --color-role-empty: var(--role-empty);
+}
+
 html,
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: "bg-gray-900";
-    font-size: medium;
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
 }

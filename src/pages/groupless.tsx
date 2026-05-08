@@ -13,7 +13,7 @@ export default function Groupless(): JSX.Element {
             accessorKey: "character",
             header: "Character",
             cell: info => (
-                <div className="text-white">
+                <div className="text-foreground">
                     {info.getValue<string>()}
                 </div>
             )
@@ -21,7 +21,7 @@ export default function Groupless(): JSX.Element {
         {
             accessorKey: 'warid',
             cell: info => (
-                <div className="text-white">
+                <div className="text-foreground">
                     {info.getValue<string>()}
                 </div>
             )
@@ -39,7 +39,7 @@ export default function Groupless(): JSX.Element {
 
     return (
         <div className="mx-auto max-w-4xl py-6">
-            <div className="rounded-lg bg-gray-800 shadow-sm ring-1 ring-gray-700/50 overflow-hidden">
+            <div className="rounded-lg bg-background shadow-sm ring-1 ring-gray-700/50 overflow-hidden">
 
                 {/* Header */}
                 <div className="border-b border-gray-700 px-4 py-3 text-sm font-semibold text-gray-300">
@@ -70,12 +70,12 @@ export default function Groupless(): JSX.Element {
                         {table.getRowModel().rows.map(row => (
                             <tr
                                 key={row.id}
-                                className="border-t border-gray-700 hover:bg-gray-700/40"
+                                className="border-t border-gray-700 hover:bg-card/40"
                             >
                                 {row.getVisibleCells().map(cell => (
                                     <td
                                         key={cell.id}
-                                        className="px-4 py-2 text-gray-200"
+                                        className="px-4 py-2 text-muted"
                                     >
                                         {flexRender(
                                             cell.column.columnDef.cell,

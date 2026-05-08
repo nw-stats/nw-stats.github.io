@@ -18,13 +18,13 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
     const defenderColor = factionBgPrimary(war.defender.faction);
     return (
         <Link to={`/wars/${war.id}`}>
-            <div className="grid grid-cols-3 bg-gray-700 text-white rounded-lg">
+            <div className="grid grid-cols-3 bg-card text-foreground rounded-lg">
                 {/* Attacker */}
                 <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
                     <div className={`absolute inset-0 ${attackerColor} w-1/12 rounded-l-lg`}></div>
                     {(goldStar || attackerWins) && (
                         <CrownIcon
-                            className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-yellow-400"
+                            className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-winner"
                             weight="fill"
                             size={16}
                         />
@@ -34,7 +34,7 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
                 </div>
 
                 <div className="flex flex-col items-center justify-center text-center h-full py-2">
-                    <span className="text-sm text-gray-200">
+                    <span className="text-sm text-muted">
                         <span className="hidden sm:block">
                             {formatDate(war.date)} • {formatTime(war.date)}
                         </span>
@@ -47,12 +47,12 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
                             </span>
                         </span>
                     </span>
-                    <span className="flex flex-row items-center font-extrabold text-gray-200 gap-1">
+                    <span className="flex flex-row items-center font-extrabold text-muted gap-1">
                         <SwordIcon weight="fill" size={16} />
                         <span>VS</span>
                         <ShieldIcon weight="fill" size={16} />
                     </span>
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-muted">
                         <span className="hidden sm:block">
                             {war.map} • {war.server}
                         </span>
@@ -72,7 +72,7 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
                 <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
                     <div className={`absolute right-0 top-0 h-full w-1/12 ${defenderColor} rounded-r-lg`} />                    {(goldStar || defenderWins) && (
                         <CrownIcon
-                            className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-yellow-400"
+                            className="absolute bottom-full left-1/2 -translate-x-1/2 -mb-8 text-winner"
                             weight="fill"
                             size={16}
                         />
@@ -86,7 +86,7 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
 
 export function WarListCardSkeleton(): JSX.Element {
     return (
-        <div className="grid grid-cols-3 bg-gray-700 text-white rounded-lg overflow-hidden animate-pulse">
+        <div className="grid grid-cols-3 bg-card text-foreground rounded-lg overflow-hidden animate-pulse">
             {/* Attacker */}
             <div className="flex items-center justify-center h-full text-center font-semibold text-lg relative">
                 <div className="absolute inset-0 bg-gray-600 w-1/12 rounded-l-lg" />

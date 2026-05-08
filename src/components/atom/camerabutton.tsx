@@ -10,7 +10,7 @@ export function CameraButton({ onClick, loading }: CameraButtonProps): JSX.Eleme
     return (
         <button
             onClick={onClick}
-            className={`absolute top-0 right-4 p-3 rounded-full text-white shadow-lg transition ${loading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"
+            className={`absolute top-0 right-4 p-3 rounded-full text-foreground shadow-lg transition ${loading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"
                 }`}
         >
             {loading ? (

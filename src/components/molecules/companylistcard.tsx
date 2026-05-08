@@ -10,7 +10,7 @@ export function CompanyListCard({ company }: CompanyListCardProps): JSX.Element 
     const color = factionBgPrimary(company.faction);
     return (
         <Link to={`/companies/${company.name}`}>
-            <div className="flex bg-gray-800 gap-1 hover:scale-105 rounded-lg relative">
+            <div className="flex bg-background gap-1 hover:scale-105 rounded-lg relative">
                 <div className={`absolute inset-0 ${color} w-4 rounded-l-lg`}></div>
                 <div className="flex-col gap-1 p-2 relative pl-6">
                     <div>

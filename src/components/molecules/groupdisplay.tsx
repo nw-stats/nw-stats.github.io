@@ -42,7 +42,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => (<LabelIcon text={'Score'} icon={<PlusCircleIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -51,7 +51,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => <LabelIcon text='Kills' icon={<SwordIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -60,7 +60,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -69,7 +69,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => <LabelIcon text='Assists' icon={<HandshakeIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -78,7 +78,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -87,7 +87,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => <LabelIcon text='Damage' icon={<FireIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -96,7 +96,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 header: () => <LabelIcon text='KPAR' icon={<PercentIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
                     </div>
                 ),
             },
@@ -116,9 +116,9 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                 },
                 cell: info => {
                     const value = info.getValue<{ role: Role; inferred: boolean }>();
-                    if (!value?.role) return <span className="text-gray-400 italic"></span>;
+                    if (!value?.role) return <span className="text-muted italic"></span>;
                     return (
-                        <span className={value.inferred ? "italic text-gray-600" : ""}>
+                        <span className={value.inferred ? "italic text-foreground" : ""}>
                             <RoleText role={value.role} />
                         </span>
                     );
@@ -159,8 +159,8 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
     const label: string = groupId !== 'strong' && groupId !== 'weak' ? `Group ${groupId}` : `${groupId.substring(0, 1).toUpperCase()}${groupId.substring(1)} side QDPS`;
 
     return (
-        <div className="text-white">
-            <div className="font-bold p-2 bg-gray-800 rounded-t-lg text-xs">{label}</div>
+        <div className="text-foreground">
+            <div className="font-bold p-2 bg-background rounded-t-lg text-xs">{label}</div>
             <StatsTable columns={columns} data={combinedData} sort={sort} calc={calcColumns} bottomRowOverride={override} />
         </div >
     );

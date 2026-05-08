@@ -192,19 +192,19 @@ export default function PlayerRankings(): JSX.Element {
     if (loading) return <Loading />;
 
     return (
-        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-white">
+        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-foreground">
             <div className="w-full pt-8 max-w-6xl mx-auto gap-4">
-                <div className="bg-gray-800 rounded-t-lg">
-                    <h1 className="text-white font-semibold text-xl p-2">Character Totals</h1>
+                <div className="bg-background rounded-t-lg">
+                    <h1 className="text-foreground font-semibold text-xl p-2">Character Totals</h1>
                     <div className="pl-2 pb-2">
                         <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
                     </div>
                 </div>
             </div >
 
-            <div className="w-full text-white bg-gray-800 " >
+            <div className="w-full text-foreground bg-background " >
                 <table className="w-full table-fixed border-collapse text-sm">
-                    <thead className="bg-gray-700" >
+                    <thead className="bg-card" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>

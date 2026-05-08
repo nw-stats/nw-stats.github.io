@@ -9,7 +9,6 @@ import NotFound from './pages/notfound';
 import Home from './pages/home';
 import CompanyDetail from './pages/company-detail';
 import Feedback from './pages/feedback';
-// import Rankings from './pages/rankings';
 import Inaccuracy from './pages/inaccuracy';
 import PlayerDetails from './pages/playerdetails';
 import { Footer } from './components/organisms/footer';

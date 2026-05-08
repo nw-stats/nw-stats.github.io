@@ -18,7 +18,7 @@ import { WarListCard, WarListCardSkeleton } from "../components/molecules/warlis
 //     const [showOnlyCompleted, setShowOnlyCompleted] = useLocalStorage<boolean>('onlyCompleted', false);
 
 
-//     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
+//     if (loading) return <div className="flex w-full justify-center text-foreground p-8" ><Loading /></div >;
 //     if (error) return <div className="flex w-full justify-center text-red-500">Error loading wars </div>;
 
 //     const rightNow = currentHour();
@@ -51,20 +51,20 @@ import { WarListCard, WarListCardSkeleton } from "../components/molecules/warlis
 //             <main className="flex flex-col md:flex-row md:items-start gap-6">
 //                 {/* War cards */}
 //                 <div className="flex-1 md:order-1 order-2">
-//                     <div className="text-white text-xl font-semibold">Upcoming Wars</div>
+//                     <div className="text-foreground text-xl font-semibold">Upcoming Wars</div>
 //                     <div className="grid gap-4 grid-cols-1 w-full mt-4">
 //                         {loading
-//                             ? <div className="flex items-center justify-center text-white bg-gray-800 rounded-lg w-full h-full min-h-[104px]"><Loading /></div>
+//                             ? <div className="flex items-center justify-center text-foreground bg-background rounded-lg w-full h-full min-h-[104px]"><Loading /></div>
 //                             : Upcoming.length === 0
 //                                 ? <PlaceholderTile />
 //                                 : Upcoming.map((v, i) => <WarListCard war={v} key={i} />)
 //                         }
 //                     </div>
 
-//                     <div className="text-white text-xl font-semibold mt-8">Past Wars</div>
+//                     <div className="text-foreground text-xl font-semibold mt-8">Past Wars</div>
 //                     <div className="grid gap-4 grid-cols-1 w-full mt-4">
 //                         {loading
-//                             ? <span className="text-white"><Loading /></span>
+//                             ? <span className="text-foreground"><Loading /></span>
 //                             : pastWars.map((v, i) => (
 //                                 <div className="hover:scale-105" key={i}>
 //                                     <WarListCard war={v} />
@@ -75,8 +75,8 @@ import { WarListCard, WarListCardSkeleton } from "../components/molecules/warlis
 //                 </div>
 
 //                 {/* Sidebar filters */}
-//                 <div className="text-white flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
-//                     <div className="text-white text-xl font-semibold">Filters</div>
+//                 <div className="text-foreground flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
+//                     <div className="text-foreground text-xl font-semibold">Filters</div>
 
 //                     <MultiselectDropdown
 //                         name="companies"
@@ -143,7 +143,7 @@ const Home: React.FC = () => {
                 {/* War cards */}
                 <div className="flex-1 md:order-1 order-2">
                     {/* Upcoming */}
-                    <div className="text-white text-xl font-semibold">Upcoming Wars</div>
+                    <div className="text-foreground text-xl font-semibold">Upcoming Wars</div>
                     <div className="grid gap-4 grid-cols-1 w-full mt-4">
                         {loading
                             ? <WarListCardSkeleton />
@@ -158,7 +158,7 @@ const Home: React.FC = () => {
                     </div>
 
                     {/* Past */}
-                    <div className="text-white text-xl font-semibold mt-8">Past Wars</div>
+                    <div className="text-foreground text-xl font-semibold mt-8">Past Wars</div>
                     <div className="grid gap-4 grid-cols-1 w-full mt-4">
                         {loading
                             ? Array.from({ length: 5 }).map((_, i) => (
@@ -176,8 +176,8 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Sidebar filters */}
-                <div className="text-white flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
-                    <div className="text-white text-xl font-semibold">Filters</div>
+                <div className="text-foreground flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
+                    <div className="text-foreground text-xl font-semibold">Filters</div>
 
                     <MultiselectDropdown
                         name="companies"

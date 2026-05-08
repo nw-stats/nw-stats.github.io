@@ -11,7 +11,7 @@ import LabelIcon from "../atom/labelicon";
 import { sortRolesStrings } from "../../utils/roster";
 
 const cardBase =
-    "rounded-lg bg-gray-800 shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
+    "rounded-lg bg-background shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
 export interface CharacterWarHistoryProps {
     history: CharacterDetailsEntry[];
 }
@@ -140,7 +140,7 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
     return (
         <div className={`${cardBase}`}>
             <div className="p-3 border-b border-gray-700">
-                <h1 className="text-white font-semibold">
+                <h1 className="text-foreground font-semibold">
                     War History
                 </h1>
             </div>

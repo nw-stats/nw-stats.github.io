@@ -8,7 +8,7 @@ export interface ErrorPageProps {
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ error }) => {
     return (
-        <div className="text-center text-white p-8">
+        <div className="text-center text-foreground p-8">
             <h1 className="text-4xl font-bold mb-4">{String(error)}</h1>
 
             <Link to="/" className="text-blue-400 underline">Go back home</Link>

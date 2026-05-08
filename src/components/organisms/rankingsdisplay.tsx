@@ -44,7 +44,7 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
                 const data = row.original;
                 return (
                     <Link to={`/companies/${data.name}`} className="block w-full text-left">
-                        <span className="hover:underline text-white font-semibold text-xl truncate">
+                        <span className="hover:underline text-foreground font-semibold text-xl truncate">
                             {data.name}
                         </span>
                     </Link>
@@ -63,7 +63,7 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
             accessorFn: item => item.attackWins + item.defenseWins,
             sortingFn: "basic",
             cell: info => (
-                <div className="w-32 text-center font-semibold text-green-300">
+                <div className="w-32 text-center font-semibold text-positive">
                     {info.getValue<number>()}
                 </div>
             ),
@@ -80,7 +80,7 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
             accessorFn: item => item.attackLoss + item.defenseLoss,
             sortingFn: "basic",
             cell: info => (
-                <div className="w-32 text-center font-semibold text-red-300">
+                <div className="w-32 text-center font-semibold text-negative">
                     {info.getValue<number>()}
                 </div>
             ),
@@ -97,9 +97,9 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
     });
 
     return (
-        <div className="w-full text-white">
+        <div className="w-full text-foreground">
             <table className="w-full table-fixed border-collapse text-sm">
-                <thead className="bg-gray-700 text-white">
+                <thead className="bg-card text-foreground">
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => {
@@ -112,7 +112,7 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
                                 return (
                                     <th
                                         key={header.id}
-                                        className={`${widthClass} cursor-pointer select-none p-2 border-b border-gray-600 text-center relative pr-6`} // pr-6 for space on right
+                                        className={`${widthClass} cursor-pointer select-none p-2 border-b border-border text-center relative pr-6`} // pr-6 for space on right
                                     >
                                         <div>
                                             {flexRender(header.column.columnDef.header, header.getContext())}
@@ -145,7 +145,7 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
                                     return (
                                         <td
                                             key={cell.id}
-                                            className={`p-3 border-b border-gray-700 align-middle ${widthClass}`}
+                                            className={`p-3 border-b border-border align-middle ${widthClass}`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>

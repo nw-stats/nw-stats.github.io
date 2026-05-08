@@ -25,7 +25,7 @@ interface CharacterSummaryProps {
 //     return (
 //         <div className="flex flex-row">
 //             <div className={`${color} p-4`}></div>
-//             <div className={`grid grid-cols-1 text-white bg-gray-700 p-1 gap-1 w-full`}>
+//             <div className={`grid grid-cols-1 text-foreground bg-card p-1 gap-1 w-full`}>
 //                 <h1 className="font-semibold">Lifetime</h1>
 //                 <div className={`grid grid-cols-6 pb-2`}>
 //                     <StatWithIcon icon={<HashIcon weight="bold" />} value={<NumberCell value={summary ? summary.count : 0} />} />
@@ -35,7 +35,7 @@ interface CharacterSummaryProps {
 //                     <StatWithIcon icon={<FirstAidIcon weight="fill" />} value={<NumberCell value={summary ? summary.healing : 0} />} />
 //                     <StatWithIcon icon={<FireIcon weight="fill" />} value={<NumberCell value={summary ? summary.damage : 0} />} />
 //                 </div>
-//                 <div className="bg-gray-800 p-0.5"></div>
+//                 <div className="bg-background p-0.5"></div>
 //                 <h1 className="font-semibold">Per War <span className="text-xs text-gray-400">(normalized to 30 minutes)</span></h1>
 //                 {averages &&
 //                     <div className={`grid grid-cols-6`}>
@@ -54,7 +54,7 @@ interface CharacterSummaryProps {
 
 // export default CharacterSummary
 const cardBase =
-    "rounded-lg bg-gray-800 shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
+    "rounded-lg bg-background shadow-sm ring-1 ring-gray-700/50 overflow-hidden";
 export default function CharacterSummary({ character, summary, averages }: CharacterSummaryProps): JSX.Element {
     const color = factionBgPrimary(character.faction);
 
@@ -73,7 +73,7 @@ export default function CharacterSummary({ character, summary, averages }: Chara
         <div className={`${cardBase} flex`}>
             <div className={`w-2 ${color}`} />
 
-            <div className="p-4 w-full space-y-6 text-white">
+            <div className="p-4 w-full space-y-6 text-foreground">
                 <StatRow title="Lifetime">
                     <StatWithIcon icon={<HashIcon weight="bold" />} value={<NumberCell value={summary?.count ?? 0} />} />
                     <StatWithIcon icon={<SwordIcon weight="fill" />} value={<NumberCell value={summary?.kills ?? 0} />} />
@@ -83,7 +83,7 @@ export default function CharacterSummary({ character, summary, averages }: Chara
                     <StatWithIcon icon={<FireIcon weight="fill" />} value={<NumberCell value={summary?.damage ?? 0} />} />
                 </StatRow>
 
-                <div className="h-px bg-gray-700" />
+                <div className="h-px bg-card" />
 
                 <StatRow title="Per War (30 min normalized)">
                     <StatWithIcon icon={<HashIcon weight="bold" />} value={<NumberCell value={averages?.count ?? 0} />} />

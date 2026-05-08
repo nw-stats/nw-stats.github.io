@@ -1,29 +1,25 @@
 import type { Role } from "../../types/role";
 const roleTextColors: Record<Role, string> = {
-    // Healers
-    "Healer MB": "text-emerald-400",
-    "Healer AOE": "text-green-400",
-    "Healer KS": "text-lime-400",
+    "Healer MB": "text-role-healer-mb",
+    "Healer AOE": "text-role-healer-aoe",
+    "Healer KS": "text-role-healer-ks",
 
-    // Frontline
-    "Bruiser": "text-orange-400",
-    "Tank": "text-slate-300",
-    "Flail": "text-amber-300",
+    "Bruiser": "text-role-bruiser",
+    "Tank": "text-role-tank",
+    "Flail": "text-role-flail",
 
-    // DPS
-    "QDPS": "text-red-400",
-    "VG IG": "text-violet-400",
-    "Disruptor": "text-pink-400",
-    "Firestaff": "text-rose-400",
-    "Ranged": "text-sky-400",
-    "Blunderbuss": "text-yellow-300",
+    "QDPS": "text-role-qdps",
+    "VG IG": "text-role-vg-ig",
+    "Disruptor": "text-role-disruptor",
+    "Firestaff": "text-role-firestaff",
+    "Ranged": "text-role-ranged",
+    "Blunderbuss": "text-role-blunderbuss",
 
-    // Utility
-    "Shotcaller": "text-cyan-400",
+    "Shotcaller": "text-role-shotcaller",
 
-    "Many": "text-gray-300",
+    "Many": "text-role-many",
 
-    "": "text-gray-500",
+    "": "text-role-empty",
 };
 
 interface RoleTextProps {

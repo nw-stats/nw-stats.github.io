@@ -12,7 +12,7 @@ function CompanyDetailCard({ company }: CompanyDetailCardProps): JSX.Element {
     return (
         <div className="flex flex-row">
             <div className={`${color} min-w-10 rounded-l-lg`}></div>
-            <div className={`flex w-full items-center bg-gray-600 rounded-r-lg p-2 gap-2 text-white`}>
+            <div className={`flex w-full items-center bg-gray-600 rounded-r-lg p-2 gap-2 text-foreground`}>
                 <ProfilePicture pictureUrl="https://dqzvgunkova5o.cloudfront.net/statics/2025-06-20/images/NW-bug.svg" size={32} />
                 <div className="flex flex-col">
                     <div className="flex items-end gap-2">

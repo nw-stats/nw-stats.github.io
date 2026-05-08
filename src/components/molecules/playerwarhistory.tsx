@@ -27,7 +27,7 @@
 //         <div className="space-y-4">
 //             {entries.map((match, i) => (
 //                 <Link key={match.matchId ?? i} to={`/wars/${match.matchId}`}>
-//                     <div className="bg-gray-800 rounded-lg p-4 shadow hover:shadow-lg transition-all">
+//                     <div className="bg-background rounded-lg p-4 shadow hover:shadow-lg transition-all">
 //                         <div className="flex justify-between text-sm text-gray-400 mb-2">
 //                             <div className="flex items-center gap-1">
 //                                 <MapTrifold size={16} />
@@ -64,7 +64,7 @@
 //     <div className="flex items-center gap-2">
 //         {icon}
 //         <span>{label}:</span>
-//         <span className="ml-auto font-semibold text-white">{value}</span>
+//         <span className="ml-auto font-semibold text-foreground">{value}</span>
 //     </div>
 // );
 

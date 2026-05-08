@@ -15,8 +15,8 @@ import type { JSX } from "react";
 //     const [showOnlyCompleted, setShowOnlyCompleted] = useLocalStorage<boolean>('onlyCompleted', false);
 
 
-//     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
-//     if (error) return <div className="text-white">Problem loading wars</div>
+//     if (loading) return <div className="flex w-full justify-center text-foreground p-8" ><Loading /></div >;
+//     if (error) return <div className="text-foreground">Problem loading wars</div>
 
 //     const filteredWars = wars.filter(v => {
 //         if (savedCompanies.length === 0) {
@@ -34,10 +34,10 @@ import type { JSX } from "react";
 //             <main className="flex flex-col md:flex-row md:items-start gap-6">
 //                 {/* War cards */}
 //                 <div className="flex-1 md:order-1 order-2">
-//                     <div className="text-white text-xl font-semibold">Wars</div>
+//                     <div className="text-foreground text-xl font-semibold">Wars</div>
 //                     <div className="grid gap-4 grid-cols-1 w-full mt-4">
 //                         {loading
-//                             ? <span className="text-white"><Loading /></span>
+//                             ? <span className="text-foreground"><Loading /></span>
 //                             : sortedWars.map((v, i) => (
 //                                 <div className="hover:scale-105" key={i}>
 //                                     <WarListCard war={v} />
@@ -49,7 +49,7 @@ import type { JSX } from "react";
 
 //                 {/* Sidebar filters */}
 //                 <div className="flex flex-col gap-2 w-full md:w-48 md:order-2 order-1">
-//                     <div className="text-white text-xl font-semibold">Filters</div>
+//                     <div className="text-foreground text-xl font-semibold">Filters</div>
 
 //                     <MultiselectDropdown
 //                         name="companies"
@@ -71,7 +71,7 @@ export function Wars(): JSX.Element {
     const [savedCompanies, setCompanies] = useLocalStorage<string[]>('companies', []);
     const [showOnlyCompleted, setShowOnlyCompleted] = useLocalStorage<boolean>('onlyCompleted', false);
 
-    if (error) return <div className="text-white">Problem loading wars</div>;
+    if (error) return <div className="text-foreground">Problem loading wars</div>;
 
     const filteredWars = wars.filter(v => {
         if (savedCompanies.length === 0) {
@@ -92,7 +92,7 @@ export function Wars(): JSX.Element {
             <main className="flex flex-col md:flex-row md:items-start gap-6">
                 {/* War cards */}
                 <div className="flex-1 md:order-1 order-2">
-                    <div className="text-white text-xl font-semibold">Wars</div>
+                    <div className="text-foreground text-xl font-semibold">Wars</div>
                     <div className="grid gap-4 grid-cols-1 w-full mt-4">
                         {loading
                             ? Array.from({ length: 5 }).map((_, i) => (
@@ -110,8 +110,8 @@ export function Wars(): JSX.Element {
                 </div>
 
                 {/* Sidebar filters */}
-                <div className="flex flex-col gap-2 w-full md:w-48 md:order-2 order-1 text-white">
-                    <div className="text-white text-xl font-semibold">Filters</div>
+                <div className="flex flex-col gap-2 w-full md:w-48 md:order-2 order-1 text-foreground">
+                    <div className="text-foreground text-xl font-semibold">Filters</div>
 
                     <MultiselectDropdown
                         name="companies"

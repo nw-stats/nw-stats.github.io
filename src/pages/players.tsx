@@ -28,7 +28,7 @@ import type { Character } from "../types/character";
 //                 placeholder="Search players..."
 //                 value={search}
 //                 onChange={(e) => setSearch(e.target.value)}
-//                 className="p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 w-full"
+//                 className="p-2 rounded-lg bg-card text-foreground placeholder-gray-400 w-full"
 //             />
 //             <div className="flex flex-col gap-2">
 //                 {filteredPlayers.map(p => (
@@ -99,10 +99,10 @@ export default function Players(): JSX.Element {
                                     className="
                         inline-flex items-center
                         rounded-full
-                        border border-gray-800
-                        bg-gradient-to-b from-gray-600 to-gray-700
+                        border border-border
+                        bg-gradient-to-b from-surface to-surface-2
                         px-3 py-1
-                        text-sm font-medium text-white
+                        text-sm font-medium text-foreground
                         shadow-sm
                         transition
                         hover:shadow"
@@ -128,23 +128,23 @@ export default function Players(): JSX.Element {
     if (error) return <NotFound />;
 
     return (
-        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-white gap-4">
+        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-foreground gap-4">
             <div className="w-full pt-8 max-w-6xl mx-auto gap-4">
-                <div className="bg-gray-800 rounded-t-lg">
-                    <h1 className="text-white font-semibold text-xl p-2">Players</h1>
+                <div className="bg-background rounded-t-lg">
+                    <h1 className="text-foreground font-semibold text-xl p-2">Players</h1>
                     <input
                         type="text"
                         placeholder="Search players..."
                         value={filterTerm}
                         onChange={(e) => setFilterTerm(e.target.value)}
-                        className="p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 w-full"
+                        className="p-2 rounded-lg bg-card text-foreground placeholder-muted w-full"
                     />
                 </div>
             </div >
 
-            <div className="w-full text-white bg-gray-800 " >
+            <div className="w-full text-foreground bg-background " >
                 <table className="w-full table-fixed border-collapse text-sm">
-                    <thead className="bg-gray-700" >
+                    <thead className="bg-card" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>
@@ -154,7 +154,7 @@ export default function Players(): JSX.Element {
                                             style={{ width: header.getSize() }}
                                             colSpan={header.colSpan}
                                             onClick={header.column.getToggleSortingHandler()}
-                                            className={`cursor-pointer select-none p-2 border-b border-gray-600 text-left`}
+                                            className={`cursor-pointer select-none p-2 border-b border-border text-left`}
                                         >
                                             <div className="flex relative justify-center w-full items-center space-x-2">
                                                 <span>
@@ -187,7 +187,7 @@ export default function Players(): JSX.Element {
                                         <td
                                             key={cell.id}
                                             style={{ width: cell.column.getSize() }}
-                                            className={`p-3 border-b border-gray-700 text-sm`}
+                                            className={`p-3 border-b border-border text-sm`}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </td>
@@ -200,7 +200,7 @@ export default function Players(): JSX.Element {
             </div>
 
             {playerList.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-muted">
                     No rankings data available yet.
                 </div>
             )}

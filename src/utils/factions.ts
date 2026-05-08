@@ -3,34 +3,34 @@ import type { Faction } from "../types/faction";
 
 export function factionBgPrimary(faction: Faction): string {
     if (faction === "Marauder") {
-        return 'bg-green-700';
+        return 'bg-marauder-primary';
     } else if (faction === "Covenant") {
-        return 'bg-yellow-700';
+        return 'bg-covenant-primary';
     } else if (faction === 'Syndicate') {
-        return 'bg-purple-700';
+        return 'bg-syndicate-primary';
     }
-    return 'bg-gray-700';
+    return 'bg-gray-primary';
 }
 export function factionBgSecondary(faction: Faction): string {
     if (faction === "Marauder") {
-        return 'bg-green-800';
+        return 'bg-marauder-secondary';
     } else if (faction === "Covenant") {
-        return 'bg-yellow-800';
+        return 'bg-covenant-secondary';
     } else if (faction === 'Syndicate') {
-        return 'bg-purple-800';
+        return 'bg-syndicate-secondary';
     }
-    return 'bg-gray-800';
+    return 'bg-gray-secondary';
 }
 
 export function factionBgTertiary(faction: Faction): string {
     if (faction === "Marauder") {
-        return 'bg-green-900';
+        return 'bg-marauder-tertiary';
     } else if (faction === "Covenant") {
-        return 'bg-yellow-900';
+        return 'bg-covenant-tertiary';
     } else if (faction === 'Syndicate') {
-        return 'bg-purple-900';
+        return 'bg-syndicate-tertiary';
     }
-    return 'bg-gray-900';
+    return 'bg-gray-tertiary';
 }
 
 export function factionBgDark(faction: Faction): string {

@@ -61,7 +61,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => (<LabelIcon text={'Score'} icon={<PlusCircleIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -70,7 +70,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => <LabelIcon text='Kills' icon={<SwordIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -79,7 +79,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -88,7 +88,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => <LabelIcon text='Assists' icon={<HandshakeIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -97,7 +97,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -106,7 +106,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => <LabelIcon text='Damage' icon={<FireIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : <NumberCell value={info.getValue<number>()} />}
                     </div>
                 ),
             },
@@ -115,7 +115,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => <LabelIcon text='KPAR' icon={<PercentIcon weight='fill' />} />,
                 cell: info => (
                     <div className="text-right">
-                        {goldStar ? <StarIcon className="text-yellow-400 w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
+                        {goldStar ? <StarIcon className="text-winner w-full" weight="fill" /> : formatPercent(info.getValue<number>())}
                     </div>
                 ),
             },
@@ -173,14 +173,14 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
     });
 
     return (
-        <div className="flex flex-col gap-2 bg-gray-800 rounded-lg shadow-lg text-white">
+        <div className="flex flex-col gap-2 bg-background rounded-lg shadow-lg text-foreground">
             <h2 className="text-xl font-bold p-2">Leaderboard</h2>
             <div className="pl-2 pb-2">
                 <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full table-auto border-collapse">
-                    <thead className="bg-gray-700" >
+                    <thead className="bg-card" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>
@@ -221,9 +221,9 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                                     key={row.id}
                                     className="
                                     border-b border-gray-700
-                                    bg-gray-800
+                                    bg-background
                                     transition
-                                    hover:bg-gray-700/40"
+                                    hover:bg-card/40"
                                 >
                                     {row.getVisibleCells().map((cell, index) => (
                                         <td

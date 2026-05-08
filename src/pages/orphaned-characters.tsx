@@ -28,11 +28,11 @@ export function OrphanedCharacters(): JSX.Element {
     if (lbLoading) return <Loading />
     if (lbError) return <NotFound />
     return (
-        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-white">
+        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-foreground">
 
-            <div className="w-full text-white bg-gray-800 " >
+            <div className="w-full text-foreground bg-background " >
                 <table className="w-full table-fixed border-collapse text-sm">
-                    <thead className="bg-gray-700" >
+                    <thead className="bg-card" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>

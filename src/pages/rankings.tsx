@@ -67,8 +67,8 @@ function Rankings(): JSX.Element {
     return (
         <div className="flex flex-col pt-8 max-w-6xl mx-auto gap-4">
 
-            <div className="bg-gray-800 rounded-lg">
-                <h1 className="text-white font-semibold text-xl p-2">Split Wars</h1>
+            <div className="bg-background rounded-lg">
+                <h1 className="text-foreground font-semibold text-xl p-2">Split Wars</h1>
                 <RankingsDisplay rankings={entries} />
             </div>
         </div >

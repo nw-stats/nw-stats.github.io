@@ -14,8 +14,8 @@ interface WarResultsSummaryProp {
 }
 
 const WarResultsCompany: React.FC<WarResultsSummaryProp> = ({ summary, faction, isAttacker, isWinner }) => {
-    let color = 'bg-gray-700';
-    let accent = 'bg-gray-800';
+    let color = 'bg-card';
+    let accent = 'bg-background';
     if (faction === 'Marauder') {
         color = 'bg-green-700';
         accent = 'bg-green-800';
@@ -30,8 +30,8 @@ const WarResultsCompany: React.FC<WarResultsSummaryProp> = ({ summary, faction, 
 
     return (
         <div className={`${accent} rounded-lg`}>
-            <div className="flex w-full text-white p-2 justify-center items-center drop-shadow-lg font-bold"> {isWinner && <CrownIcon weight={"fill"} className="text-yellow-500 drop-shadow-lg" />} {label}</div>
-            <div className={`rounded-b-lg ${color} text-center text-white p-1`}>
+            <div className="flex w-full text-foreground p-2 justify-center items-center drop-shadow-lg font-bold"> {isWinner && <CrownIcon weight={"fill"} className="text-yellow-500 drop-shadow-lg" />} {label}</div>
+            <div className={`rounded-b-lg ${color} text-center text-foreground p-1`}>
                 <div className="text-3xl font-bold drop-shadow-lg">
                     <Link to={`/companies/${summary.name}`}>
                         <span className="hover:underline">{summary.name}</span>

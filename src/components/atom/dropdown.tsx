@@ -12,13 +12,13 @@ function Dropdown({ options, value, onChange }: DropdownProps): React.JSX.Elemen
             <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="block w-full appearance-none bg-gray-700 border border-gray-600 text-white py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="block w-full appearance-none bg-card border border-border text-foreground py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-accent"
             >
                 {options.map(option => (
                     <option key={option} value={option}>{option}</option>
                 ))}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-foreground">
                 <svg
                     className="fill-current h-4 w-4"
                     xmlns="http://www.w3.org/2000/svg"

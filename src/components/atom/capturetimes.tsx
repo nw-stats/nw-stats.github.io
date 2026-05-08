@@ -14,9 +14,9 @@ export function CaptureTimes({ captures }: CaptureTimesProps): JSX.Element {
         const pc = captures.pointC ? formatSeconds(captures.pointC) : "-";
         const pf = captures.fort ? formatSeconds(captures.fort) : "-";
         return (
-            <div className="flex flex-col text-white">
+            <div className="flex flex-col text-foreground">
                 <span className="text-sm text-center">Captures</span>
-                <div className="grid grid-cols-4 place-items-center w-full text-white text-sm">
+                <div className="grid grid-cols-4 place-items-center w-full text-foreground text-sm">
                     <StatWithIcon icon={<div>A</div>} value={pa} />
                     <StatWithIcon icon={<div>B</div>} value={pb} />
                     <StatWithIcon icon={<div>C</div>} value={pc} />

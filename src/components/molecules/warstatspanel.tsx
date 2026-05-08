@@ -16,7 +16,7 @@ const WarStatsPanel: React.FC<WarStatsPanelProps> = ({ date, map, server }) => {
     // const pf = captures.fort ? formatSeconds(captures.fort) : "-";
 
     return (
-        <div className="bg-gray-800 text-white text-lg rounded-lg p-2">
+        <div className="bg-background text-foreground text-lg rounded-lg p-2">
             <div className="grid grid-cols-1 gap-0">
 
                 {/* Left side: map + date */}
@@ -39,7 +39,7 @@ const WarStatsPanel: React.FC<WarStatsPanelProps> = ({ date, map, server }) => {
     );
 
     // return (
-    //     <div className="bg-gray-800 text-white rounded-lg p-2 space-y-0">
+    //     <div className="bg-background text-foreground rounded-lg p-2 space-y-0">
     //         <div className="grid sm:grid-cols-1 md:grid-cols-2 w-full gap-0">
 
     //             {/* Left side: map + date */}

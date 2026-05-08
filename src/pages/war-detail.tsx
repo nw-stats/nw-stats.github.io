@@ -7,9 +7,6 @@ import { WarResultsCompanyCombined } from "../components/molecules/warresultscom
 import NotFound from "./notfound";
 import DataEntryInProgress from "./dataentryinprogress";
 import { CaptureTimes } from "../components/atom/capturetimes";
-import { toPng } from "html-to-image";
-import { formatDateTimeSlug } from "../utils/time";
-import { CameraButton } from "../components/atom/camerabutton";
 import { Tab, TabbedContent } from "../components/molecules/tabbedcontent";
 import { GroupsSummary } from "../components/molecules/groupssummary";
 import GroupsDetail from "../components/molecules/groupsdetails";
@@ -28,7 +25,7 @@ function WarDetail(): JSX.Element {
     const warIdNum = Number(warId);
     const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
 
-    const [ssLoading, setSsLoading] = useState(false);
+    // const [ssLoading, setSsLoading] = useState(false);
 
     const outerTab = searchParams.get("o") ?? "Groups Detail";
     const setOuterTab = (outter: string) => {
@@ -66,28 +63,28 @@ function WarDetail(): JSX.Element {
     const defenderHealer = healerSummary.get(war.defender.name);
     const hasLeaderboard = combinedLeaderboard !== undefined;
 
-    const handleScreenshot = async () => {
-        if (!screenshotRef.current) return;
+    // const handleScreenshot = async () => {
+    //     if (!screenshotRef.current) return;
 
-        try {
-            if (!screenshotRef.current) return;
-            setSsLoading(true);
-            await new Promise(resolve => setTimeout(resolve, 0));
+    //     try {
+    //         if (!screenshotRef.current) return;
+    //         setSsLoading(true);
+    //         await new Promise(resolve => setTimeout(resolve, 0));
 
-            const dataUrl = await toPng(screenshotRef.current, {
-                cacheBust: true,
-                skipFonts: true,
-                backgroundColor: "#1f2937",
-            });
+    //         const dataUrl = await toPng(screenshotRef.current, {
+    //             cacheBust: true,
+    //             skipFonts: true,
+    //             backgroundColor: "#1f2937",
+    //         });
 
-            const link = document.createElement("a");
-            link.download = `leaderboard_${formatDateTimeSlug(war.date)}_${war.attacker.name}_${war.defender.name}.png`;
-            link.href = dataUrl;
-            link.click();
-        } finally {
-            setSsLoading(false);
-        }
-    };
+    //         const link = document.createElement("a");
+    //         link.download = `leaderboard_${formatDateTimeSlug(war.date)}_${war.attacker.name}_${war.defender.name}.png`;
+    //         link.href = dataUrl;
+    //         link.click();
+    //     } finally {
+    //         setSsLoading(false);
+    //     }
+    // };
 
     return (
         <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
@@ -96,7 +93,7 @@ function WarDetail(): JSX.Element {
                     {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                     <WarListCard war={war} goldStar={goldStar} />
                 </div>
-                <div className="flex flex-col gap-2 text-lg bg-gray-700 rounded-lg">
+                <div className="flex flex-col gap-2 text-lg bg-card rounded-lg">
                     <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[war.attacker.faction, war.defender.faction]} attacker={war.attacker.name} defender={war.defender.name} goldStar={goldStar} />
                     <CaptureTimes captures={war.captures} />
                 </div>
@@ -105,7 +102,7 @@ function WarDetail(): JSX.Element {
                     <DataEntryInProgress />
                 ) : (
                     <div className="text-sm relative">
-                        <CameraButton onClick={handleScreenshot} loading={ssLoading} />
+                        {/* <CameraButton onClick={handleScreenshot} loading={ssLoading} /> */}
                         <TabbedContent
                             activeLabel={outerTab}
                             onChangeLabel={(label) => {
@@ -219,7 +216,7 @@ export default WarDetail;
 //     const warIdNum = Number(warId);
 //     const { loading, error, war, leaderboard, summary, factions, groupSummary, groupDetails: groupPerformance } = useWarData(warIdNum);
 
-//     if (loading) return <div className="flex w-full justify-center text-white p-8" ><Loading /></div >;
+//     if (loading) return <div className="flex w-full justify-center text-foreground p-8" ><Loading /></div >;
 //     if (error || !leaderboard || !war) return <ErrorPage error={error} />
 
 //     const attackerSummary = summary.get(war.attacker);

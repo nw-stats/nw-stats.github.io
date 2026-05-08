@@ -127,11 +127,11 @@ export function HealerCompare({ attackerName, defenderName, attackerHealers, def
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div className="bg-gray-700 rounded-lg">
+            <div className="bg-card rounded-lg">
                 <h1 className="m-2 font-semibold">{attackerName}</h1>
                 {attackerHealers ? (<StatsTable columns={healerStatsColumns} data={attackerHealers} />) : (<NoData />)}
             </div>
-            <div className="bg-gray-700 rounded-lg">
+            <div className="bg-card rounded-lg">
                 <h1 className="m-2 font-semibold">{defenderName}</h1>
                 {defenderHealers ? (<StatsTable columns={healerStatsColumns} data={defenderHealers} />) : (<NoData />)}
             </div>

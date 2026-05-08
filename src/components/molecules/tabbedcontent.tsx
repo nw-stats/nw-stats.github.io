@@ -28,13 +28,13 @@ export function TabbedContent({ children, activeLabel, onChangeLabel }: TabbedCo
     };
 
     return (
-        <div className="text-white">
+        <div className="text-foreground">
             <div className="flex gap-0.5">
                 {labels.map((label, index) => (
                     <button
                         key={label}
-                        className={`px-3 py-1 ${currentIndex === index ? "bg-blue-600"
-                            : "bg-gray-600 hover:bg-gray-700"
+                        className={`px-3 py-1 ${currentIndex === index ? "bg-surface-active"
+                            : "bg-surface hover:bg-surface-hover"
                             } ${index === 0
                                 ? 'rounded-l-lg'
                                 : index === labels.length - 1

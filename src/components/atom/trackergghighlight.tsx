@@ -10,14 +10,14 @@ function TrackerGgStyleHighlight({ title, text, subtext }: StatHighlightProps): 
     return (
         <div className="flex items-center gap-4 w-fit">
             <div
-                className="relative w-2 h-24 bg-gray-800 rounded overflow-hidden">
+                className="relative w-2 h-24 bg-background rounded overflow-hidden">
                 <div
-                    className="absolute bottom-0 left-0 w-full bg-gray-700"
+                    className="absolute bottom-0 left-0 w-full bg-card"
                     style={{ height: '100%' }}
                 ></div>
             </div>
 
-            <div className="flex flex-col justify-center text-white text-sm">
+            <div className="flex flex-col justify-center text-foreground text-sm">
                 <span className="text-gray-400 font-semibold" title="Assists">{title}</span>
                 <span className="text-lg font-bold">{text}</span>
                 {subtext && <span className="text-xs text-gray-400 font-semibold mt-1">{subtext}</span>}
