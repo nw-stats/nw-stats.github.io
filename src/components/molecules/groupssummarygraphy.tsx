@@ -103,37 +103,37 @@ export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element 
             </div >
             <div className="grid grid-cols-1 md:grid-cols-3 w-full"> {/* full width, fixed height */}
                 {shownGraphs.includes("Kills") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Kills" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.kills }
                     ))} />
                 </div>}
                 {shownGraphs.includes("Deaths") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Deaths" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.deaths }
                     ))} />
                 </div>}
                 {shownGraphs.includes("Assists") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Assists" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.assists }
                     ))} />
                 </div>}
                 {shownGraphs.includes("Healing") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Healing" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.healing }
                     ))} />
                 </div>}
                 {shownGraphs.includes("Damage") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Damage" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.damage }
                     ))} />
                 </div>}
                 {shownGraphs.includes("KPar") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Kpar" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.kpar }
                     ))} style="percent" />
                 </div>}
                 {shownGraphs.includes("Score") && <div>
-                    <BarGraph data={data.map((v) => (
+                    <BarGraph title="Score" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.score }
                     ))} />
                 </div>}

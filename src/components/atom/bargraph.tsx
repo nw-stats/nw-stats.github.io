@@ -3,15 +3,16 @@ import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, 
 import { formatCompact, formatPercent } from "../../utils/format";
 
 interface BarGraphProps {
+    title: string;
     data: { name: string, value: number }[];
     style?: "number" | "percent"
 }
 
-export function BarGraph({ data, style }: BarGraphProps): JSX.Element {
+export function BarGraph({ title, data, style }: BarGraphProps): JSX.Element {
     const _style = style ? style : "number";
     return (
         <>
-            <h3 className="text-center">Kills</h3>
+            <h3 className="text-center">{title}</h3>
             < ResponsiveContainer width="100%" height={256}>
                 <BarChart data={data}>
                     <XAxis dataKey="name" interval={0} tick={{ fill: '#fff', fontSize: 12 }} />

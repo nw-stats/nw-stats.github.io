@@ -3,7 +3,7 @@ import type { HealerStats } from "../types/healerstats";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { GroupKey } from "../types/roster";
 import { isNumberGroup } from "./groups";
-import { isAoeHealer, isHealer } from "./role";
+import { isHealer } from "./role";
 
 export function calculateHealerStats(groups: Map<string, Map<GroupKey, GroupPerformance>>): Map<string, HealerStats[]> {
     const stats = new Map<string, HealerStats[]>();
@@ -27,14 +27,11 @@ export function calculateHealerStats(groups: Map<string, Map<GroupKey, GroupPerf
                         qdpsDeaths: 0,
                         groupDeaths: 0,
                     })
-                } else if (entry.qpds) {
+                }
+                if (entry.qpds) {
                     qdpsDeaths += entry.deaths;
                 } else {
                     groupDeaths += entry.deaths
-                }
-
-                if (isAoeHealer(entry.roleAssignment.role)) {
-                    groupDeaths += entry.deaths;
                 }
             }
 
