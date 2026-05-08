@@ -74,9 +74,9 @@ function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTa
                     key={header.id}
                     colSpan={header.colSpan}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="p-1 cursor-pointer select-none text-left"
+                    className="p-1 cursor-pointer select-none text-left bg-background"
                 >
-                    <div className="flex relative justify-center items-center w-full space-x-2 text-foreground">
+                    <div className="flex relative justify-center items-center w-full space-x-2 text-foreground ">
                         <span>
                             {flexRender(header.column.columnDef.header, header.getContext())}
                         </span>
@@ -95,7 +95,7 @@ function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTa
         const rowCells: JSX.Element[] = [];
         for (const cell of row.getVisibleCells()) {
             rowCells.push(
-                <td key={cell.id} className={`p-1  ${sortedIndex % 2 === 0 ? "bg-surface" : "bg-surface-2"} text-foreground`}>
+                <td key={cell.id} className={`p-1  ${sortedIndex % 2 === 0 ? "bg-surface-2" : "bg-surface-3"} text-foreground`}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
             );
@@ -109,7 +109,7 @@ function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTa
         const sum = bottomRowCalc[colId];
         const colDef = getColumnById(columns, colId);
         let fmt = (
-            <td key={colId} className="p1 bg-card text-foreground text-right font-semibold">
+            <td key={colId} className="p1 bg-surface-2 text-foreground text-right font-semibold">
                 {typeof sum === "number" ? <NumberCell value={sum} /> : null}
             </td>
         );
@@ -127,7 +127,7 @@ function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTa
                         getContext: () => ({}),
                     } as CellContext<any, unknown>;
                     fmt = (
-                        <td key={colId} className="p1 bg-card text-foreground text-right font-semibold">
+                        <td key={colId} className="p1 bg-surface-2 text-foreground text-right font-semibold">
                             {colDef.cell(fakeCellContext)}
                         </td >
                     );
@@ -137,11 +137,11 @@ function StatsTable<T>({ columns, data, calc, sort, bottomRowOverride }: StatsTa
 
         sumRowCells.push(fmt);
     }
-    const summaryRow = <tr key="summary" className="border-t border-border bg-card">{sumRowCells}</tr>;
+    const summaryRow = <tr key="summary" className="border-t border-border bg-surface-2">{sumRowCells}</tr>;
 
     return (
         <table className="w-full table-auto border-collapse">
-            <thead className="bg-card">{headerRow}</thead>
+            <thead className="bg-surface-2">{headerRow}</thead>
             <tbody>
                 {tableRows}
                 {summaryRow}

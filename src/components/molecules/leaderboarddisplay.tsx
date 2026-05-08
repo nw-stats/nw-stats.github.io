@@ -180,7 +180,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full table-auto border-collapse">
-                    <thead className="bg-card" >
+                    <thead className="bg-surface" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>
@@ -223,7 +223,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                                     border-b border-gray-700
                                     bg-background
                                     transition
-                                    hover:bg-card/40"
+                                    hover:bg-surface/40"
                                 >
                                     {row.getVisibleCells().map((cell, index) => (
                                         <td

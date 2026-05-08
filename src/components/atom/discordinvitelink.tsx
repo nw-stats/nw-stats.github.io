@@ -13,7 +13,7 @@ export function DiscordInviteLink({ inviteLink, label = "Join the Discord", clas
             href={inviteLink}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-foreground hover:bg-gray-600 transition-colors ${className}`}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-1text-foreground hover:bg-gray-600 transition-colors ${className}`}
         >
             <DiscordLogoIcon size={16} weight="fill" />
             <span>{label}</span>

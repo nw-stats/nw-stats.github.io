@@ -18,7 +18,7 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
     const defenderColor = factionBgPrimary(war.defender.faction);
     return (
         <Link to={`/wars/${war.id}`}>
-            <div className="grid grid-cols-3 bg-card text-foreground rounded-lg">
+            <div className="grid grid-cols-3 bg-surface-1text-foreground rounded-lg">
                 {/* Attacker */}
                 <div className={`flex items-center justify-center h-full text-center font-semibold text-lg relative`}>
                     <div className={`absolute inset-0 ${attackerColor} w-1/12 rounded-l-lg`}></div>
@@ -86,7 +86,7 @@ export function WarListCard({ war, goldStar }: WarListCardProp): JSX.Element {
 
 export function WarListCardSkeleton(): JSX.Element {
     return (
-        <div className="grid grid-cols-3 bg-card text-foreground rounded-lg overflow-hidden animate-pulse">
+        <div className="grid grid-cols-3 bg-surface-1text-foreground rounded-lg overflow-hidden animate-pulse">
             {/* Attacker */}
             <div className="flex items-center justify-center h-full text-center font-semibold text-lg relative">
                 <div className="absolute inset-0 bg-gray-600 w-1/12 rounded-l-lg" />

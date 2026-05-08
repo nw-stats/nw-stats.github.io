@@ -60,7 +60,7 @@ export function MultiselectDropdown({
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between bg-card text-foreground px-3 py-2 rounded-lg"
+                className="w-full flex items-center justify-between bg-surface-1text-foreground px-3 py-2 rounded-lg"
             >
                 <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                     {allSelected
@@ -94,7 +94,7 @@ export function MultiselectDropdown({
                     <button
                         type="button"
                         onClick={toggleAll}
-                        className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-card ${allSelected ? "font-semibold text-rose-400" : "text-muted"
+                        className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-surface-1${allSelected ? "font-semibold text-rose-400" : "text-muted"
                             }`}
                     >
                         <span>All</span>
@@ -112,7 +112,7 @@ export function MultiselectDropdown({
                                     key={index}
                                     type="button"
                                     onClick={() => toggleOption(option)}
-                                    className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-card ${selected ? "font-semibold text-rose-400" : "text-muted"
+                                    className={`flex items-center justify-between w-full px-3 py-2 text-left hover:bg-surface-1${selected ? "font-semibold text-rose-400" : "text-muted"
                                         }`}
                                 >
                                     <span>{option}</span>

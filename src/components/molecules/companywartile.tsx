@@ -12,7 +12,7 @@ function CompanyWarTile({ companyName, war }: CompanyWarTileProps): JSX.Element 
     const opponent = war.attacker.name === companyName ? war.defender : war.attacker;
     return (
         <Link to={`/wars/${war.id}`} className="h-full w-full">
-            <div className="text-foreground bg-card rounded-lg">
+            <div className="text-foreground bg-surface-1rounded-lg">
                 <div className="flex w-full h-full justify-center items-center">
                     <div className="flex flex-col items-center">
                         <div>vs</div>

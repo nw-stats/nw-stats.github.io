@@ -34,7 +34,7 @@ export function TabbedContent({ children, activeLabel, onChangeLabel }: TabbedCo
                     <button
                         key={label}
                         className={`px-3 py-1 ${currentIndex === index ? "bg-surface-active"
-                            : "bg-surface hover:bg-surface-hover"
+                            : "bg-surface-1hover:bg-surface-hover"
                             } ${index === 0
                                 ? 'rounded-l-lg'
                                 : index === labels.length - 1

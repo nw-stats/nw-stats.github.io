@@ -160,7 +160,7 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
 
     return (
         <div className="text-foreground">
-            <div className="font-bold p-2 bg-background rounded-t-lg text-xs">{label}</div>
+            <div className="font-bold p-2 bg-surface-1 rounded-t-lg text-xs">{label}</div>
             <StatsTable columns={columns} data={combinedData} sort={sort} calc={calcColumns} bottomRowOverride={override} />
         </div >
     );

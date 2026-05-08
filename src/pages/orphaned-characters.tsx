@@ -32,7 +32,7 @@ export function OrphanedCharacters(): JSX.Element {
 
             <div className="w-full text-foreground bg-background " >
                 <table className="w-full table-fixed border-collapse text-sm">
-                    <thead className="bg-card" >
+                    <thead className="bg-surface" >
                         {
                             table.getHeaderGroups().map(headerGroup => (
                                 <tr key={headerGroup.id}>

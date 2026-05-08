@@ -2,9 +2,9 @@
 
 :root {
   --bg: oklch(98.5% 0.002 247.839);
-  --card: oklch(87.2% 0.01 258.338);
-  --surface: oklch(87.2% 0.01 258.338);
-  --surface-2: oklch(70.7% 0.022 261.325);
+  --surface-1: oklch(92.9% 0.006 252.5);
+  --surface-2: oklch(87.2% 0.01 258.338);
+  --surface-3: oklch(70.7% 0.022 261.325);
   --surface-hover:  oklch(92.9% 0.013 255.508);
   --surface-active: oklch(92.8% 0.006 264.531);
   --fg: oklch(13% 0.028 261.692);
@@ -55,13 +55,12 @@
 }
 
 .dark {
-  --bg: oklch(16% 0.02 260);
-  --card: oklch(20% 0.025 260);
-
-  --surface: oklch(22% 0.025 260);
-  --surface-2: oklch(26% 0.03 260);
-  --surface-hover: oklch(30% 0.035 260);
-  --surface-active: oklch(34% 0.04 260);
+  --bg: oklch(20.8% 0.042 265.755);
+  --surface-1: oklch(24.5% 0.042 262.5);   /* NEW */
+  --surface-2: oklch(27.9% 0.041 260.031);
+  --surface-3: oklch(37.2% 0.044 257.287);
+  --surface-hover: oklch(44.6% 0.043 257.281);
+  --surface-active: oklch(37.2% 0.044 257.287);
 
   --fg: oklch(92% 0.02 255);
   --muted: oklch(72% 0.02 255);
@@ -70,17 +69,17 @@
   --ring: oklch(65% 0.18 262);
   --title: oklch(88% 0.06 265);
 
-  --marauder-primary: oklch(62% 0.14 150);
-  --marauder-secondary: oklch(54% 0.12 150);
-  --marauder-tertiary: oklch(46% 0.10 150);
+  --marauder-primary: oklch(44.8% 0.119 151.328);
+  --marauder-secondary: oklch(44.8% 0.119 151.328);
+  --marauder-tertiary: oklch(39.3% 0.095 152.535);
 
-  --covenant-primary: oklch(68% 0.14 85);
-  --covenant-secondary: oklch(60% 0.12 85);
-  --covenant-tertiary: oklch(52% 0.10 85);
+  --covenant-primary: oklch(47.6% 0.114 61.907);
+  --covenant-secondary: oklch(55.4% 0.135 66.442);
+  --covenant-tertiary: oklch(42.1% 0.095 57.708);
 
-  --syndicate-primary: oklch(64% 0.18 300);
-  --syndicate-secondary: oklch(56% 0.16 300);
-  --syndicate-tertiary: oklch(48% 0.14 300);
+  --syndicate-primary: oklch(49.1% 0.27 292.581);
+  --syndicate-secondary: oklch(43.2% 0.232 292.759);
+  --syndicate-tertiary: oklch(38% 0.189 293.745);
 
   --role-healer-mb: oklch(72% 0.12 155);
   --role-healer-aoe: oklch(70% 0.11 150);
@@ -103,11 +102,46 @@
   --role-empty: oklch(70% 0.01 240);
 }
 
+.retro {
+  --bg: oklch(94% 0.02 85);          /* warm paper */
+  --surface-1: oklch(90% 0.03 85);
+  --surface-2: oklch(92% 0.025 85);
+  --surface-3: oklch(88% 0.03 85);
+  --surface-hover: oklch(86% 0.04 85);
+  --surface-active: oklch(82% 0.05 85);
+
+  --fg: oklch(22% 0.02 250);         /* ink-like */
+  --muted: oklch(45% 0.03 250);
+
+  --border: oklch(78% 0.03 85);
+  --ring: oklch(65% 0.12 250);
+
+  --title: oklch(35% 0.08 250);
+
+  --positive: oklch(65% 0.10 150);
+  --negative: oklch(60% 0.12 30);
+  --winner: oklch(75% 0.10 85);
+
+  --marauder-primary: oklch(64% 0.12 145);
+  --marauder-secondary: oklch(58% 0.10 145);
+  --marauder-tertiary: oklch(52% 0.08 145);
+
+  --covenant-primary: oklch(78% 0.12 85);
+  --covenant-secondary: oklch(72% 0.10 85);
+  --covenant-tertiary: oklch(66% 0.09 85);
+
+  --syndicate-primary: oklch(62% 0.16 300);
+  --syndicate-secondary: oklch(56% 0.14 300);
+  --syndicate-tertiary: oklch(50% 0.12 300);
+}
+
 @theme {
   --color-title: var(--title);
   --color-background: var(--bg);
-  --color-card: var(--card);
-  --color-surface:var(--surface);
+  --color-surface-1:var(--surface-1);
+  --color-surface-2:var(--surface-2);
+  --color-surface-3:var(--surface-3);
+
   --color-surface-active: var(--surface-active);
   --color-surface-hover: var(--surface-hover);
   --color-foreground: var(--fg);

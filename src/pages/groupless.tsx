@@ -70,7 +70,7 @@ export default function Groupless(): JSX.Element {
                         {table.getRowModel().rows.map(row => (
                             <tr
                                 key={row.id}
-                                className="border-t border-gray-700 hover:bg-card/40"
+                                className="border-t border-gray-700 hover:bg-surface/40"
                             >
                                 {row.getVisibleCells().map(cell => (
                                     <td

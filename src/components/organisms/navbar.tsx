@@ -91,7 +91,7 @@ const Navbar: React.FC = () => {
                         </button>
 
                         {isThemeOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-card rounded shadow-lg z-20">
+                            <div className="absolute right-0 mt-2 w-48 bg-surface-1rounded shadow-lg z-20">
 
                                 <button
                                     onClick={() => setTheme("light")}
@@ -130,7 +130,7 @@ const Navbar: React.FC = () => {
                         </button>
 
                         {isMoreOpen && (
-                            <div className="absolute right-0 mt-2 w-64 bg-card rounded shadow-lg z-20">
+                            <div className="absolute right-0 mt-2 w-64 bg-surface-1rounded shadow-lg z-20">
 
                                 <NavLink
                                     to="/orphans"

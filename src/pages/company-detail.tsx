@@ -32,13 +32,13 @@ const CompanyDetail: React.FC = () => {
         <div className="flex flex-col mx-auto max-w-6xl pt-4 gap-4">
             <CompanyDetailCard company={company} />
             <div className="flex ">
-                <button onClick={() => setPage(0)} className={`px-4 py-2 ${page === 0 ? "bg-blue-700" : "bg-card"} text-foreground rounded-l-lg hover:bg-gray-600 transition`}>
+                <button onClick={() => setPage(0)} className={`px-4 py-2 ${page === 0 ? "bg-blue-700" : "bg-surface"} text-foreground rounded-l-lg hover:bg-gray-600 transition`}>
                     Overview
                 </button>
-                <button onClick={() => setPage(1)} className={`px-4 py-2 ${page === 1 ? "bg-blue-700" : "bg-card"} text-foreground  hover:bg-gray-600 transition`}>
+                <button onClick={() => setPage(1)} className={`px-4 py-2 ${page === 1 ? "bg-blue-700" : "bg-surface"} text-foreground  hover:bg-gray-600 transition`}>
                     War History
                 </button>
-                <button onClick={() => setPage(2)} className={`px-4 py-2 ${page === 2 ? "bg-blue-700" : "bg-card"} text-foreground rounded-r-lg hover:bg-gray-600 transition`}>
+                <button onClick={() => setPage(2)} className={`px-4 py-2 ${page === 2 ? "bg-blue-700" : "bg-surface"} text-foreground rounded-r-lg hover:bg-gray-600 transition`}>
                     Roster
                 </button>
             </div>

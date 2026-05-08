@@ -38,7 +38,7 @@ import { useMemo, type JSX } from "react";
 //     return (
 //         <div>
 //             <div className="mx-auto max-w-6xl pt-6">
-//                 <div className="inline-flex items-center gap-2 bg-card px-3 py-2 rounded-t-lg">
+//                 <div className="inline-flex items-center gap-2 bg-surface-1px-3 py-2 rounded-t-lg">
 //                     <div className="text-foreground font-bold">Alt</div>
 //                     <Dropdown options={options} value={selectedAlt} onChange={setSelectedAlt} />
 //                 </div>

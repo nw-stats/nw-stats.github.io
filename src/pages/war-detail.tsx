@@ -93,7 +93,7 @@ function WarDetail(): JSX.Element {
                     {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                     <WarListCard war={war} goldStar={goldStar} />
                 </div>
-                <div className="flex flex-col gap-2 text-lg bg-card rounded-lg">
+                <div className="flex flex-col gap-2 text-lg bg-surface-1rounded-lg">
                     <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[war.attacker.faction, war.defender.faction]} attacker={war.attacker.name} defender={war.defender.name} goldStar={goldStar} />
                     <CaptureTimes captures={war.captures} />
                 </div>

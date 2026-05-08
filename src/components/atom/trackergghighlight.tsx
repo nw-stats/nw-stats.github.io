@@ -12,7 +12,7 @@ function TrackerGgStyleHighlight({ title, text, subtext }: StatHighlightProps): 
             <div
                 className="relative w-2 h-24 bg-background rounded overflow-hidden">
                 <div
-                    className="absolute bottom-0 left-0 w-full bg-card"
+                    className="absolute bottom-0 left-0 w-full bg-surface"
                     style={{ height: '100%' }}
                 ></div>
             </div>

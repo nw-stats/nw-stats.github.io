@@ -21,7 +21,7 @@ const Companies: React.FC = () => {
                 placeholder="Search companies..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="p-2 rounded-lg bg-card text-foreground placeholder-gray-400 w-full"
+                className="p-2 rounded-lg bg-surface-1text-foreground placeholder-gray-400 w-full"
             />
             <div className="flex flex-col gap-2 text-foreground w-full mx-auto">
                 {companies.filter(v => v.name.toLocaleLowerCase().includes(search)).map((c, i) => (

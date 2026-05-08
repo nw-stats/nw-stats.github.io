@@ -55,7 +55,7 @@ const GroupsDetail: React.FC<GroupsDetailProps> = ({ hideRoles, groups, goldStar
 
     return (
         <div className=''>
-            <div className='flex flex-row items-center h-full mb-2 gap-2'>
+            <div className='flex flex-row items-center h-full mb-2 gap-2 '>
                 <span className="">QDPS arrangement</span>
                 <NWayToggle
                     className="text-small px-2 py-1"

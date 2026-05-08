@@ -25,7 +25,7 @@ interface CharacterSummaryProps {
 //     return (
 //         <div className="flex flex-row">
 //             <div className={`${color} p-4`}></div>
-//             <div className={`grid grid-cols-1 text-foreground bg-card p-1 gap-1 w-full`}>
+//             <div className={`grid grid-cols-1 text-foreground bg-surface-1p-1 gap-1 w-full`}>
 //                 <h1 className="font-semibold">Lifetime</h1>
 //                 <div className={`grid grid-cols-6 pb-2`}>
 //                     <StatWithIcon icon={<HashIcon weight="bold" />} value={<NumberCell value={summary ? summary.count : 0} />} />
@@ -83,7 +83,7 @@ export default function CharacterSummary({ character, summary, averages }: Chara
                     <StatWithIcon icon={<FireIcon weight="fill" />} value={<NumberCell value={summary?.damage ?? 0} />} />
                 </StatRow>
 
-                <div className="h-px bg-card" />
+                <div className="h-px bg-surface" />
 
                 <StatRow title="Per War (30 min normalized)">
                     <StatWithIcon icon={<HashIcon weight="bold" />} value={<NumberCell value={averages?.count ?? 0} />} />

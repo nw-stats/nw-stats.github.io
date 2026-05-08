@@ -14,7 +14,7 @@ interface WarResultsSummaryProp {
 }
 
 const WarResultsCompany: React.FC<WarResultsSummaryProp> = ({ summary, faction, isAttacker, isWinner }) => {
-    let color = 'bg-card';
+    let color = 'bg-surface';
     let accent = 'bg-background';
     if (faction === 'Marauder') {
         color = 'bg-green-700';
