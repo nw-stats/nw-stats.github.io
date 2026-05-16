@@ -101,7 +101,7 @@ export function Wars(): JSX.Element {
                                 </div>
                             ))
                             : sortedWars.map((v, i) => (
-                                <div className="hover:scale-105" key={i}>
+                                <div className="transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" key={i}>
                                     <WarListCard war={v} />
                                 </div>
                             ))

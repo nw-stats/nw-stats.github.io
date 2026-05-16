@@ -42,8 +42,8 @@ export function convertFaction(value: DataType): Faction {
 }
 
 export function convertRole(value: DataType): Role {
-    if (!value) return '';
-    if (typeof value !== 'string') return '';
+    if (!value) return 'Unassigned';
+    if (typeof value !== 'string') return 'Unassigned';
 
     const lower = value.toLowerCase();
     if (lower.includes('healer')) {

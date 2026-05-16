@@ -28,7 +28,7 @@ import type { Character } from "../types/character";
 //                 placeholder="Search players..."
 //                 value={search}
 //                 onChange={(e) => setSearch(e.target.value)}
-//                 className="p-2 rounded-lg bg-surface-1text-foreground placeholder-gray-400 w-full"
+//                 className="p-2 rounded-lg bg-surface-1 text-foreground placeholder-gray-400 w-full"
 //             />
 //             <div className="flex flex-col gap-2">
 //                 {filteredPlayers.map(p => (
@@ -100,7 +100,7 @@ export default function Players(): JSX.Element {
                         inline-flex items-center
                         rounded-full
                         border border-border
-                        bg-gradient-to-b from-surface-1to-surface-2
+                        bg-gradient-to-b from-surface-1 to-surface-2
                         px-3 py-1
                         text-sm font-medium text-foreground
                         shadow-sm
@@ -137,7 +137,7 @@ export default function Players(): JSX.Element {
                         placeholder="Search players..."
                         value={filterTerm}
                         onChange={(e) => setFilterTerm(e.target.value)}
-                        className="p-2 rounded-lg bg-surface-1text-foreground placeholder-muted w-full"
+                        className="p-2 rounded-lg bg-surface-1 text-foreground placeholder-muted w-full"
                     />
                 </div>
             </div >

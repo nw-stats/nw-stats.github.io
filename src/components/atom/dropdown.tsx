@@ -12,7 +12,7 @@ function Dropdown({ options, value, onChange }: DropdownProps): React.JSX.Elemen
             <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="block w-full appearance-none bg-surface-1border border-border text-foreground py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-accent"
+                className="block w-full appearance-none bg-surface-1 border border-border text-foreground py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-accent"
             >
                 {options.map(option => (
                     <option key={option} value={option}>{option}</option>

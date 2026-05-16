@@ -17,9 +17,7 @@ const roleTextColors: Record<Role, string> = {
 
     "Shotcaller": "text-role-shotcaller",
 
-    "Many": "text-role-many",
-
-    "": "text-role-empty",
+    "Unassigned": "text-role-empty",
 };
 
 interface RoleTextProps {

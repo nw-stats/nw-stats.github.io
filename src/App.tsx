@@ -17,6 +17,8 @@ import Rankings from './pages/rankings';
 import PlayerRankings from './pages/playerrankings';
 import { OrphanedCharacters } from './pages/orphaned-characters';
 import Groupless from './pages/groupless';
+import PlayerCompare from './pages/playercompare';
+import ZScore from './pages/zscore';
 const App: React.FC = () => {
   return (
 
@@ -28,6 +30,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/players" element={<Players />} />
             <Route path="/players/:playerName" element={<PlayerDetails />} />
+            <Route path="/players-compare" element={<PlayerCompare />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/:companyName" element={<CompanyDetail />} />
             <Route path="/wars" element={<Wars />} />
@@ -36,6 +39,7 @@ const App: React.FC = () => {
             <Route path="/inaccuracy" element={<Inaccuracy />} />
             <Route path="/rankings" element={<Rankings />} />
             <Route path="/character-rankings" element={<PlayerRankings />} />
+            <Route path="/zscore" element={<ZScore />} />
             <Route path="/orphans" element={<OrphanedCharacters />} />
             <Route path="groupless" element={<Groupless />} />
             <Route path="*" element={<NotFound />} />

@@ -105,37 +105,37 @@ export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element 
                 {shownGraphs.includes("Kills") && <div>
                     <BarGraph title="Kills" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.kills }
-                    ))} />
+                    ))} series={[]} />
                 </div>}
                 {shownGraphs.includes("Deaths") && <div>
                     <BarGraph title="Deaths" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.deaths }
-                    ))} />
+                    ))} series={[]} />
                 </div>}
                 {shownGraphs.includes("Assists") && <div>
                     <BarGraph title="Assists" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.assists }
-                    ))} />
+                    ))} series={[]} />
                 </div>}
                 {shownGraphs.includes("Healing") && <div>
                     <BarGraph title="Healing" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.healing }
-                    ))} />
+                    ))} series={[]} />
                 </div>}
                 {shownGraphs.includes("Damage") && <div>
                     <BarGraph title="Damage" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.damage }
-                    ))} />
+                    ))} series={[]} />
                 </div>}
                 {shownGraphs.includes("KPar") && <div>
                     <BarGraph title="Kpar" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.kpar }
-                    ))} style="percent" />
+                    ))} style="percent" series={[]} />
                 </div>}
                 {shownGraphs.includes("Score") && <div>
                     <BarGraph title="Score" data={data.map((v) => (
                         { name: numberOrNLetters(v.name), value: v.score }
-                    ))} />
+                    ))} series={[]} />
                 </div>}
             </div >
         </>

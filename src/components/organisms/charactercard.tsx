@@ -13,7 +13,7 @@
 //     return (
 //         <div className="flex flex-row">
 //             <div className={`${color} p-4`}></div>
-//             <div className={`flex items-center bg-surface-1rounded-tr-lg p-2 gap-2 w-full`}>
+//             <div className={`flex items-center bg-surface-1 rounded-tr-lg p-2 gap-2 w-full`}>
 //                 <ProfilePicture pictureUrl="https://dqzvgunkova5o.cloudfront.net/statics/2025-06-20/images/NW-bug.svg" size={32} />
 //                 <div className="flex flex-col">
 //                     <div className="flex items-end text-foreground gap-2">

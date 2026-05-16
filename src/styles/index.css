@@ -5,8 +5,8 @@
   --surface-1: oklch(92.9% 0.006 252.5);
   --surface-2: oklch(87.2% 0.01 258.338);
   --surface-3: oklch(70.7% 0.022 261.325);
-  --surface-hover:  oklch(92.9% 0.013 255.508);
-  --surface-active: oklch(92.8% 0.006 264.531);
+  --surface-hover:  oklch(70.4% 0.04 256.788);
+  --surface-active: oklch(86.9% 0.022 252.894);
   --fg: oklch(13% 0.028 261.692);
   --border:oklch(70.7% 0.022 261.325);
   --ring:oklch(54.6% 0.245 262.881);

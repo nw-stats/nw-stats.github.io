@@ -1,17 +1,27 @@
 import type { DateTime } from "luxon";
 import type { RoleAssignment } from "./role";
 import type { Company } from "./company";
+import type { GroupKey } from "./roster";
 
-export interface LeaderboardEntry {
-    warid: number;
-    character: string;
-    roleAssignment: RoleAssignment;
-    score: number;
+export interface Stats {
     kills: number;
     deaths: number;
     assists: number;
     healing: number;
     damage: number;
+}
+type Counted<T> = T & {
+    count: number;
+}
+export type MeanStats = Counted<Stats>;
+export type AggregateStats = Counted<Stats>;
+export type DistributionStats = Stats;
+
+export interface LeaderboardEntry extends Stats {
+    warid: number;
+    character: string;
+    roleAssignment: RoleAssignment;
+    score: number;
     kpar: number;
     company: string;
 }
@@ -51,8 +61,6 @@ export interface StatTotals {
 }
 
 
-export interface StatDiff extends StatTotals { }
-
 
 export interface GroupPerformance {
     stats: GroupsEntry[];
@@ -73,3 +81,9 @@ export interface WarsSummary {
 }
 
 export type Leaderboard = LeaderboardEntry[];
+
+export interface WarPressure {
+    maxPressure: number;
+    attackPressure: Map<GroupKey, number>;
+    defendPressure: Map<GroupKey, number>;
+}

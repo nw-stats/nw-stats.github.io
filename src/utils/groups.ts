@@ -1,6 +1,7 @@
-import type { GroupPerformance, Leaderboard, StatDiff, StatTotals } from "../types/leaderboard";
+import type { GroupPerformance, Leaderboard, StatTotals, WarPressure } from "../types/leaderboard";
 import type { GroupKey, Roster } from "../types/roster";
 import { isQpdsGroup } from "./roster";
+import { calculatePressure } from "../types/pressure";
 
 export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, Roster>): Map<string, Map<GroupKey, GroupPerformance>> {
     const performance = new Map<string, Map<GroupKey, GroupPerformance>>();
@@ -112,8 +113,8 @@ export function companyGroupSummary(groups: Map<GroupKey, GroupPerformance>): Ma
     return summary;
 }
 
-export function getGroupDiff(attackerSummary: Map<GroupKey, StatTotals>, defenderSummary: Map<GroupKey, StatTotals>): Map<GroupKey, StatDiff> {
-    const diff = new Map<GroupKey, StatDiff>();
+export function getGroupDiff(attackerSummary: Map<GroupKey, StatTotals>, defenderSummary: Map<GroupKey, StatTotals>): Map<GroupKey, StatTotals> {
+    const diff = new Map<GroupKey, StatTotals>();
     //{ name: 'diff', score: 0, killS: 0, deths: 0, assists: 0, healing: 0, damage: 0 };
     for (const gk of attackerSummary.keys()) {
         let atk = attackerSummary.get(gk);
@@ -162,4 +163,65 @@ export function joinedRoster(roster: Map<GroupKey, GroupPerformance>): Map<Group
 
 export function isNumberGroup(gk: GroupKey): boolean {
     return typeof gk === 'number';
+}
+
+export function getGroupsDiff(attacker: Map<GroupKey, GroupPerformance>, defender: Map<GroupKey, GroupPerformance>): Map<GroupKey, StatTotals> {
+    const diff: Map<GroupKey, StatTotals> = new Map();
+    const toSummarize: Map<string, Map<GroupKey, GroupPerformance>> = new Map();
+    toSummarize.set("atk", attacker);
+    toSummarize.set("def", defender);
+    const summaries = getGroupSummaries(toSummarize)
+    const atkSummary = summaries.get("atk");
+    const defSummary = summaries.get("def");
+    if (!atkSummary || !defSummary) return diff;
+
+    for (const k of atkSummary.keys()) {
+        const a = atkSummary.get(k);
+        const d = defSummary.get(k);
+        if (!a || !d) continue;
+        diff.set(k, ({
+            name: '',
+            score: d.score - a.score,
+            kills: d.kills - a.kills,
+            deaths: d.kills - a.deaths,
+            assists: d.kills - a.assists,
+            healing: d.kills - a.healing,
+            damage: d.kills - a.damage,
+            count: 1,
+            kpar: d.kpar - a.kpar,
+        }));
+    }
+    return diff;
+}
+
+export function getPressure(attacker: Map<GroupKey, GroupPerformance>, defender: Map<GroupKey, GroupPerformance>): WarPressure {
+    const pressure: WarPressure = {
+        maxPressure: 0,
+        attackPressure: new Map(),
+        defendPressure: new Map(),
+    };
+    const toSummarize: Map<string, Map<GroupKey, GroupPerformance>> = new Map();
+    toSummarize.set("atk", attacker);
+    toSummarize.set("def", defender);
+    const summaries = getGroupSummaries(toSummarize)
+    const atkSummary = summaries.get("atk");
+    const defSummary = summaries.get("def");
+    if (!atkSummary || !defSummary) return pressure;
+
+    const pressuresDiff: number[] = [];
+    for (const k of atkSummary.keys()) {
+        const a = atkSummary.get(k);
+        const d = defSummary.get(k);
+        if (!a || !d) continue;
+
+        const ap = calculatePressure(a.kills, a.deaths, a.assists);
+        const dp = calculatePressure(d.kills, d.deaths, d.assists);
+
+        pressure.attackPressure.set(k, ap);
+        pressure.defendPressure.set(k, dp);
+        pressuresDiff.push(ap - dp);
+    }
+    pressure.maxPressure = Math.max(...(pressuresDiff.map(v => Math.abs(v))));
+    console.log(pressure.maxPressure);
+    return pressure;
 }

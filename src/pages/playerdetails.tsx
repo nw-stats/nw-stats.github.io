@@ -7,52 +7,6 @@ import CharacterDetailsDisplay from "../components/organisms/characterdetails";
 import { usePlayerDetails } from "../hooks/usePlayerFull";
 import { useMemo, type JSX } from "react";
 
-// function PlayerDetails() {
-//     const { characterName } = useParams<{ characterName: string, mode?: string }>();
-//     const [searchParams, setSearchParams] = useSearchParams();
-
-//     const alt = searchParams.get('alt') || '';
-//     const setAlt = (name: string) => {
-//         setSearchParams(prev => {
-//             const next = new URLSearchParams(prev);
-//             next.set('alt', name.toLowerCase());
-//             return next;
-//         })
-//     };
-
-
-//     const { loading: loadingPlayerName, error: errorPlayerName, playerName } = usePlayerNameFromAlt(characterName);
-//     const { loading, error, details } = usePlayerDetails(playerName);
-
-//     let options = [...(details.keys() || [])];
-//     options = options.sort((a, b) => {
-//         if (a === 'All') return -1; // 'All' goes first
-//         if (b === 'All') return 1;  // 'All' goes first
-//         return a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()); // alphabetical order
-//     });
-
-//     if (loading) return <Loading />;
-//     if (!characterName) return <NotFound />;
-//     if (!characterName) return <ErrorPage error={characterName} />;
-
-//     return (
-//         <div>
-//             <div className="mx-auto max-w-6xl pt-6">
-//                 <div className="inline-flex items-center gap-2 bg-surface-1px-3 py-2 rounded-t-lg">
-//                     <div className="text-foreground font-bold">Alt</div>
-//                     <Dropdown options={options} value={selectedAlt} onChange={setSelectedAlt} />
-//                 </div>
-//             </div>
-//             {charDetails ?
-//                 <CharacterDetailsDisplay details={charDetails} /> :
-//                 <div className="text-gray-400">No Data</div>
-//             }
-//         </div>
-//     );
-// }
-
-// export default PlayerDetails;
-
 export default function PlayerDetails(): JSX.Element {
     const { playerName } = useParams<{ playerName: string }>();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -66,20 +20,25 @@ export default function PlayerDetails(): JSX.Element {
             return next;
         })
     }
+    console.log(details);
 
-    let options = [...(details.keys() || [])];
-    options = options.sort((a, b) => {
-        if (a === 'All') return -1; // 'All' goes first
-        if (b === 'All') return 1;  // 'All' goes first
-        return a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()); // alphabetical order
-    });
-
+    const options = useMemo(() => {
+        if (!details) return [];
+        const o = [...details.keys() || []]
+            .sort((a, b) => {
+                if (a === 'All') return -1;
+                if (b === 'All') return 1;
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+        return o;
+    }, [details]);
     const characterDetails = useMemo(() => {
+        if (!details) return undefined;
         if (details.has(alt)) {
             return details.get(alt);
         }
         return details.get('All');
-    }, [alt, details])
+    }, [alt, details]);
 
     if (!playerName) return <NotFound />
     if (loading) return <Loading />
@@ -108,6 +67,7 @@ export default function PlayerDetails(): JSX.Element {
             {characterDetails && (
                 <CharacterDetailsDisplay details={characterDetails} />
             )}
+
         </div>
     );
 }

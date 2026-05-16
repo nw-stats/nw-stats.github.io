@@ -40,10 +40,10 @@ export function NWayToggle<T extends string>({
                 <button
                     key={index}
                     onClick={() => handleClick(index)}
-                    className={`${className} ${disabled ? 'bg-surface-1text-foreground'
+                    className={`${className} ${disabled ? 'bg-surface-1 text-foreground'
                         : selectedIndex === index
                             ? "bg-surface-active"
-                            : "bg-surface-1hover:bg-surface-hover"
+                            : "bg-surface-1 hover:bg-surface-hover"
                         } ${index === 0
                             ? 'rounded-l-full'
                             : index === options.length - 1

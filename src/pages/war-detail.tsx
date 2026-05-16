@@ -13,7 +13,11 @@ import GroupsDetail from "../components/molecules/groupsdetails";
 import { HealerCompare } from "../components/organisms/healercompare";
 import { WarListCard } from "../components/molecules/warlistcard";
 import { GroupsSummaryGraph } from "../components/molecules/groupssummarygraphy";
-import { useRef, useState, type JSX } from "react";
+import { useMemo, useRef, useState, type JSX } from "react";
+import Heatmap from "../components/molecules/heatmap";
+import { getPressure } from "../utils/groups";
+import { getHeatmapColor } from "../utils/heatmap";
+import { factionColorVar } from "../utils/factions";
 
 
 
@@ -48,6 +52,132 @@ function WarDetail(): JSX.Element {
 
     const goldStar = searchParams.has("weenie") ?? false;
 
+    const heatmap = useMemo(() => {
+        const neutral = {
+            point: { attacker: 0, defender: 0, color: "#eeeeee" },
+            topLeft: { attacker: 0, defender: 0, color: "#eeeeee" },
+            topRight: { attacker: 0, defender: 0, color: "#eeeeee" },
+            bottomLeft: { attacker: 0, defender: 0, color: "#eeeeee" },
+            bottomRight: { attacker: 0, defender: 0, color: "#eeeeee" },
+            weak: { attacker: 0, defender: 0, color: "#eeeeee" },
+            strong: { attacker: 0, defender: 0, color: "#eeeeee" },
+            outer: { attacker: 0, defender: 0, color: "#eeeeee" },
+            wide: { attacker: 0, defender: 0, color: "#eeeeee" },
+        };
+        if (!war) return neutral;
+
+        const atkGrps = groupDetails.get(war.attacker.name);
+        const defGrps = groupDetails.get(war.defender.name);
+        if (!atkGrps || !defGrps) return neutral;
+        const pressure = getPressure(atkGrps, defGrps);
+        const attackerColor = factionColorVar(war.attacker.faction);
+        const defenderColor = factionColorVar(war.defender.faction);
+        const neutralColor = factionColorVar('Gray');
+        return {
+            point: {
+                attacker: pressure.attackPressure.get(1)! / 2 + pressure.attackPressure.get(2)! / 2,
+                defender: pressure.defendPressure.get(1)! / 2 + pressure.defendPressure.get(2)! / 2,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(1)! / 2 + pressure.attackPressure.get(2)! / 2 - pressure.defendPressure.get(1)! / 2 - pressure.defendPressure.get(2)! / 2,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            topLeft: {
+                attacker: pressure.attackPressure.get(6)!,
+                defender: pressure.defendPressure.get(6)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(6)! - pressure.defendPressure.get(6)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            topRight: {
+                attacker: pressure.attackPressure.get(5)!,
+                defender: pressure.defendPressure.get(5)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(5)! - pressure.defendPressure.get(5)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            bottomLeft: {
+                attacker: pressure.attackPressure.get(4)!,
+                defender: pressure.defendPressure.get(4)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(4)! - pressure.defendPressure.get(4)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            bottomRight: {
+                attacker: pressure.attackPressure.get(3)!,
+                defender: pressure.defendPressure.get(3)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(3)! - pressure.defendPressure.get(3)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            weak: {
+                attacker: pressure.attackPressure.get(7)!,
+                defender: pressure.defendPressure.get(7)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(7)! - pressure.defendPressure.get(7)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            strong: {
+                attacker: pressure.attackPressure.get(8)!,
+                defender: pressure.defendPressure.get(8)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(8)! - pressure.defendPressure.get(8)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            outer: {
+                attacker: pressure.attackPressure.get(9)!,
+                defender: pressure.defendPressure.get(9)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(9)! - pressure.defendPressure.get(9)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            },
+            wide: {
+                attacker: pressure.attackPressure.get(10)!,
+                defender: pressure.defendPressure.get(10)!,
+                color: getHeatmapColor(
+                    pressure.attackPressure.get(10)! - pressure.defendPressure.get(10)!,
+                    pressure.maxPressure,
+                    defenderColor,
+                    neutralColor,
+                    attackerColor
+                )
+            }
+
+        };
+
+    }, [war, groupDetails]);
+
     if (loading) return <Loading />;
     if (error) return <NotFound />;
     if (!war) return <NotFound />;
@@ -62,6 +192,7 @@ function WarDetail(): JSX.Element {
     const attackerHealer = healerSummary.get(war.attacker.name);
     const defenderHealer = healerSummary.get(war.defender.name);
     const hasLeaderboard = combinedLeaderboard !== undefined;
+
 
     // const handleScreenshot = async () => {
     //     if (!screenshotRef.current) return;
@@ -93,7 +224,7 @@ function WarDetail(): JSX.Element {
                     {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
                     <WarListCard war={war} goldStar={goldStar} />
                 </div>
-                <div className="flex flex-col gap-2 text-lg bg-surface-1rounded-lg">
+                <div className="flex flex-col gap-2 text-lg bg-surface-1 rounded-lg">
                     <WarResultsCompanyCombined summaries={[attackerSummary, defenderSummary]} factions={[war.attacker.faction, war.defender.faction]} attacker={war.attacker.name} defender={war.defender.name} goldStar={goldStar} />
                     <CaptureTimes captures={war.captures} />
                 </div>
@@ -140,6 +271,25 @@ function WarDetail(): JSX.Element {
                                     <Tab label={war.defender.name}>
                                         <GroupsSummary groups={defenderGroups} goldStar={goldStar} />
                                     </Tab>
+                                </TabbedContent>
+                            </Tab>
+                            <Tab label="Pressure">
+                                <TabbedContent key={`heatmap-${war.attacker.name}-${war.defender.name}`}>
+                                    <Heatmap
+                                        point={heatmap.point}
+                                        topLeft={heatmap.topLeft}
+                                        topRight={heatmap.topRight}
+                                        bottomLeft={heatmap.bottomLeft}
+                                        bottomRight={heatmap.bottomRight}
+                                        weak={heatmap.weak}
+                                        strong={heatmap.strong}
+                                        outer={heatmap.outer}
+                                        wide={heatmap.wide}
+                                        attackerColor={factionColorVar(war.attacker.faction)}
+                                        defenderColor={factionColorVar(war.defender.faction)}
+                                        neutralColor={factionColorVar('Gray')}
+                                        attackerName={war.attacker.name}
+                                        defenderName={war.defender.name} />
                                 </TabbedContent>
                             </Tab>
                             <Tab label="Graphs">

@@ -99,7 +99,7 @@ export function createCharacterToPlayerMap(characters: CharacterRow[]): Map<stri
     const mapping = new Map<string, string>();
     for (const row of characters) {
         if (mapping.has(row.name)) {
-            console.error("0x000009aa", ": tell computer rofl")
+            console.error("0x000009aa", ": tell computer rofl ", row.name)
         }
         mapping.set(row.name, row.player);
     }

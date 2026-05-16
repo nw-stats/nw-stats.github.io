@@ -60,7 +60,7 @@ export function MultiselectDropdown({
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between bg-surface-1text-foreground px-3 py-2 rounded-lg"
+                className="w-full flex items-center justify-between bg-surface-1 text-foreground px-3 py-2 rounded-lg"
             >
                 <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                     {allSelected

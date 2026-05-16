@@ -88,3 +88,19 @@ export function factionAccentBar(faction: Faction): string {
         return "before:bg-gray-500";
     }
 }
+
+export function factionColorVar(faction: Faction): string {
+    switch (faction) {
+        case "Marauder":
+            return "var(--marauder-primary)";
+
+        case "Syndicate":
+            return "var(--syndicate-primary)";
+
+        case "Covenant":
+            return "var(--covenant-primary)";
+
+        default:
+            return "var(--gray-primary)";
+    }
+}

@@ -139,18 +139,12 @@ function CharacterWarHistory({ history }: CharacterWarHistoryProps) {
 
     return (
         <div className={`${cardBase}`}>
-            <div className="p-3 border-b border-gray-700">
-                <h1 className="text-foreground font-semibold">
-                    War History
-                </h1>
-            </div>
-
             {history.length > 0 ? (
                 <div className="pb-2">
                     <StatsTable columns={columns} data={history} sort={sort} />
                 </div>
             ) : (
-                <div className="p-3 text-gray-500">
+                <div className="p-3 text-muted">
                     No data
                 </div>
             )}

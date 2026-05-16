@@ -99,7 +99,7 @@ function RankingsDisplay({ rankings }: RankingsDisplayProps): JSX.Element {
     return (
         <div className="w-full text-foreground">
             <table className="w-full table-fixed border-collapse text-sm">
-                <thead className="bg-surface-1text-foreground">
+                <thead className="bg-surface-1 text-foreground">
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map(header => {

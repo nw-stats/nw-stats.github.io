@@ -8,7 +8,7 @@ interface StatHighlightProps {
 
 function StatHighlight({ title, text, subtext }: StatHighlightProps): JSX.Element {
     return (
-        <div className="flex items-center gap-4 w-full h-full bg-surface-1rounded-lg p-2">
+        <div className="flex items-center gap-4 w-full h-full bg-surface-1 rounded-lg p-2">
             <div className="flex flex-col justify-center text-foreground text-sm">
                 <span className="text-gray-400 font-semibold" title="Assists">{title}</span>
                 <span className="text-lg font-bold">{text}</span>

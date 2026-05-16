@@ -1,3 +1,5 @@
+import type { DateTime } from "luxon";
+
 export function formatCompact(value: number): string {
     return Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 0 }).format(value);
 }
@@ -22,4 +24,8 @@ export function formatPercent(value: number, figures?: number): string {
 export function numberOrNLetters(value: string, limit?: number): string {
     const _limit = limit ? limit : 1;
     return isNaN(Number(value)) ? value.slice(0, _limit) : value;
+}
+
+export function formatDate(value: DateTime): string {
+    return `${value.get('month')}/${value.get('day')}`;
 }

@@ -53,7 +53,8 @@ export function createPlayerDetailsAndSummary(
     characters: Character[],
     leaderboardEntries: Leaderboard,
     rosters: Map<number, Map<string, Roster>>,
-    wars: War[]): Map<string, CharacterDetails> {
+    wars: War[],
+): Map<string, CharacterDetails> {
 
     const details = new Map<string, CharacterDetails>();
 

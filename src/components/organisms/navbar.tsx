@@ -1,10 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { kWebsiteName } from "../../constants/name";
-import { ArrowDownIcon, CircleHalfIcon, DiscordLogoIcon, RadioactiveIcon } from "@phosphor-icons/react";
+import {
+    ArrowDownIcon,
+    CircleHalfIcon,
+    DiscordLogoIcon,
+    RadioactiveIcon
+} from "@phosphor-icons/react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-const Navbar: React.FC = () => {
+const navItemBase =
+    "px-3 py-2 rounded transition-colors duration-150";
+
+const navItemInactive =
+    `${navItemBase} bg-surface-1 hover:bg-surface-hover`;
+
+const navItemActive =
+    `${navItemBase} bg-surface-active`;
+
+const dropdownItem =
+    "block w-full text-left px-4 py-2 transition-colors duration-150 hover:bg-surface-hover";
+
+export default function Navbar(): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
 
     const [isMoreOpen, setMoreOpen] = useState(false);
@@ -14,10 +31,6 @@ const Navbar: React.FC = () => {
 
     const toggleMenu = () => setIsOpen((v) => !v);
 
-    // const toggleMore = () => setMoreOpen((v) => !v);
-    // const toggleTheme = () => setThemeOpen((v) => !v);
-
-    // Apply theme to <html>
     useEffect(() => {
         const root = document.documentElement;
 
@@ -29,8 +42,8 @@ const Navbar: React.FC = () => {
     }, [theme]);
 
     return (
-        <nav className="bg-background p-4 text-foreground w-full top-0 z-10 fixed shadow-md">
-            <div className="container mx-auto flex justify-between items-center">
+        <nav className="bg-surface-1 border-b border-border text-foreground w-full top-0 z-10 fixed shadow-md">
+            <div className="container mx-auto flex justify-between items-center p-4">
 
                 {/* Logo */}
                 <Link to="/">
@@ -42,74 +55,86 @@ const Navbar: React.FC = () => {
                     </h2>
                 </Link>
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex space-x-4 items-center relative">
+                {/* Desktop */}
+                <div className="hidden md:flex items-center gap-2 relative">
 
-                    <NavLink to="/wars" className={({ isActive }) =>
-                        isActive ? "px-3 py-2 bg-surface-active rounded" : "px-3 py-2 hover:bg-surface-hover rounded"
-                    }>
+                    <NavLink
+                        to="/wars"
+                        className={({ isActive }) =>
+                            isActive ? navItemActive : navItemInactive
+                        }
+                    >
                         Wars
                     </NavLink>
 
-                    <NavLink to="/companies" className={({ isActive }) =>
-                        isActive ? "px-3 py-2 bg-surface-active rounded" : "px-3 py-2 hover:bg-surface-hover rounded"
-                    }>
+                    <NavLink
+                        to="/companies"
+                        className={({ isActive }) =>
+                            isActive ? navItemActive : navItemInactive
+                        }
+                    >
                         Companies
                     </NavLink>
 
-                    <NavLink to="/players" className={({ isActive }) =>
-                        isActive ? "px-3 py-2 bg-surface-active rounded" : "px-3 py-2 hover:bg-surface-hover rounded"
-                    }>
+                    <NavLink
+                        to="/players"
+                        className={({ isActive }) =>
+                            isActive ? navItemActive : navItemInactive
+                        }
+                    >
                         Players
                     </NavLink>
 
-                    <NavLink to="/rankings" className={({ isActive }) =>
-                        isActive ? "px-3 py-2 bg-surface-active rounded" : "px-3 py-2 hover:bg-surface-hover rounded"
-                    }>
+                    <NavLink
+                        to="/rankings"
+                        className={({ isActive }) =>
+                            isActive ? navItemActive : navItemInactive
+                        }
+                    >
                         Company Rankings
                     </NavLink>
 
                     <NavLink
                         to="/character-rankings"
                         className={({ isActive }) =>
-                            isActive ? "px-3 py-2 bg-surface-active rounded" : "px-3 py-2 hover:bg-surface-hover rounded"
+                            isActive ? navItemActive : navItemInactive
                         }
                     >
-                        <RadioactiveIcon size={24} />
+                        <RadioactiveIcon size={20} />
                     </NavLink>
 
-                    {/* 🎨 THEME DROPDOWN (NEW SEPARATE SECTION) */}
+                    {/* Theme Dropdown */}
                     <div className="relative">
                         <button
-                            className="px-3 py-2 hover:bg-surface-hover rounded"
+                            className={navItemInactive}
                             onClick={() => {
                                 setThemeOpen((v) => !v);
                                 setMoreOpen(false);
                             }}
                         >
-                            <CircleHalfIcon />
+                            <CircleHalfIcon size={20} />
                         </button>
 
                         {isThemeOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-surface-1rounded shadow-lg z-20">
+                            <div className="absolute right-0 mt-2 w-48 overflow-hidden rounded-lg border border-border bg-surface-2 shadow-lg z-20">
 
                                 <button
                                     onClick={() => setTheme("light")}
-                                    className="block w-full text-left px-4 py-2 hover:bg-surface-hover"
+                                    className={dropdownItem}
                                 >
                                     Light
                                 </button>
 
                                 <button
                                     onClick={() => setTheme("dark")}
-                                    className="block w-full text-left px-4 py-2 hover:bg-surface-hover"
+                                    className={dropdownItem}
                                 >
                                     Dark
                                 </button>
 
                                 <button
                                     onClick={() => setTheme("retro")}
-                                    className="block w-full text-left px-4 py-2 hover:bg-surface-hover"
+                                    className={dropdownItem}
                                 >
                                     Retro
                                 </button>
@@ -117,24 +142,24 @@ const Navbar: React.FC = () => {
                         )}
                     </div>
 
-                    {/* 📁 MORE DROPDOWN */}
+                    {/* More Dropdown */}
                     <div className="relative">
                         <button
-                            className="px-3 py-2 hover:bg-surface-hover rounded"
+                            className={navItemInactive}
                             onClick={() => {
                                 setMoreOpen((v) => !v);
                                 setThemeOpen(false);
                             }}
                         >
-                            <ArrowDownIcon />
+                            <ArrowDownIcon size={20} />
                         </button>
 
                         {isMoreOpen && (
-                            <div className="absolute right-0 mt-2 w-64 bg-surface-1rounded shadow-lg z-20">
+                            <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-lg border border-border bg-surface-2 shadow-lg z-20">
 
                                 <NavLink
                                     to="/orphans"
-                                    className="block px-4 py-2 hover:bg-surface-hover"
+                                    className={dropdownItem}
                                     onClick={() => setMoreOpen(false)}
                                 >
                                     Orphans
@@ -142,7 +167,7 @@ const Navbar: React.FC = () => {
 
                                 <NavLink
                                     to="/groupless"
-                                    className="block px-4 py-2 hover:bg-surface-hover"
+                                    className={dropdownItem}
                                     onClick={() => setMoreOpen(false)}
                                 >
                                     Groupless
@@ -150,9 +175,9 @@ const Navbar: React.FC = () => {
 
                                 <a
                                     href="https://discord.gg/jfhRyNSHvD"
-                                    className="flex items-center gap-2 px-4 py-2 hover:bg-surface-hover"
+                                    className="flex items-center gap-2 px-4 py-2 transition-colors duration-150 hover:bg-surface-hover"
                                 >
-                                    <DiscordLogoIcon size={12} />
+                                    <DiscordLogoIcon size={14} />
                                     <span>Join the Discord</span>
                                 </a>
                             </div>
@@ -162,7 +187,7 @@ const Navbar: React.FC = () => {
 
                 {/* Mobile Button */}
                 <button
-                    className="md:hidden text-foreground focus:outline-none"
+                    className="md:hidden text-foreground"
                     onClick={toggleMenu}
                 >
                     <svg
@@ -182,49 +207,92 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Mobile Menu */}
-            <div className={`md:hidden bg-background p-4 ${isOpen ? "block" : "hidden"}`}>
-
-                <NavLink to="/wars" onClick={toggleMenu} className="block px-3 py-2 hover:bg-surface-hover rounded mb-2">
+            <div
+                className={`md:hidden border-t border-border bg-background p-4 space-y-2 ${isOpen ? "block" : "hidden"
+                    }`}
+            >
+                <NavLink
+                    to="/wars"
+                    onClick={toggleMenu}
+                    className={({ isActive }) =>
+                        `block ${isActive ? navItemActive : navItemInactive}`
+                    }
+                >
                     Wars
                 </NavLink>
 
-                <NavLink to="/companies" onClick={toggleMenu} className="block px-3 py-2 hover:bg-surface-hover rounded mb-2">
+                <NavLink
+                    to="/companies"
+                    onClick={toggleMenu}
+                    className={({ isActive }) =>
+                        `block ${isActive ? navItemActive : navItemInactive}`
+                    }
+                >
                     Companies
                 </NavLink>
 
-                <NavLink to="/players" onClick={toggleMenu} className="block px-3 py-2 hover:bg-surface-hover rounded mb-2">
-                    Player Stats
+                <NavLink
+                    to="/players"
+                    onClick={toggleMenu}
+                    className={({ isActive }) =>
+                        `block ${isActive ? navItemActive : navItemInactive}`
+                    }
+                >
+                    Players
                 </NavLink>
 
-                <NavLink to="/rankings" onClick={toggleMenu} className="block px-3 py-2 hover:bg-surface-hover rounded mb-2">
+                <NavLink
+                    to="/rankings"
+                    onClick={toggleMenu}
+                    className={({ isActive }) =>
+                        `block ${isActive ? navItemActive : navItemInactive}`
+                    }
+                >
                     Company Rankings
                 </NavLink>
 
-                <NavLink to="/character-rankings" className="block px-3 py-2 hover:bg-surface-hover rounded mb-2">
-                    <RadioactiveIcon size={24} />
+                <NavLink
+                    to="/character-rankings"
+                    onClick={toggleMenu}
+                    className={({ isActive }) =>
+                        `block ${isActive ? navItemActive : navItemInactive}`
+                    }
+                >
+                    <RadioactiveIcon size={20} />
                 </NavLink>
 
                 <a
                     href="https://discord.gg/jfhRyNSHvD"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-surface-hover"
+                    className="flex items-center gap-2 rounded px-4 py-2 bg-surface-1 hover:bg-surface-hover transition-colors duration-150"
                 >
-                    <DiscordLogoIcon size={12} />
+                    <DiscordLogoIcon size={14} />
                     <span>Join the Discord</span>
                 </a>
 
-                {/* Mobile Theme */}
-                <div className="mt-4 border-t border-gray-700 pt-2">
-                    <div className="text-sm text-gray-400 px-2 mb-1"><CircleHalfIcon /></div>
+                {/* Mobile Theme Section */}
+                <div className="mt-4 rounded-lg border border-border bg-surface-1 p-2">
+                    <div className="px-2 py-1 text-muted">
+                        <CircleHalfIcon size={18} />
+                    </div>
 
-                    <button onClick={() => setTheme("light")} className="block w-full text-left px-3 py-2 hover:bg-surface-hover">
+                    <button
+                        onClick={() => setTheme("light")}
+                        className={dropdownItem}
+                    >
                         Light
                     </button>
 
-                    <button onClick={() => setTheme("dark")} className="block w-full text-left px-3 py-2 hover:bg-surface-hover">
+                    <button
+                        onClick={() => setTheme("dark")}
+                        className={dropdownItem}
+                    >
                         Dark
                     </button>
 
-                    <button onClick={() => setTheme("retro")} className="block w-full text-left px-3 py-2 hover:bg-surface-hover">
+                    <button
+                        onClick={() => setTheme("retro")}
+                        className={dropdownItem}
+                    >
                         Retro
                     </button>
                 </div>
@@ -232,5 +300,3 @@ const Navbar: React.FC = () => {
         </nav>
     );
 };
-
-export default Navbar;

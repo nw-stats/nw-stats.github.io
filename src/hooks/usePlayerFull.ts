@@ -31,6 +31,6 @@ export function usePlayerDetails(playerName?: string) {
     return {
         loading,
         error,
-        details,
+        details
     };
 }

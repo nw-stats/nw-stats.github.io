@@ -1,23 +1,21 @@
 import { useMemo, type JSX } from "react";
-import { useCharacterRankings } from "../hooks/useCharacterRankings";
 import NotFound from "./notfound";
 import Loading from "../components/atom/loading";
-import { factionBgSecondary, factionBgTertiary } from "../utils/factions";
-import { type ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable, type SortingState, flexRender } from "@tanstack/react-table";
-import LabelIcon from "../components/atom/labelicon";
-import { FireIcon, FirstAidIcon, HandshakeIcon, HashIcon, PercentIcon, PlusCircleIcon, SkullIcon, SwordIcon, UsersIcon, UsersThreeIcon } from "@phosphor-icons/react";
-import { formatPercent } from "../utils/format";
-import NumberCell from "../components/atom/numbercell";
+import { type ColumnDef, } from "@tanstack/react-table";
+import { useZScore } from "../hooks/useZScore";
+import type { StatZScore } from "../domain/stats/types";
+import StatsTable from "../components/atom/statstble";
+import { transformPlayerPerformanceForReactTables } from "../domain/stats/transformer";
 import { Link, useSearchParams } from "react-router-dom";
-import type { PlayerRolePerformance } from "../types/characterperformance";
-import { sortRolesStrings } from "../utils/roster";
 import Dropdown from "../components/atom/dropdown";
+import Grade from "../components/atom/grade";
 
 export default function PlayerRankings(): JSX.Element {
-    const { loading, error, rankings } = useCharacterRankings();
+    const { loading, error, zscore } = useZScore();
+
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const selectedRole = searchParams.get("role") ?? "All Roles";
+    const selectedRole = searchParams.get("role") ?? "All";
     const setSelectedRole = (role: string) => {
         setSearchParams(prev => {
             const next = new URLSearchParams(prev);
@@ -26,242 +24,119 @@ export default function PlayerRankings(): JSX.Element {
         });
     };
 
-    const sorting: SortingState = useMemo(() => {
-        const sortParam = searchParams.get("sort");
-        if (!sortParam) return [{ id: "kpar", desc: true }];
+    const filterTerm = searchParams.get("who") ?? "";
+    const setFilterTerm = (who: string) => {
+        setSearchParams(prev => {
+            const next = new URLSearchParams(prev);
+            next.set("who", who);
+            return next
+        })
+    }
 
-        const [id, dir] = sortParam.split("_");
+    const forReactTable = useMemo(() => {
+        return transformPlayerPerformanceForReactTables(zscore);
+    }, [zscore]);
 
-        return [
-            {
-                id,
-                desc: dir === "desc",
-            },
-        ];
-    }, [searchParams]);
-    const setSorting = (updater: SortingState | ((old: SortingState) => SortingState)) => {
-        const nextSorting =
-            typeof updater === "function" ? updater(sorting) : updater;
-
-        const next = new URLSearchParams(searchParams);
-
-        if (!nextSorting.length) {
-            next.delete("sort");
-        } else {
-            const { id, desc } = nextSorting[0];
-            next.set("sort", `${id}_${desc ? "desc" : "asc"}`);
-        }
-
-        setSearchParams(next);
-    };
-
-
-    const filtered = useMemo(() => {
-        if (rankings) {
-            return rankings.filter(v => selectedRole === 'All Roles' || selectedRole === v.role.role);
-        } else {
-            return [];
-        }
-    }, [selectedRole, rankings]);
-
-    const columns = useMemo<ColumnDef<PlayerRolePerformance>[]>(() => {
-        const baseCols: ColumnDef<PlayerRolePerformance>[] = [
-            {
-                accessorKey: 'name',
-                header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
-                sortingFn: 'basic',
-                cell: info => (
-                    <div className="text-left hover:underline">
-                        <Link to={`/players/${info.getValue<string>()}`}>
-                            {info.getValue<string>()}
-                        </Link>
-                    </div>
-                )
-            },
-            {
-                id: 'role',
-                accessorFn: (row) => row.role.role,
-                header: () => (<LabelIcon text='Role' icon={<UsersThreeIcon weight="fill" />} />),
-                cell: info => (
-                    <div>
-                        {info.getValue<string>()}
-                    </div>
-                )
-            },
-            {
-                accessorKey: 'count',
-                header: () => (<LabelIcon text='Wars' icon={<HashIcon weight="fill" />} />),
-                cell: info => (
-                    <div className="text-center">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                )
-            },
-            {
-                accessorKey: 'score',
-                header: () => (<LabelIcon text={'Score'} icon={<PlusCircleIcon weight="fill" />} />),
-                cell: info => (
-                    <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'kills',
-                header: () => <LabelIcon text='Kills' icon={<SwordIcon weight='fill' />} />,
-                cell: info => (
-                    <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'deaths',
-                header: () => <LabelIcon text='Deaths' icon={<SkullIcon weight='fill' />} />,
-                cell: info => (
-                    <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'assists',
-                header: () => <LabelIcon text='Assists' icon={<HandshakeIcon weight='fill' />} />,
-                cell: info => (
-                    <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'healing',
-                header: () => <LabelIcon text='Healing' icon={<FirstAidIcon weight='fill' />} />,
-                cell: info => (
-                    <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'damage',
-                header: () => <LabelIcon text='Damage' icon={<FireIcon weight='fill' />} />,
-                cell: info => (
-                    <div className="text-right">
-                        <NumberCell value={info.getValue<number>()} />
-                    </div>
-                ),
-            },
-            {
-                accessorKey: 'kpar',
-                header: () => <LabelIcon text='KPAR' icon={<PercentIcon weight='fill' />} />,
-                cell: info => (
-                    <div className="text-right">
-                        {formatPercent(info.getValue<number>())}
-                    </div>
-                ),
-            },
-        ];
-
-        return baseCols;
-    }, []);
-
-    const table = useReactTable({
-        data: filtered,
-        columns,
-        state: {
-            sorting,
-        },
-        onSortingChange: setSorting,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-    });
+    const filteredData = useMemo(() => {
+        return forReactTable
+            .filter(v => v.role === selectedRole || selectedRole == 'All')
+            .filter(v => v.name.toLowerCase().includes(filterTerm.toLowerCase()));
+    }, [forReactTable, selectedRole, filterTerm])
 
     const roleOptions = useMemo(() => {
-        const roleSet = new Set<string>();
-        if (rankings) {
-            for (const row of rankings) {
-                if (row.role.role) {
-                    roleSet.add(row.role.role);
-                }
-            }
+        const s = new Set<string>();
+        s.add('All')
+        for (const row of forReactTable) {
+            if (row.role)
+                s.add(row.role);
         }
-        return [...roleSet].sort(sortRolesStrings);
-    }, [rankings]);
+        const sorted = Array.from(s).sort();
+        return sorted;
+    }, [forReactTable]);
 
-    if (error) return <NotFound />;
-    if (loading) return <Loading />;
+    const colmns = useMemo<ColumnDef<StatZScore>[]>(() => ([
+        {
+            accessorKey: 'name',
+            cell: info => (
+                <div className="text-left hover:underline">
+                    <Link to={`/players/${info.getValue<string>()}`}>
+                        {info.getValue<string>()}
+                    </Link>
+                </div>
+            )
+        },
+        {
+            accessorKey: 'role'
+        },
+        {
+            accessorKey: 'kills',
+            cell: info => (
+                <div className="flex items-center justify-center">
+                    <Grade inverse={false} value={info.getValue<number>()} />
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'deaths',
+            cell: info => (
+                <div className="flex items-center justify-center">
+                    <Grade inverse={true} value={info.getValue<number>()} />
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'assists',
+            cell: info => (
+                <div className="flex items-center justify-center">
+                    <Grade inverse={false} value={info.getValue<number>()} />
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'healing',
+            cell: info => (
+                <div className="flex items-center justify-center">
+                    <Grade inverse={false} value={info.getValue<number>()} />
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'damage',
+            cell: info => (
+                <div className="flex items-center justify-center">
+                    <Grade inverse={false} value={info.getValue<number>()} />
+                </div>
+            ),
+        },
+    ]), []);
 
+    if (loading) return <Loading />
+    if (error) return <NotFound />
     return (
-        <div className="flex flex-col pt-8 max-w-6xl mx-auto text-foreground">
+        <div className="pt-4 flex flex-col items-center gap-4">
+            <div className="flex flex-row">
+                <div>Role:</div>
+                <Dropdown
+                    options={roleOptions}
+                    value={selectedRole}
+                    onChange={setSelectedRole}
+                />
+            </div>
             <div className="w-full pt-8 max-w-6xl mx-auto gap-4">
                 <div className="bg-background rounded-t-lg">
-                    <h1 className="text-foreground font-semibold text-xl p-2">Character Totals</h1>
-                    <div className="pl-2 pb-2">
-                        <Dropdown options={['All Roles', ...roleOptions]} value={selectedRole} onChange={setSelectedRole} />
-                    </div>
+                    <h1 className="text-foreground font-semibold text-xl p-2">Players</h1>
+                    <input
+                        type="text"
+                        placeholder="Search players..."
+                        value={filterTerm}
+                        onChange={(e) => setFilterTerm(e.target.value)}
+                        className="p-2 rounded-lg bg-surface-1 text-foreground placeholder-muted w-full"
+                    />
                 </div>
             </div >
-
-            <div className="w-full text-foreground bg-background " >
-                <table className="w-full table-fixed border-collapse text-sm">
-                    <thead className="bg-surface" >
-                        {
-                            table.getHeaderGroups().map(headerGroup => (
-                                <tr key={headerGroup.id}>
-                                    {headerGroup.headers.map(header => (
-                                        <th
-                                            key={header.id}
-                                            colSpan={header.colSpan}
-                                            onClick={header.column.getToggleSortingHandler()}
-                                            className="cursor-pointer select-none p-2 border-b border-gray-600 text-left"
-                                        >
-                                            <div className="flex relative justify-center w-full items-center space-x-2">
-                                                <span>
-                                                    {flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                                </span>
-                                                <span className="text-xs absolute right-0.5">
-                                                    {{
-                                                        asc: '▲',
-                                                        desc: '▼',
-                                                    }[header.column.getIsSorted() as string] ?? null}
-                                                </span>
-                                            </div>
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))
-                        }
-                    </thead >
-                    <tbody>
-                        {table.getRowModel().rows.map((row, index) => {
-                            const faction = 'Gray';
-                            const rowClass = index % 2 === 0 ? factionBgSecondary(faction) : factionBgTertiary(faction);
-
-                            return (
-                                <tr key={row.id} className={rowClass}>
-                                    {row.getVisibleCells().map(cell => (
-                                        <td
-                                            key={cell.id}
-                                            className="p-3 border-b border-gray-700 text-sm text-nowrap"
-                                        >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    ))}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+            <div className="w-full max-w-6xl">
+                <StatsTable columns={colmns} data={filteredData} />
             </div>
-
-            {rankings.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
-                    No rankings data available yet.
-                </div>
-            )}
         </div>
     );
 }

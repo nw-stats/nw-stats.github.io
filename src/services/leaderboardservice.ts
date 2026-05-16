@@ -1,6 +1,7 @@
 import { kSheetId } from "../constants/sheets";
 import type { LeaderboardRow } from "../types/db/leaderboardrow";
 import type { RosterRow } from "../types/db/rosterrow";
+import type { WarRaw } from "../types/db/warraw";
 import { type Leaderboard, type LeaderboardEntry, type StatTotals } from "../types/leaderboard";
 import { type QueryParameter } from "../types/queryparameter";
 import type { Role } from "../types/role";
@@ -79,17 +80,17 @@ export function summarizeLeaderboard(leaderboard: Leaderboard): Map<string, Stat
     return summaries;
 }
 
-export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | undefined> {
+export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | LeaderboardEntry[]> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], params);
     let data: DataType[][] = [];
     try {
         data = await fetchTableFromGoogleSheets(kSheetId, 'leaderboards', query);
     } catch (err) {
-        return undefined;
+        return [];
     }
 
     if (data.length === 0) {
-        return undefined;
+        return [];
     }
 
     const entries: Leaderboard = data.map((row: any[]) => ({
@@ -162,4 +163,35 @@ export function HydrateLeaderboardTable(
         }
     }
     return entries;
+}
+
+export function normalizeLeaderboardEntries(
+    leaderboard: LeaderboardEntry[],
+    wars: WarRaw[]
+): LeaderboardEntry[] {
+
+    for (let entry of leaderboard) {
+        const war = wars.find(v => v.id = entry.warid)
+        if (!war) continue;
+        entry.kills = entry.kills / war.duration * 1800;
+        entry.deaths = entry.deaths / war.duration * 1800;
+        entry.assists = entry.assists / war.duration * 1800;
+        entry.healing = entry.healing / war.duration * 1800;
+        entry.damage = entry.damage / war.duration * 1800;
+    }
+    return leaderboard;
+}
+
+export function groupByPlayer(
+    leaderboardEntires: LeaderboardEntry[],
+    characterPlayerMap: Map<string, string>
+): Map<string, LeaderboardEntry[]> {
+    const mapping = new Map<string, LeaderboardEntry[]>;
+    for (const [character, player] of characterPlayerMap.entries()) {
+        const entries = leaderboardEntires.filter(v => v.character == character);
+        if (entries.length) {
+            mapping.set(player, entries);
+        }
+    }
+    return mapping;
 }
