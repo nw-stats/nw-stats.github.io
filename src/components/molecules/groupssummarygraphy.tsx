@@ -7,18 +7,20 @@ import { MultiselectDropdown } from "../atom/multiselectdropdown";
 import { NWayToggle } from "../atom/nwaytoggle";
 import { numberOrNLetters } from "../../utils/format";
 import { BarGraph } from "../atom/bargraph";
+import NwsPieChart from "../atom/nwspiechart";
 
 const labels = ["Kills", "Deaths", "Assists", "Healing", "Damage", "KPar", "Score"];
 
 interface GroupsSummaryProps {
+    colorRange: { from: string, to: string };
     groups?: Map<GroupKey, GroupPerformance>;
 }
 
-export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element {
+export function GroupsSummaryGraph({ colorRange, groups }: GroupsSummaryProps): JSX.Element {
     const [qdpsSplit, setQdpsSplit] = useLocalStorage<'Joined' | 'Split' | 'Both'>('qdpsSplit', 'Joined');
     const [aoeSplit, setAoeSplit] = useLocalStorage<'Include' | 'Exclude'>('aoeSplit', 'Include');
     const [shownGraphs, setShowGraphs] = useLocalStorage<string[]>('shownGraphs', labels);
-
+    const [chartType, setChartType] = useLocalStorage<'Bar' | 'Pie'>('chartType', 'Bar');
     const hasQdps = useMemo(() => {
         return Array.from(groups?.keys() || []).some(v => typeof v !== 'number');
     }, [groups]);
@@ -93,51 +95,98 @@ export function GroupsSummaryGraph({ groups }: GroupsSummaryProps): JSX.Element 
                     disabled={false}
                 />
             </div>
-            <div className="w-32">
+            <div className="w-32 gap-2 flex flex-row">
                 <MultiselectDropdown
                     name="graphs"
                     options={labels}
                     value={shownGraphs}
                     onChange={setShowGraphs}
                 />
+                <NWayToggle
+                    className="text-small px-2 py-1"
+                    defaultValue={chartType}
+                    options={['Bar', 'Pie']}
+                    onChange={(value => setChartType(value as 'Bar' | 'Pie'))}
+                />
             </div >
-            <div className="grid grid-cols-1 md:grid-cols-3 w-full"> {/* full width, fixed height */}
-                {shownGraphs.includes("Kills") && <div>
-                    <BarGraph title="Kills" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.kills }
-                    ))} series={[]} />
-                </div>}
-                {shownGraphs.includes("Deaths") && <div>
-                    <BarGraph title="Deaths" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.deaths }
-                    ))} series={[]} />
-                </div>}
-                {shownGraphs.includes("Assists") && <div>
-                    <BarGraph title="Assists" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.assists }
-                    ))} series={[]} />
-                </div>}
-                {shownGraphs.includes("Healing") && <div>
-                    <BarGraph title="Healing" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.healing }
-                    ))} series={[]} />
-                </div>}
-                {shownGraphs.includes("Damage") && <div>
-                    <BarGraph title="Damage" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.damage }
-                    ))} series={[]} />
-                </div>}
-                {shownGraphs.includes("KPar") && <div>
-                    <BarGraph title="Kpar" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.kpar }
-                    ))} style="percent" series={[]} />
-                </div>}
-                {shownGraphs.includes("Score") && <div>
-                    <BarGraph title="Score" data={data.map((v) => (
-                        { name: numberOrNLetters(v.name), value: v.score }
-                    ))} series={[]} />
-                </div>}
-            </div >
+            {chartType === 'Bar' &&
+                <div className="grid grid-cols-1 md:grid-cols-3 w-full"> {/* full width, fixed height */}
+                    {shownGraphs.includes("Kills") && <div>
+                        <BarGraph title="Kills" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.kills }
+                        ))} series={[]} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Deaths") && <div>
+                        <BarGraph title="Deaths" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.deaths }
+                        ))} series={[]} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Assists") && <div>
+                        <BarGraph title="Assists" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.assists }
+                        ))} series={[]} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Healing") && <div>
+                        <BarGraph title="Healing" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.healing }
+                        ))} series={[]} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Damage") && <div>
+                        <BarGraph title="Damage" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.damage }
+                        ))} series={[]} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("KPar") && <div>
+                        <BarGraph title="Kpar" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.kpar }
+                        ))} style="percent" series={[]} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Score") && <div>
+                        <BarGraph title="Score" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.score }
+                        ))} series={[]} colorRange={colorRange} />
+                    </div>}
+                </div >
+            }
+            {chartType === 'Pie' &&
+                <div className="grid grid-cols-1 md:grid-cols-3 w-full"> {/* full width, fixed height */}
+                    {shownGraphs.includes("Kills") && <div>
+                        <NwsPieChart title="Kills" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.kills }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Deaths") && <div>
+                        <NwsPieChart title="Deaths" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.deaths }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Assists") && <div>
+                        <NwsPieChart title="Assists" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.assists }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Healing") && <div>
+                        <NwsPieChart title="Healing" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.healing }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Damage") && <div>
+                        <NwsPieChart title="Damage" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.damage }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("KPar") && <div>
+                        <NwsPieChart title="Kpar" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.kpar }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                    {shownGraphs.includes("Score") && <div>
+                        <NwsPieChart title="Score" data={data.map((v) => (
+                            { name: numberOrNLetters(v.name), value: v.score }
+                        ))} colorRange={colorRange} />
+                    </div>}
+                </div >
+            }
         </>
     );
 }

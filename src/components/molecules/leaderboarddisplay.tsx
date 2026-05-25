@@ -18,9 +18,8 @@ import { factionAccentBar } from "../../utils/factions";
 import { formatPercent } from "../../utils/format";
 import Dropdown from "../atom/dropdown";
 import { NoData } from "../atom/nodata";
-import { sortRolesStrings } from "../../utils/roster";
-import type { Role } from "../../types/role";
-import RoleText from "../atom/roletext";
+import { sortRolesStrings, type Role } from "../../types/role";
+import RoleChip from "../atom/rolechip";
 
 type LeaderboardProps = {
     companies: Map<string, Company>,
@@ -137,9 +136,9 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                     const value = info.getValue<{ role: Role; inferred: boolean }>();
                     if (!value?.role) return <span className="text-gray-400 italic"></span>;
                     return (
-                        <span className={value.inferred ? "italic text-gray-600" : ""}>
-                            <RoleText role={value.role} />
-                        </span>
+                        <div className="w-full flex justify-center">
+                            <RoleChip role={value.role} />
+                        </div>
                     );
                 },
             });

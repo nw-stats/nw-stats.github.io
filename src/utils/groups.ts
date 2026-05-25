@@ -1,7 +1,7 @@
 import type { GroupPerformance, Leaderboard, StatTotals, WarPressure } from "../types/leaderboard";
 import type { GroupKey, Roster } from "../types/roster";
-import { isQpdsGroup } from "./roster";
 import { calculatePressure } from "../types/pressure";
+import { isQpdsGroup } from "../types/role";
 
 export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, Roster>): Map<string, Map<GroupKey, GroupPerformance>> {
     const performance = new Map<string, Map<GroupKey, GroupPerformance>>();
@@ -222,6 +222,5 @@ export function getPressure(attacker: Map<GroupKey, GroupPerformance>, defender:
         pressuresDiff.push(ap - dp);
     }
     pressure.maxPressure = Math.max(...(pressuresDiff.map(v => Math.abs(v))));
-    console.log(pressure.maxPressure);
     return pressure;
 }

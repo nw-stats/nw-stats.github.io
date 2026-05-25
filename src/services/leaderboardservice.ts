@@ -187,10 +187,17 @@ export function groupByPlayer(
     characterPlayerMap: Map<string, string>
 ): Map<string, LeaderboardEntry[]> {
     const mapping = new Map<string, LeaderboardEntry[]>;
+
     for (const [character, player] of characterPlayerMap.entries()) {
         const entries = leaderboardEntires.filter(v => v.character == character);
         if (entries.length) {
-            mapping.set(player, entries);
+            if (mapping.has(player)) {
+                const prevEntires = mapping.get(player)!;
+                const fullEntires = prevEntires?.concat(entries);
+                mapping.set(player, fullEntires);
+            } else {
+                mapping.set(player, entries);
+            }
         }
     }
     return mapping;

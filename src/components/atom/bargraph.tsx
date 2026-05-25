@@ -1,6 +1,7 @@
 import type { JSX } from "react";
-import { Bar, BarChart, CartesianGrid, LabelList, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Cell, LabelList, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { formatCompact, formatPercent } from "../../utils/format";
+import { LerpColor } from "../../utils/colors";
 
 interface SeriesPoint {
     name: string;
@@ -15,11 +16,12 @@ interface BarGraphProps {
     title: string;
     data: SeriesPoint[];
     series: Series[];
+    colorRange: { from: string, to: string };
     lines?: number[];
     style?: "number" | "percent"
 }
 
-export function BarGraph({ title, data, series, lines, style }: BarGraphProps): JSX.Element {
+export function BarGraph({ title, data, series, colorRange, lines, style }: BarGraphProps): JSX.Element {
     const _style = style ? style : "number";
     return (
         <div>
@@ -49,7 +51,10 @@ export function BarGraph({ title, data, series, lines, style }: BarGraphProps): 
                             }}
                         />))}
                     {series.map(s => (
-                        <Bar key={s.key} dataKey={s.key} fill={s.color} radius={[6, 6, 0, 0]}>
+                        <Bar key={s.key}
+                            dataKey={s.key}
+                            fill={s.color}
+                            radius={[6, 6, 0, 0]}>
                             <LabelList dataKey={s.key} position="top" fill="#fff" fontSize={12} formatter={(v) =>
                                 _style === "number"
                                     ? formatCompact(Number(v))
@@ -57,7 +62,20 @@ export function BarGraph({ title, data, series, lines, style }: BarGraphProps): 
                             } />
                         </Bar>
                     ))}
-                    <Bar dataKey="value" fill="#1c398e">
+                    <Bar dataKey="value"
+                        fill="#1c398e">
+                        {data.map((_, index) => (
+                            <Cell
+                                key={`cell-${index}`}
+                                fill={LerpColor(
+                                    colorRange.from,
+                                    colorRange.to,
+                                    data.length > 1
+                                        ? index / (data.length - 1)
+                                        : 1
+                                )}
+                            />
+                        ))}
                         <LabelList dataKey="value" position="top" fill="#fff" fontSize={12} formatter={(v) => _style === "number" ? formatCompact(Number(v)) : formatPercent(Number(v))} />
                     </Bar>
                 </BarChart>

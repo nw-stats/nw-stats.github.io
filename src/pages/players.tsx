@@ -9,6 +9,7 @@ import { factionBgSecondary, factionBgTertiary } from "../utils/factions";
 import { usePlayerList } from "../hooks/usePlayerList";
 import { type Player } from "../types/player";
 import type { Character } from "../types/character";
+import Chip from "../components/atom/chip";
 
 // const Players: React.FC = () => {
 //     const { loading, error, players } = useCharacters();
@@ -94,21 +95,9 @@ export default function Players(): JSX.Element {
                     return (
                         <div className="flex flex-wrap gap-2">
                             {characters.map((character) => (
-                                <div
-                                    key={character.name}
-                                    className="
-                        inline-flex items-center
-                        rounded-full
-                        border border-border
-                        bg-gradient-to-b from-surface-1 to-surface-2
-                        px-3 py-1
-                        text-sm font-medium text-foreground
-                        shadow-sm
-                        transition
-                        hover:shadow"
-                                >
+                                <Chip key={character.name}>
                                     {character.name}
-                                </div>
+                                </Chip>
                             ))}
                         </div>
                     )

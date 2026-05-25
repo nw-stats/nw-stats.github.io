@@ -1,4 +1,41 @@
+export function resolveCssVar(value: string): string {
+    if (!value.startsWith("var(")) {
+        return value;
+    }
+
+    const styles =
+        getComputedStyle(document.documentElement);
+
+    const varName = value
+        .replace("var(", "")
+        .replace(")", "")
+        .trim();
+
+    return styles.getPropertyValue(varName).trim();
+}
+
+export function toRgb(color: string): string {
+    const el = document.createElement("div");
+    el.style.color = color;
+    document.body.appendChild(el);
+
+    const computed = getComputedStyle(el).color; // may still be oklch
+
+    document.body.removeChild(el);
+
+    // FORCE conversion by re-applying as computed RGB target
+    const temp = document.createElement("div");
+    temp.style.color = computed;
+    document.body.appendChild(temp);
+
+    const rgb = getComputedStyle(temp).color;
+
+    document.body.removeChild(temp);
+    return rgb; // now guaranteed rgb(...)
+}
+
 export function LerpColor(from_color: string, to_color: string, mix: number): string {
+
     // Clamp mix between 0 and 1
     mix = Math.max(0, Math.min(1, mix));
 

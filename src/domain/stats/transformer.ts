@@ -1,4 +1,4 @@
-import { kRoles, type Role } from "../../types/role";
+import { roleKeys, type Role } from "../../types/role";
 import type { PlayersZScoreProfile, RoleStatProfile } from "./types";
 
 export interface RolePerformanceProfileRow {
@@ -17,7 +17,7 @@ export interface RolePerformanceProfileRow {
 export function transformForReactTables(
     performanceProfile: RoleStatProfile
 ): RolePerformanceProfileRow[] {
-    return kRoles.map(role => {
+    return roleKeys.map((role: Role) => {
         const p = performanceProfile[role];
         if (!p) return {
             role,

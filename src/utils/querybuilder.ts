@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import type { DataType } from "../services/googlesheets";
 import type { Ordering, QueryParameter } from "../types/queryparameter";
 
@@ -10,11 +11,9 @@ export function joinCondition(values: string[], operator: Operator, column: stri
 export function sanitizeForGoogleSheetsQuery(value: DataType): string {
     if (typeof value === "string") {
         return `'${sanatizeSingleQuoteInString(value)}'`;
-    } else if (value instanceof Date) {
-        const year = value.getFullYear();
-        const month = String(value.getMonth() + 1).padStart(2, "0"); // +1 because months are zero-based
-        const day = String(value.getDate()).padStart(2, "0");
-        return `DATE '${year}-${month}-${day}'`;
+    } else if (value instanceof DateTime) {
+        const now = value.toFormat("yyyy-MM-dd");
+        return `DATE '${now}'`;
     } else {
         return `${value}`;
     }
@@ -22,7 +21,7 @@ export function sanitizeForGoogleSheetsQuery(value: DataType): string {
 
 
 export function makeConditions(params: QueryParameter[]): string {
-    let conditions = new Map<string, string[]>();
+    const conditions = new Map<string, string[]>();
     for (const q of params) {
         let c = conditions.get(q.column);
         if (!c) {

@@ -1,9 +1,10 @@
+import type { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { getPlayerNameFromAlt } from "../services/altservice";
+import { getAnnoucements } from "../services/annoucementsservice";
+import type { AnnouncementsRow } from "../types/db/announcementrow";
 
-
-export function usePlayerFromAlt(altname?: string) {
-    const [player, setPlayer] = useState<string | null>(null);
+export default function useAnnouncements(expires: DateTime) {
+    const [announcements, setAnnouncements] = useState<AnnouncementsRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);
 
@@ -13,16 +14,9 @@ export function usePlayerFromAlt(altname?: string) {
         async function fetchData() {
             try {
                 setLoading(true);
-                let theName = altname ? altname : null;
-                if (altname) {
-                    const p = await getPlayerNameFromAlt(altname);
-                    if (p) {
-                        theName = p;
-                    }
-                }
-
+                const a = await getAnnoucements(expires);
                 if (cancelled) return;
-                setPlayer(theName)
+                setAnnouncements(a);
 
             } catch (err) {
                 if (!cancelled) setError(err);
@@ -30,13 +24,11 @@ export function usePlayerFromAlt(altname?: string) {
                 if (!cancelled) setLoading(false);
             }
         }
-
         fetchData();
-
         return () => {
             cancelled = true; // Prevent state update on unmounted component
         };
-    }, [altname]);
+    }, [expires]);
 
-    return { error, loading, player };
+    return { error, loading, announcements };
 }

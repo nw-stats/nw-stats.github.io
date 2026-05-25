@@ -57,12 +57,21 @@ export default function CharacterDetailsDisplay({ details }: CharacterDetailsPro
         return s;
     }, [filteredHistory]);
 
+    const zScoreSeries = useMemo(() => {
+        return [
+            {
+                name: details.character.name,
+                value: details.normalized,
+                color: "blue",
+            }
+        ]
+    }, [details.character.name, details.normalized]);
     if (loading) return <Loading />
     if (error) return <></>
 
     return (
         <div>
-            <div className="flex flex-col max-w-6xl mx-auto gap-3 py-6">
+            <div className="flex flex-col max-w-6xl mx-auto gap-3">
                 <CharacterCard player={details.character} />
                 <CharacterSummary
                     character={details.character}
@@ -86,7 +95,9 @@ export default function CharacterDetailsDisplay({ details }: CharacterDetailsPro
                 </div>
                 <div className="mb-8">
                     {isRole(role)
-                        && <StatDistributionSet performanceProfile={zscore[role]} playerPerformance={details.normalized} />}
+                        && <StatDistributionSet
+                            performanceProfile={zscore[role]}
+                            playerPerformance={zScoreSeries} />}
                 </div>
                 <div className="p-3 border-b border-border">
                     <h1 className="text-foreground font-semibold">

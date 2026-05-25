@@ -8,9 +8,8 @@ import { Link } from 'react-router-dom';
 import { FireIcon, FirstAidIcon, GameControllerIcon, HandshakeIcon, PercentIcon, PlusCircleIcon, SkullIcon, StarIcon, SwordIcon, UsersIcon } from '@phosphor-icons/react';
 import type { GroupKey } from '../../types/roster';
 import { formatPercent } from '../../utils/format';
-import { sortRolesStrings } from '../../utils/roster';
-import type { Role } from '../../types/role';
-import RoleText from '../atom/roletext';
+import { sortRolesStrings, type Role } from '../../types/role';
+import RoleChip from '../atom/rolechip';
 
 
 interface GroupDisplayProps {
@@ -118,9 +117,9 @@ const GroupDisplay: React.FC<GroupDisplayProps> = ({ groupId, group, hideRoles, 
                     const value = info.getValue<{ role: Role; inferred: boolean }>();
                     if (!value?.role) return <span className="text-muted italic"></span>;
                     return (
-                        <span className={value.inferred ? "italic text-foreground" : ""}>
-                            <RoleText role={value.role} />
-                        </span>
+                        <div className="w-full flex justify-center">
+                            <RoleChip role={value.role} />
+                        </div>
                     );
                 },
             });

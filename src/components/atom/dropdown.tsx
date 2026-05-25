@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface DropdownProps {
     options: string[];
@@ -7,6 +7,16 @@ interface DropdownProps {
 }
 
 function Dropdown({ options, value, onChange }: DropdownProps): React.JSX.Element {
+    useEffect(() => {
+        if (!options.length) return;
+
+        if (!options.includes(value)) {
+            const next = options[0];
+            if (next !== value) {
+                onChange(next);
+            }
+        }
+    }, [options, value, onChange]);
     return (
         <div className="relative inline-block w-64">
             <select

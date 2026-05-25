@@ -18,14 +18,20 @@
   --marauder-primary:oklch(87.1% 0.15 154.449);
   --marauder-secondary:oklch(79.2% 0.209 151.711);
   --marauder-tertiary:oklch(72.3% 0.219 149.579);
+  --marauder-min: oklch(92.5% 0.084 155.995);
+  --marauder-max:oklch(26.6% 0.065 152.934);
 
   --covenant-primary:oklch(90.5% 0.182 98.111);
   --covenant-secondary:oklch(85.2% 0.199 91.936);
   --covenant-tertiary:oklch(79.5% 0.184 86.047);
+  --covenant-min:oklch(94.5% 0.129 101.54);
+  --covenant-max:oklch(28.6% 0.066 53.813);
 
   --syndicate-primary: oklch(82.7% 0.119 306.383);
   --syndicate-secondary:oklch(71.4% 0.203 305.504);
   --syndicate-tertiary:oklch(62.7% 0.265 303.9);
+  --syndicate-min:oklch(90.2% 0.063 306.703);
+  --syndicate-max:oklch(29.1% 0.149 302.717);
 
   --gray-primary: oklch(87.2% 0.01 258.338);
   --gray-secondary:oklch(70.7% 0.022 261.325);
@@ -38,15 +44,15 @@
   --role-healer-ks: oklch(64% 0.13 140);
 
   --role-bruiser: oklch(62% 0.14 65);
+  --role-qdps: oklch(60% 0.18 25);
+  --role-dps: oklch(60% 0.18 25);
+
   --role-tank: oklch(55% 0.02 240);
   --role-flail: oklch(68% 0.12 85);
 
-  --role-qdps: oklch(60% 0.18 25);
   --role-vg-ig: oklch(62% 0.16 300);
+  --role-ks-vg: oklch(62% 0.16 300);
   --role-disruptor: oklch(66% 0.18 330);
-  --role-firestaff: oklch(64% 0.20 10);
-  --role-ranged: oklch(58% 0.15 230);
-  --role-blunderbuss: oklch(70% 0.14 90);
 
   --role-shotcaller: oklch(60% 0.14 200);
 
@@ -86,15 +92,14 @@
   --role-healer-ks: oklch(74% 0.13 140);
 
   --role-bruiser: oklch(70% 0.14 65);
+  --role-qdps: oklch(72% 0.18 25);
+  --role-dps: oklch(72% 0.18 25);
   --role-tank: oklch(78% 0.02 240);
   --role-flail: oklch(74% 0.12 85);
 
-  --role-qdps: oklch(72% 0.18 25);
   --role-vg-ig: oklch(70% 0.16 300);
+  --role-ks-vg: oklch(70% 0.16 300);
   --role-disruptor: oklch(74% 0.18 330);
-  --role-firestaff: oklch(72% 0.20 10);
-  --role-ranged: oklch(70% 0.16 230);
-  --role-blunderbuss: oklch(76% 0.14 90);
 
   --role-shotcaller: oklch(72% 0.14 200);
 
@@ -155,14 +160,20 @@
   --color-marauder-primary: var(--marauder-primary);
   --color-marauder-secondary: var(--marauder-secondary);
   --color-marauder-tertiary: var(--marauder-tertiary);
+  --color-marauder-min:var(--marauder-min);
+  --color-marauder-max:var(--marauder-max);
 
   --color-covenant-primary: var(--covenant-primary);
   --color-covenant-secondary: var(--covenant-secondary);
   --color-covenant-tertiary: var(--covenant-tertiary);
+  --color-covenant-min:var(--covenant-min);
+  --color-covenant-max:var(--covenant-max);
 
   --color-syndicate-primary: var(--syndicate-primary);
   --color-syndicate-secondary: var(--syndicate-secondary);
   --color-syndicate-tertiary: var(--syndicate-tertiary);
+  --color-syndicate-min:var(--syndicate-min);
+  --color-syndicate-max:var(--syndicate-max);
 
   --color-role-healer-mb: var(--role-healer-mb);
   --color-role-healer-aoe: var(--role-healer-aoe);
@@ -174,10 +185,9 @@
 
   --color-role-qdps: var(--role-qdps);
   --color-role-vg-ig: var(--role-vg-ig);
+  --color-role-ks-vg: var(--role-ks-vg);
   --color-role-disruptor: var(--role-disruptor);
-  --color-role-firestaff: var(--role-firestaff);
-  --color-role-ranged: var(--role-ranged);
-  --color-role-blunderbuss: var(--role-blunderbuss);
+  --color-role-dps: var(--role-dps);
 
   --color-role-shotcaller: var(--role-shotcaller);
 

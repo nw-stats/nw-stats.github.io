@@ -16,6 +16,7 @@ export function useZScore() {
 
     const normalizedProfile = useMemo(() => {
         const characterPlayerMap = createCharacterToPlayerMap(characterTable);
+
         const groupedRosters = GroupRosterByWarId(rosterTable);
         const leaderboardEntries = HydrateLeaderboardTable(lbTable, groupedRosters);
         const normalizedEntries = normalizeLeaderboardEntries(leaderboardEntries, wars);
@@ -24,7 +25,6 @@ export function useZScore() {
             normalizedEntries,
             characterPlayerMap
         );
-
         const profile = buildPlayerPerformanceProfile(leaderboardByPlayer);
 
         return profile;

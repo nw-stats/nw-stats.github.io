@@ -2,6 +2,7 @@ import { kSheetId } from "../constants/sheets";
 import type { Character } from "../types/character";
 import type { PlayerRow } from "../types/db/playerrow";
 import type { Player } from "../types/player";
+import { Qop } from "../types/queryparameter";
 import { constructQuery } from "../utils/querybuilder";
 import { convertInt, convertString } from "../utils/sheetconvert";
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
@@ -40,4 +41,24 @@ export function hydratePlayers(players: PlayerRow[], characters: Character[]): P
         })
     }
     return hydrated;
+}
+
+export async function getPlayerRows(playerNames: string[]): Promise<PlayerRow[]> {
+    const query = constructQuery(
+        ['A', 'B', 'C', 'D', 'E', 'F',],
+        playerNames.map(v => ({ column: 'B', fn: Qop.Eq, value: v })),
+    );
+    try {
+        const data = await fetchTableFromGoogleSheets(kSheetId, 'players', query);
+        return data.map(v => ({
+            id: convertInt(v[0]),
+            name: convertString(v[1]),
+            discord: convertString(v[2]),
+            twitch: convertString(v[3]),
+            picture: convertString(v[4]),
+            youtube: convertString(v[5]),
+        }));
+    } catch {
+        return [];
+    }
 }

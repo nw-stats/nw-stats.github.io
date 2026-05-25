@@ -17,10 +17,9 @@ export async function getAlts(playerName: string): Promise<string[]> {
     let data: DataType[][] = [];
     try {
         data = await fetchTableFromGoogleSheets(kSheetId, 'characters', query);
-    } catch (err) {
+    } catch {
         return [];
     }
-
     if (data.length === 0) {
         return [playerName];
     }

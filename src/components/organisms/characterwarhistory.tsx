@@ -8,7 +8,7 @@ import { CheckCircleIcon, GameControllerIcon, XCircleIcon } from "@phosphor-icon
 import { formatDate, formatSeconds } from "../../utils/time";
 import type { DateTime } from "luxon";
 import LabelIcon from "../atom/labelicon";
-import { sortRolesStrings } from "../../utils/roster";
+import { sortRolesStrings } from "../../types/role";
 
 const cardBase =
     "rounded-lg bg-background shadow-sm ring-1 ring-gray-700/50 overflow-hidden";

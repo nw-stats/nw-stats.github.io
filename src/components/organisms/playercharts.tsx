@@ -47,12 +47,12 @@ export default function PlayerCharts({
     return (
         <div className="w-full bg-surface-">
             <div className="w-full grid grid-cols-1 md:grid-cols-3">
-                <BarGraph title={"Scores"} data={scores} lines={[averages.scores,]} series={series.scores} />
-                <BarGraph title={"Kills"} data={kills} lines={[averages.kills,]} series={series.kills} />
-                <BarGraph title={"Deaths"} data={deaths} lines={[averages.deaths,]} series={series.deaths} />
-                <BarGraph title={"Assists"} data={assists} lines={[averages.assists,]} series={series.assists} />
-                <BarGraph title={"Healing"} data={healing} lines={[averages.healing,]} series={series.healing} />
-                <BarGraph title={"Damage"} data={damage} lines={[averages.damage,]} series={series.damage} />
+                <BarGraph title={"Scores"} data={scores} lines={[averages.scores,]} series={series.scores} colorRange={{ from: "#1c398e", to: "#1c398e" }} />
+                <BarGraph title={"Kills"} data={kills} lines={[averages.kills,]} series={series.kills} colorRange={{ from: "#1c398e", to: "#1c398e" }} />
+                <BarGraph title={"Deaths"} data={deaths} lines={[averages.deaths,]} series={series.deaths} colorRange={{ from: "#1c398e", to: "#1c398e" }} />
+                <BarGraph title={"Assists"} data={assists} lines={[averages.assists,]} series={series.assists} colorRange={{ from: "#1c398e", to: "#1c398e" }} />
+                <BarGraph title={"Healing"} data={healing} lines={[averages.healing,]} series={series.healing} colorRange={{ from: "#1c398e", to: "#1c398e" }} />
+                <BarGraph title={"Damage"} data={damage} lines={[averages.damage,]} series={series.damage} colorRange={{ from: "#1c398e", to: "#1c398e" }} />
             </div>
         </div>
     );

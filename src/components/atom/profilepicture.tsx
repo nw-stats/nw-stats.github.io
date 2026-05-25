@@ -6,8 +6,18 @@ interface ProfilePictureProps {
 }
 function ProfilePicture({ pictureUrl, size }: ProfilePictureProps): JSX.Element {
     return (
-        <div className="w-fit h-fit">
-            <img src={pictureUrl} width={size} height={size}></img>
+        <div
+            className="overflow-hidden rounded-2xl"
+            style={{
+                width: size,
+                height: size,
+            }}
+        >
+            <img
+                src={pictureUrl}
+                alt="Profile"
+                className="w-full h-full object-cover"
+            />
         </div>
     );
 }

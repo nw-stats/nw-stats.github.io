@@ -1,4 +1,5 @@
 import { KRoleCodes, type Role } from "../../types/role";
+
 const roleTextColors: Record<Role, string> = {
     "Healer MB": "text-role-healer-mb",
     "Healer AOE": "text-role-healer-aoe",
@@ -19,34 +20,37 @@ const roleTextColors: Record<Role, string> = {
     "Unassigned": "text-role-empty",
 };
 
-interface RoleTextProps {
+interface RoleChipProps {
     role: Role;
     inferred?: boolean;
 }
 
-export default function RoleText({
+export default function RoleChip({
     role,
     inferred = false,
-}: RoleTextProps) {
+}: RoleChipProps) {
 
-    const safeRole = role in KRoleCodes ? role : "Unassigned";
-    if (safeRole === "Unassigned") {
-        console.log(role);
-    }
+    const safeRole: Role = role in KRoleCodes ? role : "Unassigned";
+
     return (
-
-
-
         <span
             className={`
-        font-mono
-        tracking-wider
-        text-xs
-        px-1.5 py-0.5
-        rounded
-        ${roleTextColors[safeRole]}
-        ${inferred ? "italic opacity-70" : ""}
-    `}
+                inline-flex items-center justify-center
+                w-[5ch]
+                px-2 py-0.5
+
+                font-mono text-xs tracking-wider
+                rounded-md
+
+                border
+
+                ${roleTextColors[safeRole]}
+
+                border-current
+                bg-current/10
+
+                ${inferred ? "italic opacity-70" : ""}
+            `}
         >
             {KRoleCodes[safeRole]}
         </span>

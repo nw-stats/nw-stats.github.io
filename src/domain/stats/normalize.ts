@@ -1,4 +1,4 @@
-import { kRoles, type Role } from "../../types/role";
+import { roleKeys, type Role } from "../../types/role";
 import type { PerformanceProfile } from "./types";
 import { createEmptyProfile } from "./utils";
 
@@ -8,7 +8,7 @@ export function normalizePlayerProfile(
 
     const result = {} as Record<Role, PerformanceProfile>;
 
-    for (const role of kRoles) {
+    for (const role of roleKeys) {
         result[role] = profile[role] ?? createEmptyProfile();
     }
 

@@ -24,7 +24,6 @@ export function useAlts(player?: string) {
 
             try {
                 const names = await getAlts(player)
-
                 if (cancelled) return
 
                 if (names.length === 0) {

@@ -17,7 +17,8 @@ import { useMemo, useRef, useState, type JSX } from "react";
 import Heatmap from "../components/molecules/heatmap";
 import { getPressure } from "../utils/groups";
 import { getHeatmapColor } from "../utils/heatmap";
-import { factionColorVar } from "../utils/factions";
+import { factionColorVar, factionColorVarMax, factionColorVarMin } from "../utils/factions";
+import { resolveCssVar } from "../utils/colors";
 
 
 
@@ -193,6 +194,14 @@ function WarDetail(): JSX.Element {
     const defenderHealer = healerSummary.get(war.defender.name);
     const hasLeaderboard = combinedLeaderboard !== undefined;
 
+    const attackerColorRange = {
+        from: resolveCssVar(factionColorVarMin(war.attacker.faction)),
+        to: resolveCssVar(factionColorVarMax(war.attacker.faction)),
+    };
+    const defenderColorRange = {
+        from: resolveCssVar(factionColorVarMin(war.defender.faction)),
+        to: resolveCssVar(factionColorVarMax(war.defender.faction)),
+    };
 
     // const handleScreenshot = async () => {
     //     if (!screenshotRef.current) return;
@@ -218,7 +227,7 @@ function WarDetail(): JSX.Element {
     // };
 
     return (
-        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20">
+        <div className="flex flex-col mx-auto max-w-7xl gap-8 mb-20" >
             <div className="flex flex-col gap-4 p-2" ref={screenshotRef}>
                 <div className="pt-8">
                     {/* <WarStatsPanel date={war.date} map={war.map} captures={war.captures} server={war.server} /> */}
@@ -300,10 +309,12 @@ function WarDetail(): JSX.Element {
                                         setInnerTab(label);
                                     }}>
                                     <Tab label={war.attacker.name}>
-                                        <GroupsSummaryGraph groups={attackerGroups} />
+                                        <GroupsSummaryGraph groups={attackerGroups}
+                                            colorRange={attackerColorRange} />
                                     </Tab>
                                     <Tab label={war.defender.name}>
-                                        <GroupsSummaryGraph groups={defenderGroups} />
+                                        <GroupsSummaryGraph groups={defenderGroups}
+                                            colorRange={defenderColorRange} />
                                     </Tab>
                                 </TabbedContent>
                             </Tab>

@@ -104,3 +104,35 @@ export function factionColorVar(faction: Faction): string {
             return "var(--gray-primary)";
     }
 }
+
+export function factionColorVarMin(faction: Faction): string {
+    switch (faction) {
+        case "Marauder":
+            return "#b9f8cf";
+
+        case "Syndicate":
+            return "#e9d4ff";
+
+        case "Covenant":
+            return "#fff085";
+
+        default:
+            return "#e5e7eb";
+    }
+}
+
+export function factionColorVarMax(faction: Faction): string {
+    switch (faction) {
+        case "Marauder":
+            return "#008236";
+
+        case "Syndicate":
+            return "#8200db";
+
+        case "Covenant":
+            return "#a65f00";
+
+        default:
+            return "#364153";
+    }
+}

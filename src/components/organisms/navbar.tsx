@@ -93,7 +93,13 @@ export default function Navbar(): JSX.Element {
                     >
                         Company Rankings
                     </NavLink>
-
+                    <NavLink
+                        to="/players-compare"
+                        className={({ isActive }) =>
+                            isActive ? navItemActive : navItemInactive
+                        }>
+                        Player Compare
+                    </NavLink>
                     <NavLink
                         to="/character-rankings"
                         className={({ isActive }) =>

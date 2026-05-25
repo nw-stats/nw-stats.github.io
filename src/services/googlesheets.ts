@@ -1,3 +1,4 @@
+import type { DateTime } from "luxon";
 
 
 const kBaseUrl: string = `https://docs.google.com/spreadsheets/d/{sheetId}/gviz/tq?tqx=out:json&sheet={sheetName}&tq={query}`;
@@ -7,7 +8,7 @@ const kQuery = "{query}"
 
 
 
-export type DataType = string | number | boolean | Date | null;
+export type DataType = string | number | boolean | DateTime | null;
 
 export async function fetchTableFromGoogleSheets(
     sheetId: string,
@@ -23,16 +24,22 @@ export async function fetchTableFromGoogleSheets(
             .replace(kQuery, encodedQuery);
         // console.log(fullurl);
         const response = await fetch(fullurl);
-        text = await response.text();
-        const json = JSON.parse(text.substring(47).slice(0, -2));
-        const rows: DataType[][] = json.table.rows.map((row: any) =>
-            row.c.map((cell: any) => cell?.v ?? null)
-        );
-        return rows;
+        if (response.status) {
+            text = await response.text();
+            const json = JSON.parse(text.substring(47).slice(0, -2));
+            const rows: DataType[][] = json.table.rows.map((row: any) =>
+                row.c.map((cell: any) => cell?.v ?? null)
+            );
+            return rows;
+        } else {
+            console.error(query);
+            console.error(text);
+        }
+        return [];
     } catch (err) {
-        // console.log(query);
-        // console.log(text);
-        // console.error("there was an error", err)
+        console.log(query);
+        console.log(text);
+        console.error("there was an error", err)
         return [];
     }
 }
