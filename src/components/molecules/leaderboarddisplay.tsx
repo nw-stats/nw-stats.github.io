@@ -49,7 +49,7 @@ export function LeaderboardDisplay({ leaderboard, companies, hideRoles, goldStar
                 header: () => (<LabelIcon text={"Player"} icon={<UsersIcon weight="fill" />} />),
                 cell: info => (
                     <div className="text-left hover:underline">
-                        <Link to={`/players/${info.getValue<string>()}`}>
+                        <Link to={`/character/${info.getValue<string>()}`}>
                             {info.getValue<string>()}
                         </Link>
                     </div>

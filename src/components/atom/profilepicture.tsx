@@ -2,12 +2,13 @@ import type { JSX } from "react";
 
 interface ProfilePictureProps {
     pictureUrl: string;
-    size: number
+    size: number;
 }
-function ProfilePicture({ pictureUrl, size }: ProfilePictureProps): JSX.Element {
+
+export default function deProfilePicture({ pictureUrl, size }: ProfilePictureProps): JSX.Element {
     return (
         <div
-            className="overflow-hidden rounded-2xl"
+            className="overflow-hidden rounded-2xl border border-white/25 bg-white/5 shadow-lg"
             style={{
                 width: size,
                 height: size,
@@ -21,5 +22,3 @@ function ProfilePicture({ pictureUrl, size }: ProfilePictureProps): JSX.Element 
         </div>
     );
 }
-
-export default ProfilePicture

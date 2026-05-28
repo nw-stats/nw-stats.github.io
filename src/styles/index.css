@@ -62,7 +62,7 @@
 
 .dark {
   --bg: oklch(20.8% 0.042 265.755);
-  --surface-1: oklch(24.5% 0.042 262.5);   /* NEW */
+  --surface-1: oklch(24.5% 0.042 262.5);
   --surface-2: oklch(27.9% 0.041 260.031);
   --surface-3: oklch(37.2% 0.044 257.287);
   --surface-hover: oklch(44.6% 0.043 257.281);

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getPlayerNameFromAlt } from "../services/altservice";
 
-export function usePlayerNameFromAlt(altName: string) {
+export function usePlayerNameFromAlt(altName: string | undefined) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);
-    const [playerName, setPlayerName] = useState<string>(altName);
+    const [playerName, setPlayerName] = useState<string | undefined>(altName);
     useEffect(() => {
         let cancelled = false;
         async function fetchAll() {

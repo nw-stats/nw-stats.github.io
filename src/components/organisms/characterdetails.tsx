@@ -1,4 +1,4 @@
-import { useMemo, type JSX } from "react";
+import { useMemo, useState, type JSX } from "react";
 import CharacterCard from "./charactercard";
 import CharacterSummary from "../molecules/playersummary";
 import CharacterWarHistory from "./characterwarhistory";
@@ -22,7 +22,7 @@ interface SeriesPoint {
 export default function CharacterDetailsDisplay({ details }: CharacterDetailsProps): JSX.Element {
     const [searchParams, setSearchParams] = useSearchParams();
     const { loading, error, zscore } = useMeanStdev();
-
+    const [lastN, setLastN] = useState<string>('All');
     const role = searchParams.get("role") ?? "All";
     const setRole = (role: string) => {
         setSearchParams(prev => {
@@ -46,16 +46,24 @@ export default function CharacterDetailsDisplay({ details }: CharacterDetailsPro
 
     const series: Record<string, SeriesPoint[]> = useMemo(() => {
         const sorted = filteredHistory.sort((a, b) => a.date.toMillis() - b.date.toMillis());
+        const iLastN = Number(lastN)
+        console.log(iLastN);
+        const lastTen = lastN === 'All'
+            ? sorted
+            : sorted.length > iLastN
+                ? sorted.slice(-iLastN)
+                : sorted;
+
         const s = {
-            scores: sorted.map(a => ({ name: formatDate(a.date), value: a.score })),
-            kills: sorted.map(a => ({ name: formatDate(a.date), value: a.kills })),
-            deaths: sorted.map(a => ({ name: formatDate(a.date), value: a.deaths })),
-            assists: sorted.map(a => ({ name: formatDate(a.date), value: a.assists })),
-            healing: sorted.map(a => ({ name: formatDate(a.date), value: a.healing })),
-            damage: sorted.map(a => ({ name: formatDate(a.date), value: a.damage })),
+            scores: lastTen.map(a => ({ name: formatDate(a.date), value: a.score })),
+            kills: lastTen.map(a => ({ name: formatDate(a.date), value: a.kills })),
+            deaths: lastTen.map(a => ({ name: formatDate(a.date), value: a.deaths })),
+            assists: lastTen.map(a => ({ name: formatDate(a.date), value: a.assists })),
+            healing: lastTen.map(a => ({ name: formatDate(a.date), value: a.healing })),
+            damage: lastTen.map(a => ({ name: formatDate(a.date), value: a.damage })),
         };
         return s;
-    }, [filteredHistory]);
+    }, [filteredHistory, lastN]);
 
     const zScoreSeries = useMemo(() => {
         return [
@@ -88,6 +96,9 @@ export default function CharacterDetailsDisplay({ details }: CharacterDetailsPro
                     <h1 className="text-foreground font-semibold">
                         Look at this Graph
                     </h1>
+                </div>
+                <div className="flex flex-row">
+                    <Dropdown options={['All', `10`, `5`, `1`]} value={lastN} onChange={setLastN} />
                 </div>
                 <PlayerCharts scores={series.scores} kills={series.kills} deaths={series.deaths} assists={series.assists} healing={series.healing} damage={series.damage} />
                 <div className="p-4 border-b border-border">

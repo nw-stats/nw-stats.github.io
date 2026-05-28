@@ -12,9 +12,10 @@ export default function HomePage(): JSX.Element {
     const bannerReady = !loading && !error && announcements.length > 0;
     return (
         <div className="flex flex-col items-center">
-            <div className="max-w-6xl min-w-6xl">
+            <div className="max-w-6xl w-full">
                 <div
                     className={`
+                        pt-4
             transition-all duration-500 ease-out
             overflow-hidden
             ${bannerReady

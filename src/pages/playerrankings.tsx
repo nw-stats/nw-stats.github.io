@@ -9,6 +9,8 @@ import { transformPlayerPerformanceForReactTables } from "../domain/stats/transf
 import { Link, useSearchParams } from "react-router-dom";
 import Dropdown from "../components/atom/dropdown";
 import Grade from "../components/atom/grade";
+import RoleChip from "../components/atom/rolechip";
+import type { Role } from "../types/role";
 
 export default function PlayerRankings(): JSX.Element {
     const { loading, error, zscore } = useZScore();
@@ -59,14 +61,17 @@ export default function PlayerRankings(): JSX.Element {
             accessorKey: 'name',
             cell: info => (
                 <div className="text-left hover:underline">
-                    <Link to={`/players/${info.getValue<string>()}`}>
+                    <Link to={`/character/${info.getValue<string>()}`}>
                         {info.getValue<string>()}
                     </Link>
                 </div>
             )
         },
         {
-            accessorKey: 'role'
+            accessorKey: 'role',
+            cell: info => (
+                <RoleChip role={info.getValue<Role>()} />
+            )
         },
         {
             accessorKey: 'kills',

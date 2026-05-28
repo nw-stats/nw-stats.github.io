@@ -193,6 +193,7 @@ function WarDetail(): JSX.Element {
     const attackerHealer = healerSummary.get(war.attacker.name);
     const defenderHealer = healerSummary.get(war.defender.name);
     const hasLeaderboard = combinedLeaderboard !== undefined;
+    const allGroups = groupDetails.get("All");
 
     const attackerColorRange = {
         from: resolveCssVar(factionColorVarMin(war.attacker.faction)),
@@ -264,6 +265,9 @@ function WarDetail(): JSX.Element {
                                     <Tab label={war.defender.name}>
                                         <GroupsDetail groups={defenderGroups} hideRoles={war.hideRoles} goldStar={goldStar} />
                                     </Tab>
+                                    <Tab label="All">
+                                        <GroupsDetail groups={allGroups} hideRoles={war.hideRoles} goldStar={goldStar} />
+                                    </Tab>
                                 </TabbedContent>
                             </Tab>
                             <Tab label="Groups Summary">
@@ -279,6 +283,9 @@ function WarDetail(): JSX.Element {
                                     </Tab>
                                     <Tab label={war.defender.name}>
                                         <GroupsSummary groups={defenderGroups} goldStar={goldStar} />
+                                    </Tab>
+                                    <Tab label="All">
+                                        I'm working on it
                                     </Tab>
                                 </TabbedContent>
                             </Tab>
@@ -315,6 +322,9 @@ function WarDetail(): JSX.Element {
                                     <Tab label={war.defender.name}>
                                         <GroupsSummaryGraph groups={defenderGroups}
                                             colorRange={defenderColorRange} />
+                                    </Tab>
+                                    <Tab label="All">
+                                        ¯\(ツ)/¯
                                     </Tab>
                                 </TabbedContent>
                             </Tab>

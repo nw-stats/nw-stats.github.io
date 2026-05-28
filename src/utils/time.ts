@@ -6,8 +6,9 @@ export function formatSeconds(seconds: number, pad: string = '0'): string {
     return `${mins}:${secs.toString().padStart(2, pad)}`;
 }
 
-export function formatDate(date: DateTime): string {
-    return date.setZone("local").toFormat("MM/dd/yyyy");
+export function formatDate(date: DateTime, year: boolean = true): string {
+    const fmtString = "MM/dd" + (year ? "/yyyy" : "");
+    return date.setZone("local").toFormat(fmtString);
 }
 
 export function formatTime(date: DateTime): string {

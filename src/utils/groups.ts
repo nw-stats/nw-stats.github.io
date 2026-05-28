@@ -30,6 +30,36 @@ export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, R
         }
     }
 
+    const companies = Array.from(performance.keys());
+    const groupKeysSet = new Set<GroupKey>();
+    for (const p of performance.values()) {
+        for (const k of p.keys()) {
+            groupKeysSet.add(k);
+        }
+    }
+    const allPerf = new Map<GroupKey, GroupPerformance>();
+    const groupKeys = Array.from(groupKeysSet).sort((a, b) => {
+        const aIsNum = typeof a === "number";
+        const bIsNum = typeof b === "number";
+
+        // numbers first
+        if (aIsNum && !bIsNum) return 1;
+        if (!aIsNum && bIsNum) return -1;
+
+        // both numbers
+        if (aIsNum && bIsNum) return b - a;
+
+        // both strings
+        return String(a).localeCompare(String(b));
+    });
+
+    for (const k of groupKeys) {
+        for (const c of companies) {
+            const d = performance.get(c)?.get(k) ?? { stats: [] };
+            allPerf.set(`${c} ${k}`, d);
+        }
+    }
+    performance.set("All", allPerf);
     return performance;
 }
 

@@ -11,7 +11,6 @@ import CompanyDetail from './pages/company-detail';
 import Feedback from './pages/feedback';
 import Inaccuracy from './pages/inaccuracy';
 import PlayerDetails from './pages/playerdetails';
-import { Footer } from './components/organisms/footer';
 import { Wars } from './pages/wars';
 import Rankings from './pages/rankings';
 import PlayerRankings from './pages/playerrankings';
@@ -19,6 +18,7 @@ import { OrphanedCharacters } from './pages/orphaned-characters';
 import Groupless from './pages/groupless';
 import PlayerCompare from './pages/playercompare';
 import ZScore from './pages/zscore';
+import CharacterRouting from './pages/characterrouting';
 const App: React.FC = () => {
   return (
 
@@ -30,6 +30,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/players" element={<Players />} />
             <Route path="/players/:playerName" element={<PlayerDetails />} />
+            <Route path='/character/:characterName' element={<CharacterRouting />} />
             <Route path="/players-compare" element={<PlayerCompare />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/:companyName" element={<CompanyDetail />} />
@@ -45,7 +46,7 @@ const App: React.FC = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </HashRouter >
 

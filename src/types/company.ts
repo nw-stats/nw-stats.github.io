@@ -8,4 +8,5 @@ export interface Company {
     governor: string;
     consuls: string[];
     picture: string;
+    shorthand?: string;
 }

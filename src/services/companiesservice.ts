@@ -17,15 +17,16 @@ export async function getCompanies(companyNames?: string[]): Promise<Company[]> 
         kCompaniesColumns.governor,
         kCompaniesColumns.consuls,
         kCompaniesColumns.picture,
+        kCompaniesColumns.shorthand,
     ], params);
     let data: DataType[][] = [];
     try {
         data = await fetchTableFromGoogleSheets(kSheetId, 'companies', query);
-    } catch (err) {
+    } catch {
         return [];
     }
 
-    let result = []
+    const result = []
     for (const row of data) {
         result.push({
             id: convertInt(row[kCompaniesTable.id]),
@@ -35,6 +36,7 @@ export async function getCompanies(companyNames?: string[]): Promise<Company[]> 
             governor: convertString(row[kCompaniesTable.governor]),
             consuls: convertStringArray(row[kCompaniesTable.consuls]),
             picture: convertString(row[kCompaniesTable.picture]),
+            shorthand: convertString(row[kCompaniesTable.shorthand]),
         });
     }
     return result;

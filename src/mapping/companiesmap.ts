@@ -9,6 +9,7 @@ export const kCompaniesColumns = {
     governor: "E",
     consuls: "F",
     picture: "G",
+    shorthand: "H",
 }
 
 export const kCompaniesTable = {
@@ -19,4 +20,5 @@ export const kCompaniesTable = {
     governor: 4,
     consuls: 5,
     picture: 6,
+    shorthand: 7
 }
