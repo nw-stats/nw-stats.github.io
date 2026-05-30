@@ -50,12 +50,19 @@ export default function Players(): JSX.Element {
 
     const filterTerm = searchParams.get("who") ?? "";
     const setFilterTerm = (term: string) => {
-        setSearchParams(prev => {
-            const next = new URLSearchParams(prev)
-            next.set("who", term.toLowerCase());
-            return next;
-        })
-    }
+        setSearchParams(
+            prev => {
+                const next = new URLSearchParams(prev);
+                if (term) {
+                    next.set("who", term.toLowerCase());
+                } else {
+                    next.delete("who");
+                }
+                return next;
+            },
+            { replace: true }
+        );
+    };
 
     const filtered = useMemo(() => {
         const search = filterTerm.toLowerCase().trim()

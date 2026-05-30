@@ -30,9 +30,6 @@ export default function RoleText({
 }: RoleTextProps) {
 
     const safeRole = role in KRoleCodes ? role : "Unassigned";
-    if (safeRole === "Unassigned") {
-        console.log(role);
-    }
     return (
 
 

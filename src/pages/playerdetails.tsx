@@ -13,14 +13,20 @@ export default function PlayerDetails(): JSX.Element {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const { loading, error, player } = usePlayerDetails(playerName);
-    const alt = searchParams.get('alt') || '';
+    const alt = searchParams.get('alt') ?? 'All';
     const setAlt = (name: string) => {
-        setSearchParams((prev) => {
+        setSearchParams(prev => {
             const next = new URLSearchParams(prev);
-            next.set('alt', name);
+
+            if (name === 'All') {
+                next.delete('alt');
+            } else {
+                next.set('alt', name);
+            }
+
             return next;
-        })
-    }
+        }, { replace: true });
+    };
 
     const options = useMemo(() => {
         if (!player.details) return [];
@@ -34,10 +40,7 @@ export default function PlayerDetails(): JSX.Element {
     }, [player.details]);
     const characterDetails = useMemo(() => {
         if (!player.details) return undefined;
-        if (player.details.has(alt)) {
-            return player.details.get(alt);
-        }
-        return player.details.get('All');
+        return player.details.get(alt);
     }, [alt, player.details]);
 
     if (!playerName) return <NotFound />

@@ -4,7 +4,7 @@ import { getPlayerNameFromAlt } from "../services/altservice";
 export function usePlayerNameFromAlt(altName: string | undefined) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);
-    const [playerName, setPlayerName] = useState<string | undefined>(altName);
+    const [playerName, setPlayerName] = useState<string | undefined>(undefined);
     useEffect(() => {
         let cancelled = false;
         async function fetchAll() {
@@ -15,14 +15,18 @@ export function usePlayerNameFromAlt(altName: string | undefined) {
                 }
                 setLoading(true);
                 const pname = await getPlayerNameFromAlt(altName);
+                console.log('pname', pname);
                 if (cancelled) return;
                 if (!pname) {
-                    setPlayerName(altName);
                     return;
                 };
                 setPlayerName(pname);
             } catch (err) {
-                if (!cancelled) setError(err);
+                console.error("getPlayerNameFromAlt failed", err);
+
+                if (!cancelled) {
+                    setError(err);
+                }
             } finally {
                 if (!cancelled) setLoading(false);
             }

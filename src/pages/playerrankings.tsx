@@ -23,7 +23,7 @@ export default function PlayerRankings(): JSX.Element {
             const next = new URLSearchParams(prev);
             next.set("role", role);
             return next;
-        });
+        }, { replace: true });
     };
 
     const filterTerm = searchParams.get("who") ?? "";
@@ -32,8 +32,8 @@ export default function PlayerRankings(): JSX.Element {
             const next = new URLSearchParams(prev);
             next.set("who", who);
             return next
-        })
-    }
+        }, { replace: true });
+    };
 
     const forReactTable = useMemo(() => {
         return transformPlayerPerformanceForReactTables(zscore);

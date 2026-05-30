@@ -24,7 +24,7 @@ function PlayerCompare(): JSX.Element {
             const next = new URLSearchParams(prev);
             next.set("p1", player1);
             return next;
-        });
+        }, { replace: true });
     };
 
     const setPlayer2 = (player2: string) => {
@@ -32,16 +32,16 @@ function PlayerCompare(): JSX.Element {
             const next = new URLSearchParams(prev);
             next.set("p2", player2);
             return next;
-        });
-    }
+        }, { replace: true });
+    };
 
     const setRole = (role: string) => {
         setSearchParams(prev => {
             const next = new URLSearchParams(prev);
             next.set("role", role);
             return next;
-        });
-    }
+        }, { replace: true });
+    };
     // const player1Options = useMemo(() => {
     //     return playerList.map(v => v.name);
     // }, [playerList]);
@@ -131,7 +131,7 @@ function PlayerCompare(): JSX.Element {
     const stillLoading = player1Loading || player2Loading || zLoading;
     const stillError = player1Error || player2Error || zError;
     const noCommonRoles = options.length === 0;
-    console.log(noCommonRoles);
+
     return (
         <div className="mt-8 max-w-6xl mx-auto flex flex-col gap-6">
 

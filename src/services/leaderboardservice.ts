@@ -104,6 +104,9 @@ export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderbo
         healing: convertInt(row[7]),
         damage: convertInt(row[8]),
         kpar: 0,
+        efficiency: 0,
+        aggression: 0,
+        pressure: 0,
         company: convertString(row[9]),
     }));
     return entries;
@@ -157,6 +160,9 @@ export function HydrateLeaderboardTable(
                     healing: leaderboardRow.healing,
                     damage: leaderboardRow.damage,
                     kpar: 0.,
+                    efficiency: 0,
+                    aggression: 0,
+                    pressure: 0,
                     company: leaderboardRow.company,
                 })
             }

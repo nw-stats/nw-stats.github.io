@@ -4,6 +4,7 @@ import type { War } from "../types/hydratedtypes/war";
 import { kThirtyMinutesInSeconds } from "./constants";
 import type { Roster } from "../types/roster";
 
+
 export function normalize(toNormalize: Leaderboard, wars: War[]): StatTotals {
     let name = '';
     let score = 0;
@@ -139,13 +140,18 @@ export function summarizeWars(toSummarize: War[], forCompany: string): WarsSumma
     return summary;
 }
 
-export function fillKpar(leaderboard: Leaderboard, summaries: Map<string, StatTotals>) {
+export function fillCalculatedFields(
+    leaderboard: Leaderboard,
+    summaries: Map<string, StatTotals>
+) {
     for (const entry of leaderboard) {
-        const company = entry.company;
-        if (!summaries.has(company)) { continue; }
-        const summary = summaries.get(company)!;
-        const kpar = (entry.kills + entry.assists) / summary.kills;
-        entry.kpar = kpar;
+        entry.pressure = entry.kills + entry.assists / 2 - entry.deaths;
+        entry.efficiency = (entry.kills + entry.assists) / entry.deaths;
+        entry.aggression = entry.kills / entry.deaths;
+
+        const companysummary = summaries.get(entry.company);
+        if (!companysummary) continue;
+        entry.kpar = (entry.kills + entry.assists) / companysummary.kills;
     }
 }
 

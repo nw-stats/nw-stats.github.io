@@ -47,7 +47,7 @@ export default function CharacterDetailsDisplay({ details }: CharacterDetailsPro
     const series: Record<string, SeriesPoint[]> = useMemo(() => {
         const sorted = filteredHistory.sort((a, b) => a.date.toMillis() - b.date.toMillis());
         const iLastN = Number(lastN)
-        console.log(iLastN);
+
         const lastTen = lastN === 'All'
             ? sorted
             : sorted.length > iLastN

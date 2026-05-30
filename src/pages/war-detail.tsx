@@ -21,8 +21,6 @@ import { factionColorVar, factionColorVarMax, factionColorVarMin } from "../util
 import { resolveCssVar } from "../utils/colors";
 
 
-
-
 function WarDetail(): JSX.Element {
     const { warId } = useParams<{ warId: string, slug: string }>();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -38,7 +36,7 @@ function WarDetail(): JSX.Element {
             const next = new URLSearchParams(prev);
             next.set("o", outter);
             return next;
-        });
+        }, { replace: true });
     };
     const innerTab = searchParams.get("i") ?? war?.attacker.name ?? "All";
     const setInnerTab = (inner: string) => {
@@ -46,7 +44,7 @@ function WarDetail(): JSX.Element {
             const next = new URLSearchParams(prev);
             next.set("i", inner);
             return next;
-        });
+        }, { replace: true });
     };
 
     const [lbTab, setLbTab] = useState("All");

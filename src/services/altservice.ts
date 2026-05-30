@@ -28,19 +28,19 @@ export async function getAlts(playerName: string): Promise<string[]> {
     });
 }
 
-export async function getPlayerNameFromAlt(characterName: string): Promise<string | null> {
+export async function getPlayerNameFromAlt(characterName: string): Promise<string | undefined> {
     const params = [{ column: kCharacterColumns.character, fn: Qop.Eq, value: characterName }];
     const query = constructQuery([kCharacterColumns.player], params);
     let data: DataType[][] = [];
     try {
         data = await fetchTableFromGoogleSheets(kSheetId, 'characters', query);
-    } catch (err) {
-        return null;
+    } catch {
+        return undefined;
     }
 
     if (data.length > 0) {
         return convertString(data[0][0]);
     } else {
-        return null;
+        return undefined;
     }
 }

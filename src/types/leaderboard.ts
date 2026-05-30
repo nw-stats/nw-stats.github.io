@@ -23,6 +23,9 @@ export interface LeaderboardEntry extends Stats {
     roleAssignment: RoleAssignment;
     score: number;
     kpar: number;
+    pressure: number;
+    efficiency: number;
+    aggression: number;
     company: string;
 }
 

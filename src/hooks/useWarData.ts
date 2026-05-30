@@ -7,12 +7,12 @@ import type { GroupPerformance } from "../types/leaderboard";
 import type { Company } from "../types/company";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { summarizeLeaderboard } from "../services/leaderboardservice"; // refactor this. idk what it's doing in there.
-import { fillKpar, fillRoleAssignment, splitLeaderboards } from "../utils/leaderboard";
+import { fillCalculatedFields, fillRoleAssignment, splitLeaderboards } from "../utils/leaderboard";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 import { calculateHealerStats } from "../utils/healer";
 
 export function useWarData(warId: number) {
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<unknown>(null);
     const lbHook = useLeaderboards({ warIds: [warId] });
     const wHook = useWarsHydrated({ ids: [warId], showHidden: true });
     const rHook = useRosters([warId]);
@@ -26,7 +26,7 @@ export function useWarData(warId: number) {
         if (!warRoster) return new Map<string, Map<GroupKey, GroupPerformance>>();
         fillRoleAssignment(lbHook.leaderboards, warRoster);
         return getGroupDetails(lbHook.leaderboards, warRoster);
-    }, [lbHook.leaderboards, rHook.rosters]);
+    }, [lbHook.leaderboards, rHook.rosters, warId]);
     const summary = useMemo(() => {
         return summarizeLeaderboard(lbHook.leaderboards);
     }, [lbHook.leaderboards]);
@@ -40,8 +40,8 @@ export function useWarData(warId: number) {
         return calculateHealerStats(groupDetails);
     }, [groupDetails]);
     useMemo(() => {
-        return fillKpar(lbHook.leaderboards, summary);
-    }, [lbHook.leaderboards]);
+        fillCalculatedFields(lbHook.leaderboards, summary)
+    }, [lbHook.leaderboards, summary]);
     const companyMap = new Map<string, Company>();
     for (const company of cHook.companies) {
         companyMap.set(company.name, company);
