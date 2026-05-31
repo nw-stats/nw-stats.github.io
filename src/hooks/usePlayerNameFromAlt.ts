@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPlayerNameFromAlt } from "../services/altservice";
 
-export function usePlayerNameFromAlt(altName: string | undefined) {
+export function usePlayerNameFromAlt(sheetId: string, altName: string | undefined) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);
     const [playerName, setPlayerName] = useState<string | undefined>(undefined);
@@ -14,7 +14,7 @@ export function usePlayerNameFromAlt(altName: string | undefined) {
                     return;
                 }
                 setLoading(true);
-                const pname = await getPlayerNameFromAlt(altName);
+                const pname = await getPlayerNameFromAlt(sheetId, altName);
                 console.log('pname', pname);
                 if (cancelled) return;
                 if (!pname) {

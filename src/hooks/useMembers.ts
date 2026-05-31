@@ -4,9 +4,9 @@ import { Qop } from "../types/queryparameter";
 import type { Character } from "../types/character";
 import { kCharacterColumns } from "../mapping/charactersmap";
 
-export function useMembers(company: string) {
+export function useMembers(sheetId: string, company: string) {
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<unknown>(null);
     const [members, setMemebrs] = useState<Character[]>([]);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ export function useMembers(company: string) {
         async function fetchAll() {
             try {
                 setLoading(true);
-                const m = await getCharacters([{ column: kCharacterColumns.company, fn: Qop.Eq, value: company }]);
+                const m = await getCharacters(sheetId, [{ column: kCharacterColumns.company, fn: Qop.Eq, value: company }]);
                 if (cancelled) return;
                 setMemebrs(m);
             } catch (err) {
@@ -25,7 +25,7 @@ export function useMembers(company: string) {
         }
         fetchAll();
         return () => { cancelled = true };
-    }, [company]);
+    }, [company, sheetId]);
 
     return { loading, error, members };
 }

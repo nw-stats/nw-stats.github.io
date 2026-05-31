@@ -5,13 +5,13 @@ import { normalize, summarize } from "../utils/leaderboard";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 
-export function useCharacterStats(playerName: string) {
+export function useCharacterStats(sheetId: string, playerName: string) {
     const [summary, setSummary] = useState<StatTotals | null>(null);
     const [averages, setAverages] = useState<StatTotals | null>(null);
     const [error, setError] = useState<unknown>(null);
 
-    const { loading: lbLoading, error: lbError, leaderboards } = useLeaderboards({ characters: [playerName] });
-    const { loading: warsLoading, error: warsError, wars } = useWarsHydrated({ ids: leaderboards.map(v => v.warid) });
+    const { loading: lbLoading, error: lbError, leaderboards } = useLeaderboards(sheetId, { characters: [playerName] });
+    const { loading: warsLoading, error: warsError, wars } = useWarsHydrated(sheetId, { ids: leaderboards.map(v => v.warid) });
 
     const loading = lbLoading || warsLoading;
 

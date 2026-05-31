@@ -3,7 +3,7 @@ import { getWars } from "../services/wardbservice";
 import { type QueryParameter } from "../types/queryparameter";
 import type { WarRaw } from "../types/db/warraw";
 
-export function useWarsById(withIds: number[]) {
+export function useWarsById(sheetId: string, withIds: number[]) {
     const [wars, setWars] = useState<WarRaw[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [err, setError] = useState<any>(null);
@@ -18,7 +18,7 @@ export function useWarsById(withIds: number[]) {
                 for (const wid of withIds) {
                     qp.push({ column: "A", fn: "=", value: wid });
                 }
-                const w = await getWars(qp);
+                const w = await getWars(sheetId, qp);
                 if (cancelled) return;
                 setWars(w);
 

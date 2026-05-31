@@ -3,9 +3,9 @@ import { useLeaderboardtable } from "./tables/useLeaderboardTable";
 import { useCharactersTable } from "./tables/useCharactersTable";
 import { createCharacterToPlayerMap } from "../services/characterservice";
 
-export function useOrphanedCharacters() {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable();
-    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable();
+export function useOrphanedCharacters(sheetId: string) {
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);
 
     const orphans = useMemo(() => {
         const charPlayerMap = createCharacterToPlayerMap(characterTable);

@@ -5,10 +5,10 @@ import { hydrateWars } from "../../utils/hydrate";
 import { useWarRaw } from "../base/useWarsRaw";
 import type { UseWarsOptions } from "../options/waroptions";
 
-export function useWarsHydrated(options?: UseWarsOptions) {
+export function useWarsHydrated(sheetId: string, options?: UseWarsOptions) {
     const [wars, setWars] = useState<War[]>([]);
-    const { error: rawWarsError, loading: rawWarsLoading, wars: rawWars } = useWarRaw(options);
-    const { err: companiesError, loading: companiesLoading, companies } = useCompanies();
+    const { error: rawWarsError, loading: rawWarsLoading, wars: rawWars } = useWarRaw(sheetId, options);
+    const { err: companiesError, loading: companiesLoading, companies } = useCompanies(sheetId);
 
     const error = rawWarsError || companiesError;
     const loading = rawWarsLoading || companiesLoading;

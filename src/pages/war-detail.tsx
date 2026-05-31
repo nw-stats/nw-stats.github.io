@@ -19,14 +19,17 @@ import { getPressure } from "../utils/groups";
 import { getHeatmapColor } from "../utils/heatmap";
 import { factionColorVar, factionColorVarMax, factionColorVarMin } from "../utils/factions";
 import { resolveCssVar } from "../utils/colors";
+import { useSeason } from "../hooks/base/useSeason";
+import { kSheetIds } from "../constants/sheets";
 
 
 function WarDetail(): JSX.Element {
     const { warId } = useParams<{ warId: string, slug: string }>();
     const [searchParams, setSearchParams] = useSearchParams();
+    const { season } = useSeason();
     const screenshotRef = useRef<HTMLDivElement>(null);
     const warIdNum = Number(warId);
-    const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(warIdNum);
+    const { loading, error, war, companies, leaderboard, summary, groupDetails, healerSummary } = useWarData(kSheetIds[season], warIdNum);
 
     // const [ssLoading, setSsLoading] = useState(false);
 

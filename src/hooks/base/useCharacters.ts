@@ -8,7 +8,7 @@ import { getCharacters } from "../../services/characterservice";
 export interface UseCharactersOptions {
     comapny?: string
 }
-export function useCharacters(options?: UseCharactersOptions) {
+export function useCharacters(sheetId: string, options?: UseCharactersOptions) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
     const [members, setMemebrs] = useState<Character[]>([]);
@@ -20,7 +20,7 @@ export function useCharacters(options?: UseCharactersOptions) {
                 setLoading(true);
                 let m: Character[] = [];
                 if (options?.comapny) {
-                    m = await getCharacters([{ column: kCharacterColumns.company, fn: Qop.Eq, value: options?.comapny }]);
+                    m = await getCharacters(sheetId, [{ column: kCharacterColumns.company, fn: Qop.Eq, value: options?.comapny }]);
                 }
                 if (cancelled) return;
                 setMemebrs(m);
@@ -32,7 +32,7 @@ export function useCharacters(options?: UseCharactersOptions) {
         }
         fetchAll();
         return () => { cancelled = true };
-    }, [options?.comapny]);
+    }, [options?.comapny, sheetId]);
 
     return { loading, error, members };
 }

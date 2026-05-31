@@ -5,7 +5,7 @@ import { Qop } from '../../types/queryparameter'
 import type { Character } from '../../types/character'
 import { kCharacterColumns } from '../../mapping/charactersmap'
 
-export function useAlts(player?: string) {
+export function useAlts(sheetId: string, player?: string) {
     const [alts, setAlts] = useState<Character[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<Error | null>(null)
@@ -23,7 +23,7 @@ export function useAlts(player?: string) {
             setError(null)
 
             try {
-                const names = await getAlts(player)
+                const names = await getAlts(sheetId, player)
                 if (cancelled) return
 
                 if (names.length === 0) {
@@ -37,7 +37,7 @@ export function useAlts(player?: string) {
                     value: name,
                 }))
 
-                const characters = await getCharacters(queries)
+                const characters = await getCharacters(sheetId, queries)
 
                 if (cancelled) return
 
@@ -60,7 +60,7 @@ export function useAlts(player?: string) {
         return () => {
             cancelled = true
         }
-    }, [player])
+    }, [player, sheetId])
 
     return {
         alts,

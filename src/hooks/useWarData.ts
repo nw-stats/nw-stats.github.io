@@ -11,13 +11,13 @@ import { fillCalculatedFields, fillRoleAssignment, splitLeaderboards } from "../
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 import { calculateHealerStats } from "../utils/healer";
 
-export function useWarData(warId: number) {
+export function useWarData(sheetId: string, warId: number) {
     const [error, setError] = useState<unknown>(null);
-    const lbHook = useLeaderboards({ warIds: [warId] });
-    const wHook = useWarsHydrated({ ids: [warId], showHidden: true });
-    const rHook = useRosters([warId]);
+    const lbHook = useLeaderboards(sheetId, { warIds: [warId] });
+    const wHook = useWarsHydrated(sheetId, { ids: [warId], showHidden: true });
+    const rHook = useRosters(sheetId, [warId]);
     const companies = useMemo(() => (wHook.wars.length !== 0 ? [wHook.wars[0].attacker.name, wHook.wars[0].defender.name] : []), [wHook.wars]);
-    const cHook = useCompanies(companies);
+    const cHook = useCompanies(sheetId, companies);
     const loading = lbHook.loading || wHook.loading || rHook.loading || cHook.loading;
 
     const groupDetails = useMemo(() => {

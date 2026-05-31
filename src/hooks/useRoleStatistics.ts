@@ -12,6 +12,7 @@ import type { QueryParameter } from "../types/queryparameter";
 import { Qop } from "../types/queryparameter";
 
 interface UseRoleStatisticsOptions {
+    sheetId: string;
     roles: Role[];
 }
 
@@ -25,6 +26,7 @@ interface Totals {
 }
 
 export function useRoleStatistics({
+    sheetId,
     roles
 }: UseRoleStatisticsOptions) {
 
@@ -49,7 +51,7 @@ export function useRoleStatistics({
                 /*
                  * Fetch roster data once
                  */
-                const rosterTable = await getRosterTable();
+                const rosterTable = await getRosterTable(sheetId);
 
                 /*
                  * Build:
@@ -128,7 +130,7 @@ export function useRoleStatistics({
                      * Fetch leaderboard entries
                      */
                     const leaderboard =
-                        await getLeaderboard(params);
+                        await getLeaderboard(sheetId, params);
 
                     if (leaderboard.length === 0) {
                         continue;

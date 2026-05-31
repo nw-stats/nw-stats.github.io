@@ -9,11 +9,14 @@ import { StatDistributionSet } from "../components/molecules/statdistributionset
 import { useMeanStdev } from "../hooks/useMeanStdev";
 import SearchBox from "../components/atom/searchbox";
 import { isRole } from "../types/role";
+import { useSeason } from "../hooks/base/useSeason";
+import { kSheetIds } from "../constants/sheets";
 
 function PlayerCompare(): JSX.Element {
-    const { loading, error, playerList } = usePlayerList();
+    const { season } = useSeason();
+    const { loading, error, playerList } = usePlayerList(kSheetIds[season]);
     const [searchParams, setSearchParams] = useSearchParams();
-    const { loading: zLoading, error: zError, zscore } = useMeanStdev();
+    const { loading: zLoading, error: zError, zscore } = useMeanStdev(kSheetIds[season]);
 
     const player1 = searchParams.get("p1") ?? "";
     const player2 = searchParams.get("p2") ?? "";

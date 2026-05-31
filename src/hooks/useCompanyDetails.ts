@@ -6,11 +6,11 @@ import { useLeaderboards } from "./base/useLeaderboards";
 
 
 
-export function useCompanyDetails(name: string) {
-    const { loading: warsLoading, error: warsError, wars } = useWarRaw({ companies: [name] });
-    const { loading: companyLoading, error: companyError, companies } = useCompanies([...(wars.map(v => v.attacker)), ...(wars.map(v => v.defender)), name]);
-    const { loading: membersLoading, error: membersError, members } = useMembers(name);
-    const { loading: lbLoading, error: lbError, leaderboards } = useLeaderboards({ companies: [name] });
+export function useCompanyDetails(sheetId: string, name: string) {
+    const { loading: warsLoading, error: warsError, wars } = useWarRaw(sheetId, { companies: [name] });
+    const { loading: companyLoading, error: companyError, companies } = useCompanies(sheetId, [...(wars.map(v => v.attacker)), ...(wars.map(v => v.defender)), name]);
+    const { loading: membersLoading, error: membersError, members } = useMembers(sheetId, name);
+    const { loading: lbLoading, error: lbError, leaderboards } = useLeaderboards(sheetId, { companies: [name] });
 
     const loading = companyLoading || warsLoading || membersLoading || lbLoading;
     const error = companyError || warsError || membersError || lbError;

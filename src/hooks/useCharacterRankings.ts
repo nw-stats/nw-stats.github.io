@@ -8,10 +8,10 @@ import { playerPerformanceKey, type PlayerRolePerformance } from "../types/chara
 import { useCharactersTable } from "./tables/useCharactersTable";
 import { createCharacterToPlayerMap } from "../services/characterservice";
 
-export function useCharacterRankings() {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable();
-    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable();
-    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable();
+export function useCharacterRankings(sheetId: string) {
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
+    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);
 
     const rankings = useMemo(() => {
         const charPlayerMap = createCharacterToPlayerMap(characterTable);

@@ -5,9 +5,9 @@ import { rosterHasCharacter } from "../types/db/rosterrow";
 import type { Ungrouped } from "../types/ungrouped";
 import { GroupRosterByWarId } from "../services/rosterservice";
 
-export function useGroupless() {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable();
-    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable();
+export function useGroupless(sheetId: string) {
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
 
     const groupless = useMemo(() => {
         const groupedRosters = GroupRosterByWarId(rosterTable);

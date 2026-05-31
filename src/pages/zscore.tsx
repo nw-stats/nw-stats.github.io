@@ -7,8 +7,12 @@ import { transformForReactTables, type RolePerformanceProfileRow } from "../doma
 import { type ColumnDef } from "@tanstack/react-table";
 import NumberCell from "../components/atom/numbercell";
 
+import { kSheetIds } from "../constants/sheets";
+import { useSeason } from "../hooks/base/useSeason";
+
 export default function ZScore(): JSX.Element {
-    const { loading, error, zscore } = useMeanStdev();
+    const { season } = useSeason();
+    const { loading, error, zscore } = useMeanStdev(kSheetIds[season]);
 
     const transformedZScore = useMemo(() => transformForReactTables(zscore), [zscore]);
     const columns = useMemo<ColumnDef<RolePerformanceProfileRow>[]>(() => ([

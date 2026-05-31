@@ -5,10 +5,10 @@ import type { WarRaw } from "../../types/db/warraw";
 import { getWars } from "../../services/wardbservice";
 import type { UseWarsOptions } from "../options/waroptions";
 
-export function useWarRaw(options?: UseWarsOptions) {
+export function useWarRaw(sheetId: string, options?: UseWarsOptions) {
     const [wars, setWars] = useState<WarRaw[]>([]);
-    const [loading, setLoading] = useState<Boolean>(true);
-    const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<unknown>(null);
     const warIdKey = useMemo(() => [...options?.ids || []].sort((a, b) => a - b).join(','), [options?.ids]);
     const warCompanyNameKey = useMemo(() => {
         const companies = options?.companies ?? [];
@@ -54,7 +54,7 @@ export function useWarRaw(options?: UseWarsOptions) {
                 const results = await Promise.all(
                     queries.map(query => {
                         const q = [...query];
-                        return getWars(q);
+                        return getWars(sheetId, q);
                     })
                 );
                 w = results.flat().sort((a, b) => b.date.toMillis() - a.date.toMillis());
@@ -71,7 +71,7 @@ export function useWarRaw(options?: UseWarsOptions) {
         }
         fetchAll();
         return () => { cancelled = true };
-    }, [warIdKey, warCompanyNameKey]);
+    }, [warIdKey, warCompanyNameKey, sheetId]);
 
     return { loading, error, wars };
 }

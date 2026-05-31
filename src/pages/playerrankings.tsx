@@ -11,9 +11,12 @@ import Dropdown from "../components/atom/dropdown";
 import Grade from "../components/atom/grade";
 import RoleChip from "../components/atom/rolechip";
 import type { Role } from "../types/role";
+import { useSeason } from "../hooks/base/useSeason";
+import { kSheetIds } from "../constants/sheets";
 
 export default function PlayerRankings(): JSX.Element {
-    const { loading, error, zscore } = useZScore();
+    const { season } = useSeason();
+    const { loading, error, zscore } = useZScore(kSheetIds[season]);
 
     const [searchParams, setSearchParams] = useSearchParams();
 

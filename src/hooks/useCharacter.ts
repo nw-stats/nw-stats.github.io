@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getCharacter } from "../services/characterservice";
 import type { Character } from "../types/character";
 
-export function useCharacter(playerName: string) {
+export function useCharacter(sheetId: string, playerName: string) {
     const [player, setPlayer] = useState<Character | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);
@@ -13,7 +13,7 @@ export function useCharacter(playerName: string) {
         async function fetchData() {
             try {
                 setLoading(true);
-                const p = await getCharacter(playerName);
+                const p = await getCharacter(sheetId, playerName);
                 if (cancelled) return;
                 setPlayer(p)
 
@@ -27,7 +27,7 @@ export function useCharacter(playerName: string) {
         return () => {
             cancelled = true; // Prevent state update on unmounted component
         };
-    }, [playerName]);
+    }, [playerName, sheetId]);
 
     return { error, loading, player };
 }

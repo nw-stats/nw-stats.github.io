@@ -2,12 +2,12 @@ import { constructQuery } from "../utils/querybuilder";
 import { combineDateAndTime, convertFromGoogleSheetsDateString } from "../utils/time";
 import { fetchTableFromGoogleSheets } from "./googlesheets";
 import { type Ordering, type QueryParameter } from "../types/queryparameter";
-import { kSheetId } from "../constants/sheets";
+
 import { kWarColumns, kWarTable } from "../mapping/warmap";
 import { convertBoolean, convertInt, convertString, convertToStatus } from "../utils/sheetconvert";
 import type { WarRaw } from "../types/db/warraw";
 
-export async function getWars(params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
+export async function getWars(sheetId: string, params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
     const query = constructQuery([
         kWarColumns.id,
         kWarColumns.date,
@@ -27,7 +27,7 @@ export async function getWars(params?: QueryParameter[], limit?: number, order?:
         kWarColumns.tz,
         kWarColumns.hideRoles,
     ], params, order, limit);
-    const data = await fetchTableFromGoogleSheets(kSheetId, 'wars', query);
+    const data = await fetchTableFromGoogleSheets(sheetId, 'wars', query);
     const wars: WarRaw[] = [];
     for (const row of data) {
         const id = convertInt(row[kWarTable.id]);

@@ -3,7 +3,7 @@ import type { Company } from "../types/company";
 import { getCompanies } from "../services/companiesservice";
 
 
-export function useCompanies() {
+export function useCompanies(sheetId: string) {
     const [companies, setCompanies] = useState<Company[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [err, setError] = useState<any>(null);
@@ -14,7 +14,7 @@ export function useCompanies() {
         async function fetchAll() {
             try {
                 setLoading(true);
-                let c = await getCompanies();
+                let c = await getCompanies(sheetId);
                 c = c.sort((a, b) => a.name.localeCompare(b.name));
                 if (cancelled) return;
                 setCompanies(c);

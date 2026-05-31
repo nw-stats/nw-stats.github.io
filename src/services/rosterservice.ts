@@ -1,4 +1,4 @@
-import { kSheetId } from "../constants/sheets";
+
 import { kRosterColumns } from "../mapping/rostermap";
 import type { RosterRow } from "../types/db/rosterrow";
 import { type QueryParameter } from "../types/queryparameter";
@@ -8,7 +8,7 @@ import { convertGroupKey, convertInt, convertRole, convertString } from "../util
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 
-export async function getRosters(params: QueryParameter[]): Promise<Map<number, Map<string, Roster>>> {
+export async function getRosters(sheetId: string, params: QueryParameter[]): Promise<Map<number, Map<string, Roster>>> {
     const query = constructQuery([
         kRosterColumns.id,
         kRosterColumns.war,
@@ -21,7 +21,7 @@ export async function getRosters(params: QueryParameter[]): Promise<Map<number, 
     let data: DataType[][] = [];
 
     try {
-        data = await fetchTableFromGoogleSheets(kSheetId, 'rosters', query);
+        data = await fetchTableFromGoogleSheets(sheetId, 'rosters', query);
     } catch (err) {
         return new Map();
     }
@@ -72,7 +72,7 @@ export async function getRosters(params: QueryParameter[]): Promise<Map<number, 
     return allRosters;
 }
 
-export async function getRosterTable(): Promise<RosterRow[]> {
+export async function getRosterTable(sheetId: string): Promise<RosterRow[]> {
     const query = constructQuery([
         kRosterColumns.id,
         kRosterColumns.war,
@@ -84,7 +84,7 @@ export async function getRosterTable(): Promise<RosterRow[]> {
     ]);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(kSheetId, 'rosters', query);
+        data = await fetchTableFromGoogleSheets(sheetId, 'rosters', query);
     } catch {
         return [];
     }

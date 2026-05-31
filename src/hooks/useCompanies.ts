@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Company } from "../types/company";
 import { getCompanies } from "../services/companiesservice";
 
-export function useCompanies(names: string[]) {
+export function useCompanies(sheetId: string, names: string[]) {
     const [companies, setCompanies] = useState<Company[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
@@ -12,7 +12,7 @@ export function useCompanies(names: string[]) {
         async function fetchAll() {
             try {
                 setLoading(true);
-                const c = await getCompanies(names);
+                const c = await getCompanies(sheetId, names);
                 if (cancelled) return;
                 setCompanies(c);
             } catch (err) {

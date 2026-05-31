@@ -4,9 +4,12 @@ import Loading from "../components/atom/loading";
 
 import { useCompanies } from "../hooks2/useCompaniesNew";
 import { CompanyListCard } from "../components/molecules/companylistcard";
+import { useSeason } from "../hooks/base/useSeason";
+import { kSheetIds } from "../constants/sheets";
 
 const Companies: React.FC = () => {
-    const { loading, err, companies } = useCompanies();
+    const { season } = useSeason();
+    const { loading, err, companies } = useCompanies(kSheetIds[season]);
     const [search, setSearch] = useState("");
 
     if (loading) return <div className="flex w-full justify-center text-foreground p-8" ><Loading /></div >;

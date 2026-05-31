@@ -10,10 +10,10 @@ export interface UseLeaderboardsOptions {
     companies?: string[];
 }
 
-export function useLeaderboards(options?: UseLeaderboardsOptions) {
+export function useLeaderboards(sheetId: string, options?: UseLeaderboardsOptions) {
     const [leaderboards, setLeaderboards] = useState<Leaderboard>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<unknown>(null);
 
     const warIdsKey = useMemo(() => (options?.warIds || []).sort().join(','), [options?.warIds]);
     const playersKey = useMemo(() => (options?.characters || []).sort().join(','), [options?.characters]);
@@ -49,7 +49,7 @@ export function useLeaderboards(options?: UseLeaderboardsOptions) {
                         value: v,
                     }));
                 }
-                const lb = await getLeaderboard(qp);
+                const lb = await getLeaderboard(sheetId, qp);
                 if (cancelled) return;
                 setLeaderboards(lb || []);
 

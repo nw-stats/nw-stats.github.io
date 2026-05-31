@@ -7,12 +7,14 @@ import CharacterDetailsDisplay from "../components/organisms/characterdetails";
 import { usePlayerDetails } from "../hooks/usePlayerFull";
 import { useMemo, type JSX } from "react";
 import PlayerCard from "../components/organisms/playercard";
+import { useSeason } from "../hooks/base/useSeason";
+import { kSheetIds } from "../constants/sheets";
 
 export default function PlayerDetails(): JSX.Element {
     const { playerName } = useParams<{ playerName: string }>();
     const [searchParams, setSearchParams] = useSearchParams();
-
-    const { loading, error, player } = usePlayerDetails(playerName);
+    const { season } = useSeason();
+    const { loading, error, player } = usePlayerDetails(kSheetIds[season], playerName);
     const alt = searchParams.get('alt') ?? 'All';
     const setAlt = (name: string) => {
         setSearchParams(prev => {

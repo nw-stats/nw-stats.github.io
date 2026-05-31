@@ -4,9 +4,12 @@ import Loading from "../components/atom/loading";
 import { useGroupless } from "../hooks/useGroupless";
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import type { Ungrouped } from "../types/ungrouped";
+import { kSheetIds } from "../constants/sheets";
+import { useSeason } from "../hooks/base/useSeason";
 
 export default function Groupless(): JSX.Element {
-    const { loading, error, groupless } = useGroupless();
+    const { season } = useSeason();
+    const { loading, error, groupless } = useGroupless(kSheetIds[season]);
 
     const columns = useMemo<ColumnDef<Ungrouped>[]>(() => [
         {

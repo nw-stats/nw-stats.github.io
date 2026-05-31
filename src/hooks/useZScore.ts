@@ -8,11 +8,11 @@ import { useWarRaw } from "./base/useWarsRaw";
 import { createCharacterToPlayerMap } from "../services/characterservice";
 import { useCharactersTable } from "./tables/useCharactersTable";
 
-export function useZScore() {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable();
-    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable();
-    const { loading: warLoading, error: warError, wars } = useWarRaw()
-    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable();
+export function useZScore(sheetId: string) {
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
+    const { loading: warLoading, error: warError, wars } = useWarRaw(sheetId)
+    const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);
 
     const normalizedProfile = useMemo(() => {
         const characterPlayerMap = createCharacterToPlayerMap(characterTable);

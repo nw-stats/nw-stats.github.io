@@ -5,9 +5,9 @@ import { HydrateLeaderboardTable } from "../services/leaderboardservice";
 import { GroupRosterByWarId } from "../services/rosterservice";
 import { buildRolePerformanceProfile } from "../domain/stats";
 
-export function useMeanStdev() {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable();
-    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable();
+export function useMeanStdev(sheetId: string) {
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
     //const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable();
 
     const zscore = useMemo(() => {

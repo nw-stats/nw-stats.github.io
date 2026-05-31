@@ -4,10 +4,13 @@ import Loading from "../components/atom/loading";
 import RankingsDisplay from "../components/organisms/rankingsdisplay";
 import type { WinLoss } from "../types/ranking";
 import { useWarRaw } from "../hooks/base/useWarsRaw";
+import { kSheetIds } from "../constants/sheets";
+import { useSeason } from "../hooks/base/useSeason";
 
 
 function Rankings(): JSX.Element {
-    const { wars, error, loading } = useWarRaw();
+    const { season } = useSeason();
+    const { wars, error, loading } = useWarRaw(kSheetIds[season]);
 
     if (error) return <NotFound />;
     if (loading) return <Loading />;

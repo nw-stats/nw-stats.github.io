@@ -10,14 +10,16 @@ import CompanyMembersTable from "../components/organisms/companymemberstable";
 import CompanyWarHistory from "../components/organisms/companywarhistory";
 import { useState } from "react";
 import CompanyStatOverview from "./company-stat-overview";
+import { kSheetIds } from "../constants/sheets";
+import { useSeason } from "../hooks/base/useSeason";
 // import Construction from "../components/molecules/construction";
 
 const CompanyDetail: React.FC = () => {
     const { companyName } = useParams<{ companyName: string }>();
     const [page, setPage] = useState(0);
-
+    const { season } = useSeason();
     if (!companyName) return (<NotFound />);
-    const { loading, error, company, wars, members, leaderboards } = useCompanyDetails(companyName);
+    const { loading, error, company, wars, members, leaderboards } = useCompanyDetails(kSheetIds[season], companyName);
 
     if (loading) return (<span className="text-foreground" ><Loading /></span>);
     if (error || !company || !leaderboards) return (<span className="text-foreground" ><NotFound /></span>);

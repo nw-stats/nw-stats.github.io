@@ -10,6 +10,8 @@ import { usePlayerList } from "../hooks/usePlayerList";
 import { type Player } from "../types/player";
 import type { Character } from "../types/character";
 import Chip from "../components/atom/chip";
+import { useSeason } from "../hooks/base/useSeason";
+import { kSheetIds } from "../constants/sheets";
 
 // const Players: React.FC = () => {
 //     const { loading, error, players } = useCharacters();
@@ -45,7 +47,8 @@ import Chip from "../components/atom/chip";
 // export default Players;
 
 export default function Players(): JSX.Element {
-    const { loading, error, playerList } = usePlayerList();
+    const { season } = useSeason();
+    const { loading, error, playerList } = usePlayerList(kSheetIds[season]);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const filterTerm = searchParams.get("who") ?? "";

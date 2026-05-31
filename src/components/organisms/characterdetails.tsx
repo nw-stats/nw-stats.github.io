@@ -11,6 +11,9 @@ import Loading from "../atom/loading";
 import { StatDistributionSet } from "../molecules/statdistributionset";
 import { isRole } from "../../types/role";
 import { useSearchParams } from "react-router-dom";
+import { kSheetIds } from "../../constants/sheets";
+import { useSeason } from "../../hooks/base/useSeason";
+
 
 interface CharacterDetailsProps {
     details: CharacterDetails;
@@ -20,8 +23,9 @@ interface SeriesPoint {
     value: number;
 }
 export default function CharacterDetailsDisplay({ details }: CharacterDetailsProps): JSX.Element {
+    const { season } = useSeason();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { loading, error, zscore } = useMeanStdev();
+    const { loading, error, zscore } = useMeanStdev(kSheetIds[season]);
     const [lastN, setLastN] = useState<string>('All');
     const role = searchParams.get("role") ?? "All";
     const setRole = (role: string) => {

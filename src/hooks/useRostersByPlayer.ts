@@ -3,7 +3,7 @@ import type { Roster } from "../types/roster";
 import { getRosters } from "../services/rosterservice";
 import { Qop } from "../types/queryparameter";
 
-export function useRostersByPlayer(player: string) {
+export function useRostersByPlayer(sheetId: string, player: string) {
     const [rosters, setRosters] = useState<Map<number, Map<string, Roster>>>(new Map());
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<any>(null);
@@ -14,7 +14,7 @@ export function useRostersByPlayer(player: string) {
             try {
                 setLoading(true);
                 const qp = { column: "D", fn: Qop.Eq, value: player }
-                const r = await getRosters([qp]);
+                const r = await getRosters(sheetId, [qp]);
                 if (cancelled) return;
                 setRosters(r);
             } catch (err) {

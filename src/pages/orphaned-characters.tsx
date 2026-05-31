@@ -4,9 +4,12 @@ import NotFound from "./notfound";
 import { useOrphanedCharacters } from "../hooks/useOrphanedCharacters";
 import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { factionBgSecondary, factionBgTertiary } from "../utils/factions";
+import { kSheetIds } from "../constants/sheets";
+import { useSeason } from "../hooks/base/useSeason";
 
 export function OrphanedCharacters(): JSX.Element {
-    const { loading: lbLoading, error: lbError, orphans } = useOrphanedCharacters();
+    const { season } = useSeason();
+    const { loading: lbLoading, error: lbError, orphans } = useOrphanedCharacters(kSheetIds[season]);
 
     const columns: ColumnDef<string>[] = [
         {

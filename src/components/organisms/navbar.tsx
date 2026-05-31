@@ -10,6 +10,11 @@ import {
 
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { kWebsiteName } from "../../constants/name";
+import Dropdown from "../atom/dropdown";
+import type { Season } from "../../constants/sheets";
+import { useSeason } from "../../hooks/base/useSeason";
+
+
 type NavItem = {
     label: string;
     to: string;
@@ -58,6 +63,8 @@ export default function Navbar(): JSX.Element {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [toolsOpen, setToolsOpen] = useState(false);
     const [themeOpen, setThemeOpen] = useState(false);
+
+    const { season, setSeason } = useSeason();
 
     const [theme, setTheme] =
         useLocalStorage("theme", "dark");
@@ -156,13 +163,19 @@ export default function Navbar(): JSX.Element {
 
                 <div className="hidden md:flex items-center gap-2">
 
+                    <Dropdown
+                        options={["Season10", "Season9"]}
+                        value={season}
+                        onChange={(v) => {
+                            setSeason(v as Season);
+                            // window.location.reload();
+                        }} />
                     <a
                         href="https://discord.gg/jfhRyNSHvD"
                         className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-surface-hover"
                     >
                         <DiscordLogoIcon size={18} weight="fill" />
                     </a>
-
                     <div className="relative">
                         <button
                             className="p-2 rounded-md hover:bg-surface-hover"
@@ -219,33 +232,42 @@ export default function Navbar(): JSX.Element {
             </div>
 
             {mobileOpen && (
-                <div className="md:hidden border-t border-border bg-background p-4 space-y-2">
+                <div className="md:hidden border-t border-border bg-background p-4 space-y-4">
 
-                    {[...primaryLinks, ...toolLinks].map(link => (
-                        <NavLink
-                            key={link.to}
-                            to={link.to}
-                            onClick={() => setMobileOpen(false)}
-                            className={({ isActive }) =>
-                                `block ${isActive
-                                    ? navItemActive
-                                    : navItemInactive
-                                }`
-                            }
-                        >
-                            <div className="flex items-center gap-2">
-                                {link.icon}
-                                {link.label}
-                            </div>
-                        </NavLink>
-                    ))}
+                    <div>
+                        <div className="mb-2 text-sm font-medium text-muted">
+                            Season
+                        </div>
 
-                    {/* <a
-                        href="https://discord.gg/jfhRyNSHvD"
-                        className={navItemInactive}
-                    >
-                        Discord
-                    </a> */}
+                        <Dropdown
+                            options={["Season10", "Season9"]}
+                            value={season}
+                            onChange={(v) => {
+                                setSeason(v as Season);
+                            }}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        {[...primaryLinks, ...toolLinks].map(link => (
+                            <NavLink
+                                key={link.to}
+                                to={link.to}
+                                onClick={() => setMobileOpen(false)}
+                                className={({ isActive }) =>
+                                    `block ${isActive
+                                        ? navItemActive
+                                        : navItemInactive
+                                    }`
+                                }
+                            >
+                                <div className="flex items-center gap-2">
+                                    {link.icon}
+                                    {link.label}
+                                </div>
+                            </NavLink>
+                        ))}
+                    </div>
 
                 </div>
             )}

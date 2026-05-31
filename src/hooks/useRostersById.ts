@@ -3,10 +3,10 @@ import type { Roster } from "../types/roster";
 import { getRosters } from "../services/rosterservice";
 import { Qop } from "../types/queryparameter";
 
-export function useRosters(warIds: number[]) {
+export function useRosters(sheetId: string, warIds: number[]) {
     const [rosters, setRosters] = useState<Map<number, Map<string, Roster>>>(new Map());
     const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<unknown>(null);
     const warKey = warIds.sort().join(',');
 
 
@@ -17,7 +17,7 @@ export function useRosters(warIds: number[]) {
                 setLoading(true);
 
                 const qp = warIds.map(v => ({ column: "B", fn: Qop.Eq, value: v }));
-                const r = await getRosters(qp);
+                const r = await getRosters(sheetId, qp);
                 if (cancelled) return;
                 setRosters(r);
 

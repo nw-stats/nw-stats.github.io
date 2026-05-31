@@ -1,4 +1,4 @@
-import { kSheetId } from "../constants/sheets";
+
 import type { LeaderboardRow } from "../types/db/leaderboardrow";
 import type { RosterRow } from "../types/db/rosterrow";
 import type { WarRaw } from "../types/db/warraw";
@@ -80,11 +80,11 @@ export function summarizeLeaderboard(leaderboard: Leaderboard): Map<string, Stat
     return summaries;
 }
 
-export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderboard | LeaderboardEntry[]> {
+export async function getLeaderboard(sheetId: string, params: QueryParameter[]): Promise<Leaderboard | LeaderboardEntry[]> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], params);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(kSheetId, 'leaderboards', query);
+        data = await fetchTableFromGoogleSheets(sheetId, 'leaderboards', query);
     } catch (err) {
         return [];
     }
@@ -112,11 +112,11 @@ export async function getLeaderboard(params: QueryParameter[]): Promise<Leaderbo
     return entries;
 }
 
-export async function getLeaderboardTable(): Promise<LeaderboardRow[]> {
+export async function getLeaderboardTable(sheetId: string,): Promise<LeaderboardRow[]> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']);
     let data: DataType[][] = []
     try {
-        data = await fetchTableFromGoogleSheets(kSheetId, 'leaderboards', query);
+        data = await fetchTableFromGoogleSheets(sheetId, 'leaderboards', query);
     } catch {
         return [];
     }
