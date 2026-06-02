@@ -6,8 +6,10 @@ import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
 
 import { kCharacterColumns, kCharacterTable } from "../mapping/charactersmap";
 import { convertString } from "../utils/sheetconvert";
+import type { SheetId } from "../constants/sheets";
 
-export async function getAlts(sheetId: string, playerName: string): Promise<string[]> {
+
+export async function getAlts(sheetId: SheetId, playerName: string): Promise<string[]> {
     const params = [{ column: kCharacterColumns.player, fn: Qop.Eq, value: playerName }];
     const query = constructQuery([
         kCharacterColumns.id,
@@ -16,7 +18,7 @@ export async function getAlts(sheetId: string, playerName: string): Promise<stri
     ], params);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(sheetId, 'characters', query);
+        data = await fetchTableFromGoogleSheets(sheetId.id, 'characters', query);
     } catch {
         return [];
     }
@@ -28,12 +30,12 @@ export async function getAlts(sheetId: string, playerName: string): Promise<stri
     });
 }
 
-export async function getPlayerNameFromAlt(sheetId: string, characterName: string): Promise<string | undefined> {
+export async function getPlayerNameFromAlt(sheetId: SheetId, characterName: string): Promise<string | undefined> {
     const params = [{ column: kCharacterColumns.character, fn: Qop.Eq, value: characterName }];
     const query = constructQuery([kCharacterColumns.player], params);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(sheetId, 'characters', query);
+        data = await fetchTableFromGoogleSheets(sheetId.id, 'characters', query);
     } catch {
         return undefined;
     }

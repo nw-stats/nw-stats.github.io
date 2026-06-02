@@ -10,9 +10,10 @@ import type { CalculatedStat } from "../types/calculatedsstat";
 import type { QueryParameter } from "../types/queryparameter";
 
 import { Qop } from "../types/queryparameter";
+import type { SheetId } from "../constants/sheets";
 
 interface UseRoleStatisticsOptions {
-    sheetId: string;
+    sheetId: SheetId;
     roles: Role[];
 }
 

@@ -3,12 +3,13 @@ import type { Character } from "../../types/character";
 import { kCharacterColumns } from "../../mapping/charactersmap";
 import { Qop } from "../../types/queryparameter";
 import { getCharacters } from "../../services/characterservice";
+import type { SheetId } from "../../constants/sheets";
 
 
 export interface UseCharactersOptions {
     comapny?: string
 }
-export function useCharacters(sheetId: string, options?: UseCharactersOptions) {
+export function useCharacters(sheetId: SheetId, options?: UseCharactersOptions) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
     const [members, setMemebrs] = useState<Character[]>([]);

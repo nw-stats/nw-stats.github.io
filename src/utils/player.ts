@@ -1,7 +1,7 @@
 import type { CharacterDetailsEntry, Leaderboard } from "../types/leaderboard";
 import type { Character } from "../types/character";
 import type { Role } from "../types/role";
-import type { Roster } from "../types/roster";
+import type { GroupKey, Roster } from "../types/roster";
 import type { War } from "../types/hydratedtypes/war";
 import type { CharacterDetails } from "../types/characterdetails";
 import { normalize, summarize } from "./leaderboard";
@@ -13,7 +13,7 @@ export function createCharacterDetails(
 ): CharacterDetailsEntry[] {
 
 
-    var detailEntires: CharacterDetailsEntry[] = []
+    const detailEntires: CharacterDetailsEntry[] = []
 
     for (const war of wars) {
         const lbEntry = leaderboard.find(v => v.warid === war.id);
@@ -35,15 +35,17 @@ export function createCharacterDetails(
         const isWinner = war.winner === lbEntry.company;
         const date = war.date;
         const duration = war.duration;
-        let roleAssignment = { role: '' as Role };
-        for (const [_, group] of companyRoster.groups) {
+        const roleAssignment = { role: '' as Role };
+        let groupNumber: GroupKey | undefined = undefined;
+        for (const [k, group] of companyRoster.groups) {
             const wp = group.find(v => v.name === lbEntry.character);
             if (wp) {
                 roleAssignment.role = wp.role;
+                groupNumber = k;
                 break;
             }
         }
-        detailEntires.push({ ...lbEntry, date, attacker, defender, roleAssignment, isWinner, duration });
+        detailEntires.push({ ...lbEntry, date, attacker, defender, roleAssignment, isWinner, duration, group: groupNumber });
     }
     return detailEntires;
 }

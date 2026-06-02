@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import type { PlayerRow } from "../../types/db/playerrow";
 import { getPlayersTable } from "../../services/playerservice";
+import type { SheetId } from "../../constants/sheets";
 
-export function usePlayersTable(sheetId: string) {
+export function usePlayersTable(sheetId: SheetId) {
     const [playerTable, SetPlayerTable] = useState<PlayerRow[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
-
     useEffect(() => {
         let cancelled = false;
         async function fetchAll() {

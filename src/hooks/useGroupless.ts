@@ -4,8 +4,9 @@ import { useRosterTable } from "./tables/userRosterTable";
 import { rosterHasCharacter } from "../types/db/rosterrow";
 import type { Ungrouped } from "../types/ungrouped";
 import { GroupRosterByWarId } from "../services/rosterservice";
+import type { SheetId } from "../constants/sheets";
 
-export function useGroupless(sheetId: string) {
+export function useGroupless(sheetId: SheetId) {
     const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
 

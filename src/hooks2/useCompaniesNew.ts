@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import type { Company } from "../types/company";
 import { getCompanies } from "../services/companiesservice";
+import type { SheetId } from "../constants/sheets";
 
 
-export function useCompanies(sheetId: string) {
+export function useCompanies(sheetId: SheetId) {
     const [companies, setCompanies] = useState<Company[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [err, setError] = useState<any>(null);
+    const [err, setError] = useState<unknown>(null);
 
     useEffect(() => {
         let cancelled = false;

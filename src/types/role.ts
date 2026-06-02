@@ -16,6 +16,7 @@ export const KRoleCodes = {
 
     "Disruptor": "DISR",
     "Shotcaller": "SHOT",
+    "Point Spear": "PSPR",
     "Unassigned": "--",
 } as const;
 
@@ -39,6 +40,7 @@ export const roleOrder: Role[] = [
     "Healer AOE",
     "Healer KS",
     "Bruiser",
+    "Point Spear",
     "Tank",
     "Flail",
     "DPS",

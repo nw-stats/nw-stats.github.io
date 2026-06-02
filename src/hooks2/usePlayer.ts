@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { getPlayerNameFromAlt } from "../services/altservice";
+import type { SheetId } from "../constants/sheets";
 
 
-export function usePlayerFromAlt(sheetId: string, altname?: string) {
+export function usePlayerFromAlt(sheetId: SheetId, altname?: string) {
     const [player, setPlayer] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);

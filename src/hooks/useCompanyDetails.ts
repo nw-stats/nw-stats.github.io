@@ -3,10 +3,11 @@ import { useMembers } from "./useMembers";
 import { useWarRaw } from "./base/useWarsRaw";
 import { hydrateWars } from "../utils/hydrate";
 import { useLeaderboards } from "./base/useLeaderboards";
+import type { SheetId } from "../constants/sheets";
 
 
 
-export function useCompanyDetails(sheetId: string, name: string) {
+export function useCompanyDetails(sheetId: SheetId, name: string) {
     const { loading: warsLoading, error: warsError, wars } = useWarRaw(sheetId, { companies: [name] });
     const { loading: companyLoading, error: companyError, companies } = useCompanies(sheetId, [...(wars.map(v => v.attacker)), ...(wars.map(v => v.defender)), name]);
     const { loading: membersLoading, error: membersError, members } = useMembers(sheetId, name);

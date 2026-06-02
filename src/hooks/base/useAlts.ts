@@ -4,8 +4,9 @@ import { getCharacters } from '../../services/characterservice'
 import { Qop } from '../../types/queryparameter'
 import type { Character } from '../../types/character'
 import { kCharacterColumns } from '../../mapping/charactersmap'
+import type { SheetId } from '../../constants/sheets'
 
-export function useAlts(sheetId: string, player?: string) {
+export function useAlts(sheetId: SheetId, player?: string) {
     const [alts, setAlts] = useState<Character[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<Error | null>(null)

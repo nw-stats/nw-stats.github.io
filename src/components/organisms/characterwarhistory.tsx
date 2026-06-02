@@ -384,6 +384,7 @@ import type { RoleAssignment } from "../../types/role";
 
 import { formatDate, formatSeconds } from "../../utils/time";
 import RoleChip from "../atom/rolechip";
+import type { GroupKey } from "../../types/roster";
 
 declare module "@tanstack/react-table" {
     interface ColumnMeta<TData, TValue> {
@@ -473,8 +474,22 @@ export default function CharacterWarHistory({
                     )
                 },
                 {
+                    accessorKey: 'group',
+                    header: () => (
+                        <div>Group</div>
+                    ),
+
+                    cell: info => (
+                        <div className="w-full text-center">{info.getValue<GroupKey>()}</div>
+                    )
+                },
+                {
                     accessorKey: "roleAssignment",
-                    header: "Role",
+                    header: () => (
+                        <div className="w-full flex text-center">
+                            Role
+                        </div>
+                    ),
 
                     sortingFn: (rowA, rowB) => {
                         const a =
@@ -501,6 +516,7 @@ export default function CharacterWarHistory({
                         </div>
                     )
                 },
+
                 {
                     accessorKey: "isWinner",
                     header: "W/L",
@@ -524,38 +540,26 @@ export default function CharacterWarHistory({
                     )
                 },
 
-                // {
-                //     accessorKey: "kills",
-                //     header: "K",
-                //     meta: {
-                //         className:
-                //             "w-12 text-right"
-                //     },
-                //     cell: info =>
-                //         info.getValue<number>()
-                // },
+                {
+                    accessorKey: "kills",
+                    header: "K",
+                    cell: info =>
+                        info.getValue<number>()
+                },
 
-                // {
-                //     accessorKey: "deaths",
-                //     header: "D",
-                //     meta: {
-                //         className:
-                //             "w-12 text-right"
-                //     },
-                //     cell: info =>
-                //         info.getValue<number>()
-                // },
+                {
+                    accessorKey: "deaths",
+                    header: "D",
+                    cell: info =>
+                        info.getValue<number>()
+                },
 
-                // {
-                //     accessorKey: "assists",
-                //     header: "A",
-                //     meta: {
-                //         className:
-                //             "w-12 text-right"
-                //     },
-                //     cell: info =>
-                //         info.getValue<number>()
-                // },
+                {
+                    accessorKey: "assists",
+                    header: "A",
+                    cell: info =>
+                        info.getValue<number>()
+                },
             ],
             []
         );

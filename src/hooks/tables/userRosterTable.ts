@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { getRosterTable } from "../../services/rosterservice";
 import type { RosterRow } from "../../types/db/rosterrow";
+import type { SheetId } from "../../constants/sheets";
 
-export function useRosterTable(sheetId: string) {
+export function useRosterTable(sheetId: SheetId) {
     const [rosterTable, setRosterTable] = useState<RosterRow[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);

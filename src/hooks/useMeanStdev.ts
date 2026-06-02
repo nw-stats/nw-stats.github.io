@@ -4,8 +4,9 @@ import { useRosterTable } from "./tables/userRosterTable";
 import { HydrateLeaderboardTable } from "../services/leaderboardservice";
 import { GroupRosterByWarId } from "../services/rosterservice";
 import { buildRolePerformanceProfile } from "../domain/stats";
+import type { SheetId } from "../constants/sheets";
 
-export function useMeanStdev(sheetId: string) {
+export function useMeanStdev(sheetId: SheetId) {
     const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
     //const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable();

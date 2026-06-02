@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { getWars } from "../services/wardbservice";
 import { type QueryParameter } from "../types/queryparameter";
 import type { WarRaw } from "../types/db/warraw";
+import type { SheetId } from "../constants/sheets";
 
-export function useWarsById(sheetId: string, withIds: number[]) {
+export function useWarsById(sheetId: SheetId, withIds: number[]) {
     const [wars, setWars] = useState<WarRaw[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [err, setError] = useState<any>(null);

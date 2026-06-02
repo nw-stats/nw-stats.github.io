@@ -10,8 +10,9 @@ import { summarizeLeaderboard } from "../services/leaderboardservice"; // refact
 import { fillCalculatedFields, fillRoleAssignment, splitLeaderboards } from "../utils/leaderboard";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 import { calculateHealerStats } from "../utils/healer";
+import type { SheetId } from "../constants/sheets";
 
-export function useWarData(sheetId: string, warId: number) {
+export function useWarData(sheetId: SheetId, warId: number) {
     const [error, setError] = useState<unknown>(null);
     const lbHook = useLeaderboards(sheetId, { warIds: [warId] });
     const wHook = useWarsHydrated(sheetId, { ids: [warId], showHidden: true });

@@ -4,8 +4,9 @@ import { createCharacterDetails } from "../utils/player";
 import { useCharacter } from "./useCharacter";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
+import type { SheetId } from "../constants/sheets";
 
-export function usePlayerDetails(sheetId: string, character: string) {
+export function usePlayerDetails(sheetId: SheetId, character: string) {
     const [error, setError] = useState<unknown>(null);
 
     const pHook = useCharacter(sheetId, character);

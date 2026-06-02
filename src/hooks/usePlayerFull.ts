@@ -7,8 +7,9 @@ import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 import type { PlayerRow } from "../types/db/playerrow";
 import { getPlayerRows } from "../services/playerservice";
+import type { SheetId } from "../constants/sheets";
 
-export function usePlayer(sheetId: string, playerName?: string) {
+export function usePlayer(sheetId: SheetId, playerName?: string) {
     const [player, setPlayer] = useState<PlayerRow | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);
@@ -39,7 +40,7 @@ export function usePlayer(sheetId: string, playerName?: string) {
     return { loading, error, player };
 }
 
-export function usePlayerDetails(sheetId: string, playerName?: string) {
+export function usePlayerDetails(sheetId: SheetId, playerName?: string) {
     const { player, loading: playerLoading, error: playerError } = usePlayer(sheetId, playerName);
     const { alts, loading: altsLoading, error: altsError } = useAlts(sheetId, playerName);
     const altNames = alts.map(v => v.name) || [playerName];

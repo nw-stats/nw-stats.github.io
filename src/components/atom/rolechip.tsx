@@ -15,7 +15,7 @@ const roleTextColors: Record<Role, string> = {
     "KS VG": "text-role-ks-vg",
 
     "Disruptor": "text-role-disruptor",
-
+    "Point Spear": "text-role-empty",
     "Shotcaller": "text-role-shotcaller",
     "Unassigned": "text-role-empty",
 };

@@ -6,8 +6,9 @@ import type { Company } from "../types/company";
 
 import { kCompaniesColumns, kCompaniesTable } from "../mapping/companiesmap";
 import { convertFaction, convertInt, convertString, convertStringArray } from "../utils/sheetconvert";
+import type { SheetId } from "../constants/sheets";
 
-export async function getCompanies(sheetId: string, companyNames?: string[]): Promise<Company[]> {
+export async function getCompanies(sheetId: SheetId, companyNames?: string[]): Promise<Company[]> {
     const params = companyNames ? companyNames.map(v => ({ column: kCompaniesColumns.name, fn: Qop.Eq, value: v })) : undefined;
     const query = constructQuery([
         kCompaniesColumns.id,
@@ -21,7 +22,7 @@ export async function getCompanies(sheetId: string, companyNames?: string[]): Pr
     ], params);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(sheetId, 'companies', query);
+        data = await fetchTableFromGoogleSheets(sheetId.id, 'companies', query);
     } catch {
         return [];
     }

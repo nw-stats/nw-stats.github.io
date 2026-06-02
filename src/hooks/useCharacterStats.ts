@@ -4,8 +4,9 @@ import { normalize, summarize } from "../utils/leaderboard";
 
 import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
+import type { SheetId } from "../constants/sheets";
 
-export function useCharacterStats(sheetId: string, playerName: string) {
+export function useCharacterStats(sheetId: SheetId, playerName: string) {
     const [summary, setSummary] = useState<StatTotals | null>(null);
     const [averages, setAverages] = useState<StatTotals | null>(null);
     const [error, setError] = useState<unknown>(null);

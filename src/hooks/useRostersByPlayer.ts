@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import type { Roster } from "../types/roster";
 import { getRosters } from "../services/rosterservice";
 import { Qop } from "../types/queryparameter";
+import type { SheetId } from "../constants/sheets";
 
-export function useRostersByPlayer(sheetId: string, player: string) {
+export function useRostersByPlayer(sheetId: SheetId, player: string) {
     const [rosters, setRosters] = useState<Map<number, Map<string, Roster>>>(new Map());
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<any>(null);

@@ -7,8 +7,9 @@ import { fillKpars } from "../utils/leaderboard";
 import { playerPerformanceKey, type PlayerRolePerformance } from "../types/characterperformance";
 import { useCharactersTable } from "./tables/useCharactersTable";
 import { createCharacterToPlayerMap } from "../services/characterservice";
+import type { SheetId } from "../constants/sheets";
 
-export function useCharacterRankings(sheetId: string) {
+export function useCharacterRankings(sheetId: SheetId) {
     const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
     const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);

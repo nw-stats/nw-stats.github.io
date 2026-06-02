@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { getCharacter } from "../services/characterservice";
 import type { Character } from "../types/character";
+import type { SheetId } from "../constants/sheets";
 
-export function useCharacter(sheetId: string, playerName: string) {
+export function useCharacter(sheetId: SheetId, playerName: string) {
     const [player, setPlayer] = useState<Character | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<unknown>(null);

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { getCharactersTable } from "../../services/characterservice";
 import type { CharacterRow } from "../../types/db/characterrow";
+import type { SheetId } from "../../constants/sheets";
 
-export function useCharactersTable(sheetId: string) {
+export function useCharactersTable(sheetId: SheetId) {
     const [characterTable, setCharacterTable] = useState<CharacterRow[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);

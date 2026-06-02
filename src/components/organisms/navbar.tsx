@@ -1,5 +1,5 @@
 import { useEffect, useState, type JSX, type ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
     CaretDownIcon,
     CircleHalfIcon,
@@ -11,7 +11,7 @@ import {
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { kWebsiteName } from "../../constants/name";
 import Dropdown from "../atom/dropdown";
-import type { Season } from "../../constants/sheets";
+import { kSheetIds, type Season } from "../../constants/sheets";
 import { useSeason } from "../../hooks/base/useSeason";
 
 
@@ -68,7 +68,7 @@ export default function Navbar(): JSX.Element {
 
     const [theme, setTheme] =
         useLocalStorage("theme", "dark");
-
+    const navigate = useNavigate();
     useEffect(() => {
         const root = document.documentElement;
 
@@ -164,11 +164,11 @@ export default function Navbar(): JSX.Element {
                 <div className="hidden md:flex items-center gap-2">
 
                     <Dropdown
-                        options={["Season10", "Season9"]}
+                        options={Object.keys(kSheetIds)}
                         value={season}
                         onChange={(v) => {
                             setSeason(v as Season);
-                            // window.location.reload();
+                            navigate("/");
                         }} />
                     <a
                         href="https://discord.gg/jfhRyNSHvD"
@@ -240,10 +240,11 @@ export default function Navbar(): JSX.Element {
                         </div>
 
                         <Dropdown
-                            options={["Season10", "Season9"]}
+                            options={Object.keys(kSheetIds)}
                             value={season}
                             onChange={(v) => {
                                 setSeason(v as Season);
+                                navigate("/");
                             }}
                         />
                     </div>

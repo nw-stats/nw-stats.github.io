@@ -14,6 +14,7 @@ import { kSheetIds } from "../constants/sheets";
 
 function PlayerCompare(): JSX.Element {
     const { season } = useSeason();
+    console.log(season);
     const { loading, error, playerList } = usePlayerList(kSheetIds[season]);
     const [searchParams, setSearchParams] = useSearchParams();
     const { loading: zLoading, error: zError, zscore } = useMeanStdev(kSheetIds[season]);
@@ -56,11 +57,11 @@ function PlayerCompare(): JSX.Element {
     const {
         loading: player1Loading,
         error: player1Error,
-        player: player1Details } = usePlayerDetails(player1);
+        player: player1Details } = usePlayerDetails(kSheetIds[season], player1);
     const {
         loading: player2Loading,
         error: player2Error,
-        player: player2Details } = usePlayerDetails(player2);
+        player: player2Details } = usePlayerDetails(kSheetIds[season], player2);
 
     const player1AllDetails = player1Details.details.get("All");
     const player2AllDetails = player2Details.details.get("All");

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Company } from "../types/company";
 import { getCompanies } from "../services/companiesservice";
+import type { SheetId } from "../constants/sheets";
 
-export function useCompanies(sheetId: string, names: string[]) {
+export function useCompanies(sheetId: SheetId, names: string[]) {
     const [companies, setCompanies] = useState<Company[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);

@@ -38,6 +38,7 @@ export interface CharacterDetailsEntry extends LeaderboardEntry {
     defender: Company;
     isWinner: boolean;
     duration: number;
+    group: GroupKey | undefined;
 }
 
 export interface GroupStats {

@@ -6,12 +6,13 @@ import { Qop } from "../types/queryparameter";
 import { constructQuery } from "../utils/querybuilder";
 import { convertInt, convertString } from "../utils/sheetconvert";
 import { fetchTableFromGoogleSheets, type DataType } from "./googlesheets";
+import type { SheetId } from "../constants/sheets";
 
-export async function getPlayersTable(sheetId: string): Promise<PlayerRow[]> {
+export async function getPlayersTable(sheetId: SheetId): Promise<PlayerRow[]> {
     const query = constructQuery(['A', 'B', 'C', 'D', 'E', 'F',])
     let data: DataType[][] = []
     try {
-        data = await fetchTableFromGoogleSheets(sheetId, 'players', query);
+        data = await fetchTableFromGoogleSheets(sheetId.id, 'players', query);
     } catch {
         return [];
     }
@@ -43,13 +44,13 @@ export function hydratePlayers(players: PlayerRow[], characters: Character[]): P
     return hydrated;
 }
 
-export async function getPlayerRows(sheetId: string, playerNames: string[]): Promise<PlayerRow[]> {
+export async function getPlayerRows(sheetId: SheetId, playerNames: string[]): Promise<PlayerRow[]> {
     const query = constructQuery(
         ['A', 'B', 'C', 'D', 'E', 'F',],
         playerNames.map(v => ({ column: 'B', fn: Qop.Eq, value: v })),
     );
     try {
-        const data = await fetchTableFromGoogleSheets(sheetId, 'players', query);
+        const data = await fetchTableFromGoogleSheets(sheetId.id, 'players', query);
         return data.map(v => ({
             id: convertInt(v[0]),
             name: convertString(v[1]),

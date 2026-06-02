@@ -11,7 +11,6 @@ export default function CharacterRouting(): JSX.Element {
     const { season } = useSeason();
     const { loading, error, playerName } = usePlayerNameFromAlt(kSheetIds[season], characterName);
     const navigate = useNavigate();
-    console.log('PP', playerName);
     useEffect(() => {
         if (playerName) {
             navigate(`/players/${playerName}`, { replace: true });

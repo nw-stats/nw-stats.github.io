@@ -3,8 +3,9 @@ import { hydratePlayers } from "../services/playerservice";
 import { useCharactersTable } from "./tables/useCharactersTable";
 import { usePlayersTable } from "./tables/usePlayersTable";
 import { hydrateCharacters } from "../services/characterservice";
+import type { SheetId } from "../constants/sheets";
 
-export function usePlayerList(sheetId: string) {
+export function usePlayerList(sheetId: SheetId) {
     const {
         loading: playersLoading,
         error: playersError,

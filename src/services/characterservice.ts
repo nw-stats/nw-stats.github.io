@@ -7,8 +7,9 @@ import { kCharacterColumns, kCharacterSheetName, kCharacterTable } from "../mapp
 import { convertFaction, convertInt, convertString } from "../utils/sheetconvert";
 import type { CharacterRow } from "../types/db/characterrow";
 import type { Faction } from "../types/faction";
+import type { SheetId } from "../constants/sheets";
 
-export async function getCharacter(sheetId: string, playerName: string): Promise<Character | null> {
+export async function getCharacter(sheetId: SheetId, playerName: string): Promise<Character | null> {
     const params = [{ column: kCharacterColumns.character, fn: Qop.Eq, value: playerName }];
     const query = constructQuery([
         kCharacterColumns.id,
@@ -21,7 +22,7 @@ export async function getCharacter(sheetId: string, playerName: string): Promise
     ], params);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(sheetId, 'characters', query);
+        data = await fetchTableFromGoogleSheets(sheetId.id, 'characters', query);
     } catch (err) {
         return null;
     }
@@ -38,7 +39,7 @@ export async function getCharacter(sheetId: string, playerName: string): Promise
     return null;
 }
 
-export async function getCharacters(sheetId: string, params?: QueryParameter[], order?: Ordering, limit?: number): Promise<Character[]> {
+export async function getCharacters(sheetId: SheetId, params?: QueryParameter[], order?: Ordering, limit?: number): Promise<Character[]> {
     const query = constructQuery([
         kCharacterColumns.id,
         kCharacterColumns.character,
@@ -48,7 +49,7 @@ export async function getCharacters(sheetId: string, params?: QueryParameter[], 
         kCharacterColumns.company,
         kCharacterColumns.picture
     ], params, order, limit);
-    const data = await fetchTableFromGoogleSheets(sheetId, kCharacterSheetName, query);
+    const data = await fetchTableFromGoogleSheets(sheetId.id, kCharacterSheetName, query);
 
 
     return data.map(row => ({
@@ -60,7 +61,7 @@ export async function getCharacters(sheetId: string, params?: QueryParameter[], 
     })).filter(v => v.name);
 }
 
-export async function getCharactersTable(sheetId: string): Promise<CharacterRow[]> {
+export async function getCharactersTable(sheetId: SheetId): Promise<CharacterRow[]> {
     const query = constructQuery([
         kCharacterColumns.id,
         kCharacterColumns.character,
@@ -72,7 +73,7 @@ export async function getCharactersTable(sheetId: string): Promise<CharacterRow[
     ]);
     let data: DataType[][] = [];
     try {
-        data = await fetchTableFromGoogleSheets(sheetId, kCharacterSheetName, query);
+        data = await fetchTableFromGoogleSheets(sheetId.id, kCharacterSheetName, query);
     }
     catch {
         return []

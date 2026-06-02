@@ -7,8 +7,9 @@ import { buildPlayerPerformanceProfile, buildRolePerformanceProfile, calculatePl
 import { useWarRaw } from "./base/useWarsRaw";
 import { createCharacterToPlayerMap } from "../services/characterservice";
 import { useCharactersTable } from "./tables/useCharactersTable";
+import type { SheetId } from "../constants/sheets";
 
-export function useZScore(sheetId: string) {
+export function useZScore(sheetId: SheetId) {
     const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
     const { loading: warLoading, error: warError, wars } = useWarRaw(sheetId)

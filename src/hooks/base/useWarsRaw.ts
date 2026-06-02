@@ -4,8 +4,9 @@ import { kWarColumns } from "../../mapping/warmap";
 import type { WarRaw } from "../../types/db/warraw";
 import { getWars } from "../../services/wardbservice";
 import type { UseWarsOptions } from "../options/waroptions";
+import type { SheetId } from "../../constants/sheets";
 
-export function useWarRaw(sheetId: string, options?: UseWarsOptions) {
+export function useWarRaw(sheetId: SheetId, options?: UseWarsOptions) {
     const [wars, setWars] = useState<WarRaw[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);

@@ -3,6 +3,7 @@ import type { Leaderboard, } from "../../types/leaderboard";
 import { getLeaderboard } from "../../services/leaderboardservice";
 import { kLeaderboardColumns } from "../../mapping/leaderboardmap";
 import { Qop, type QueryParameter } from "../../types/queryparameter";
+import type { SheetId } from "../../constants/sheets";
 
 export interface UseLeaderboardsOptions {
     warIds?: number[];
@@ -10,7 +11,7 @@ export interface UseLeaderboardsOptions {
     companies?: string[];
 }
 
-export function useLeaderboards(sheetId: string, options?: UseLeaderboardsOptions) {
+export function useLeaderboards(sheetId: SheetId, options?: UseLeaderboardsOptions) {
     const [leaderboards, setLeaderboards] = useState<Leaderboard>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);

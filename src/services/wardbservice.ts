@@ -6,8 +6,9 @@ import { type Ordering, type QueryParameter } from "../types/queryparameter";
 import { kWarColumns, kWarTable } from "../mapping/warmap";
 import { convertBoolean, convertInt, convertString, convertToStatus } from "../utils/sheetconvert";
 import type { WarRaw } from "../types/db/warraw";
+import type { SheetId } from "../constants/sheets";
 
-export async function getWars(sheetId: string, params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
+export async function getWars(sheetId: SheetId, params?: QueryParameter[], limit?: number, order?: Ordering): Promise<WarRaw[]> {
     const query = constructQuery([
         kWarColumns.id,
         kWarColumns.date,
@@ -27,7 +28,7 @@ export async function getWars(sheetId: string, params?: QueryParameter[], limit?
         kWarColumns.tz,
         kWarColumns.hideRoles,
     ], params, order, limit);
-    const data = await fetchTableFromGoogleSheets(sheetId, 'wars', query);
+    const data = await fetchTableFromGoogleSheets(sheetId.id, 'wars', query);
     const wars: WarRaw[] = [];
     for (const row of data) {
         const id = convertInt(row[kWarTable.id]);
