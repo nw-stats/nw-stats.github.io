@@ -64,7 +64,7 @@ export default function PlayerRankings(): JSX.Element {
             accessorKey: 'name',
             cell: info => (
                 <div className="text-left hover:underline">
-                    <Link to={`/character/${info.getValue<string>()}`}>
+                    <Link to={`/players/${info.getValue<string>()}`}>
                         {info.getValue<string>()}
                     </Link>
                 </div>
