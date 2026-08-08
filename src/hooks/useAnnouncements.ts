@@ -1,34 +1,11 @@
+import { useCallback } from "react";
 import type { DateTime } from "luxon";
-import { useEffect, useState } from "react";
 import { getAnnoucements } from "../services/annoucementsservice";
 import type { AnnouncementsRow } from "../types/db/announcementrow";
+import { useFetch } from "./useFetch";
 
 export default function useAnnouncements(expires: DateTime) {
-    const [announcements, setAnnouncements] = useState<AnnouncementsRow[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<unknown>(null);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function fetchData() {
-            try {
-                setLoading(true);
-                const a = await getAnnoucements(expires);
-                if (cancelled) return;
-                setAnnouncements(a);
-
-            } catch (err) {
-                if (!cancelled) setError(err);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        fetchData();
-        return () => {
-            cancelled = true; // Prevent state update on unmounted component
-        };
-    }, [expires]);
-
-    return { error, loading, announcements };
+    const fetcher = useCallback(() => getAnnoucements(expires), [expires]);
+    const { data: announcements, loading, error } = useFetch<AnnouncementsRow[]>(fetcher, []);
+    return { announcements, loading, error };
 }

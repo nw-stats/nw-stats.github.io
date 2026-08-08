@@ -55,14 +55,14 @@ export function useLeaderboards(sheetId: SheetId, options?: UseLeaderboardsOptio
                 setLeaderboards(lb || []);
 
             } catch (err) {
-                setError(err)
+                if (!cancelled) setError(err);
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
         }
         fetchAll();
         return () => { cancelled = true };
-    }, [warIdsKey, playersKey, companiesKey]);
+    }, [warIdsKey, playersKey, companiesKey, sheetId]);
 
     return { loading, error, leaderboards };
 }

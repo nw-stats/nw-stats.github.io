@@ -11,5 +11,5 @@ export interface RosterRow {
 }
 
 export function rosterHasCharacter(roster: RosterRow[], characterName: string): boolean {
-    return roster.some((v) => (v.character === characterName));
+    return roster.some((v) => (v.character.toLowerCase() === characterName.toLowerCase()));
 }

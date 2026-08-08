@@ -1,42 +1,21 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import type { StatTotals } from "../types/leaderboard";
 import { normalize, summarize } from "../utils/leaderboard";
-
 import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 import type { SheetId } from "../constants/sheets";
 
 export function useCharacterStats(sheetId: SheetId, playerName: string) {
-    const [summary, setSummary] = useState<StatTotals | null>(null);
-    const [averages, setAverages] = useState<StatTotals | null>(null);
-    const [error, setError] = useState<unknown>(null);
-
     const { loading: lbLoading, error: lbError, leaderboards } = useLeaderboards(sheetId, { characters: [playerName] });
     const { loading: warsLoading, error: warsError, wars } = useWarsHydrated(sheetId, { ids: leaderboards.map(v => v.warid) });
 
     const loading = lbLoading || warsLoading;
+    const error = lbError || warsError;
 
-    useEffect(() => {
-        setError(lbError || warsError);
-    }, [lbError, warsError]);
-
-    useEffect(() => {
-        if (!leaderboards || !wars.length) {
-            setSummary(null);
-            setAverages(null);
-            return;
-        }
-
-        try {
-            const validEntries = leaderboards.filter(v => wars.some(w => w.id === v.warid));
-            const s = summarize(validEntries);
-            const a = normalize(leaderboards, wars);
-
-            setSummary(s);
-            setAverages(a);
-        } catch (err) {
-            setError(err);
-        }
+    const { summary, averages } = useMemo<{ summary: StatTotals | null; averages: StatTotals | null }>(() => {
+        if (!leaderboards.length || !wars.length) return { summary: null, averages: null };
+        const validEntries = leaderboards.filter(v => wars.some(w => w.id === v.warid));
+        return { summary: summarize(validEntries), averages: normalize(leaderboards, wars) };
     }, [leaderboards, wars]);
 
     return { error, loading, summary, averages };

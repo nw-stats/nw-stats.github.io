@@ -17,6 +17,7 @@ export function useAlts(sheetId: SheetId, player?: string) {
         async function fetchAlts() {
             if (!player) {
                 setAlts([])
+                setLoading(false)
                 return
             }
 

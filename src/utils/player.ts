@@ -38,7 +38,7 @@ export function createCharacterDetails(
         const roleAssignment = { role: '' as Role };
         let groupNumber: GroupKey | undefined = undefined;
         for (const [k, group] of companyRoster.groups) {
-            const wp = group.find(v => v.name === lbEntry.character);
+            const wp = group.find(v => v.name.toLowerCase() === lbEntry.character.toLowerCase());
             if (wp) {
                 roleAssignment.role = wp.role;
                 groupNumber = k;
@@ -65,7 +65,7 @@ export function createPlayerDetailsAndSummary(
     }
     let allHistory: CharacterDetailsEntry[] = []
     for (const character of characters) {
-        const lb = leaderboardEntries.filter(v => v.character === character.name);
+        const lb = leaderboardEntries.filter(v => v.character.toLowerCase() === character.name.toLowerCase());
         const totals = summarize(lb);
         const normalized = normalize(lb, wars);
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useRosters } from "./useRostersById";
 import { useCompanies } from "./useCompanies";
 import { getGroupDetails, getGroupSummaries } from "../utils/groups";
@@ -6,14 +6,13 @@ import { type GroupKey } from "../types/roster";
 import type { GroupPerformance } from "../types/leaderboard";
 import type { Company } from "../types/company";
 import { useLeaderboards } from "./base/useLeaderboards";
-import { summarizeLeaderboard } from "../services/leaderboardservice"; // refactor this. idk what it's doing in there.
+import { summarizeLeaderboard } from "../services/leaderboardservice";
 import { fillCalculatedFields, fillRoleAssignment, splitLeaderboards } from "../utils/leaderboard";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
 import { calculateHealerStats } from "../utils/healer";
 import type { SheetId } from "../constants/sheets";
 
 export function useWarData(sheetId: SheetId, warId: number) {
-    const [error, setError] = useState<unknown>(null);
     const lbHook = useLeaderboards(sheetId, { warIds: [warId] });
     const wHook = useWarsHydrated(sheetId, { ids: [warId], showHidden: true });
     const rHook = useRosters(sheetId, [warId]);
@@ -40,18 +39,16 @@ export function useWarData(sheetId: SheetId, warId: number) {
     const healerSummary = useMemo(() => {
         return calculateHealerStats(groupDetails);
     }, [groupDetails]);
-    useMemo(() => {
-        fillCalculatedFields(lbHook.leaderboards, summary)
-    }, [lbHook.leaderboards, summary]);
-    const companyMap = new Map<string, Company>();
-    for (const company of cHook.companies) {
-        companyMap.set(company.name, company);
-    }
-
-
     useEffect(() => {
-        setError(lbHook.error || wHook.error || rHook.error || cHook.error);
-    }, [lbHook.error, wHook.error, rHook.error, cHook.error]);
+        fillCalculatedFields(lbHook.leaderboards, summary);
+    }, [lbHook.leaderboards, summary]);
+    const companyMap = useMemo(() => {
+        const m = new Map<string, Company>();
+        for (const company of cHook.companies) m.set(company.name, company);
+        return m;
+    }, [cHook.companies]);
+
+    const error = lbHook.error || wHook.error || rHook.error || cHook.error;
 
     return {
         loading,

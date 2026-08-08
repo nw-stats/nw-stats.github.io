@@ -38,7 +38,7 @@ export function hydratePlayers(players: PlayerRow[], characters: Character[]): P
         hydrated.push({
             name: player.name,
             discord: player.discord,
-            alts: characters.filter((a: Character) => (a.player === player.name)),
+            alts: characters.filter((a: Character) => (a.player.toLowerCase() === player.name.toLowerCase())),
         })
     }
     return hydrated;

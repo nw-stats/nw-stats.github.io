@@ -11,7 +11,8 @@ export function usePlayerNameFromAlt(sheetId: SheetId, altName: string | undefin
         async function fetchAll() {
             try {
                 if (!altName) {
-                    setPlayerName(altName);
+                    setPlayerName(undefined);
+                    setLoading(false);
                     return;
                 }
                 setLoading(true);
@@ -33,7 +34,7 @@ export function usePlayerNameFromAlt(sheetId: SheetId, altName: string | undefin
         }
         fetchAll();
         return () => { cancelled = true };
-    }, [altName]);
+    }, [altName, sheetId]);
 
     return { loading, error, playerName };
 }

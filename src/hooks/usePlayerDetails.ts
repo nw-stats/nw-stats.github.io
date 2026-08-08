@@ -1,25 +1,35 @@
-import { useEffect, useMemo, useState } from "react";
-import { useRostersByPlayer } from "./useRostersByPlayer";
-import { createCharacterDetails } from "../utils/player";
-import { useCharacter } from "./useCharacter";
+import { useMemo } from "react";
+import { useAlts } from "./base/useAlts";
+import { useRosters } from "./useRostersById";
+import { createPlayerDetailsAndSummary } from "../utils/player";
 import { useLeaderboards } from "./base/useLeaderboards";
 import { useWarsHydrated } from "./composite/useWarsHydrated";
+import { usePlayer } from "./usePlayer";
 import type { SheetId } from "../constants/sheets";
 
-export function usePlayerDetails(sheetId: SheetId, character: string) {
-    const [error, setError] = useState<unknown>(null);
+export function usePlayerDetails(sheetId: SheetId, playerName?: string) {
+    const { player, loading: playerLoading, error: playerError } = usePlayer(sheetId, playerName);
+    const { alts, loading: altsLoading, error: altsError } = useAlts(sheetId, playerName);
+    const altNames = useMemo(() => alts.map(v => v.name), [alts]);
+    const { leaderboards, loading: lbLoading, error: lbError } = useLeaderboards(sheetId, { characters: altNames });
 
-    const pHook = useCharacter(sheetId, character);
-    const rHook = useRostersByPlayer(sheetId, character);
-    const lbHook = useLeaderboards(sheetId, { characters: [character] })
-    const warIds = useMemo(() => lbHook.leaderboards.map(v => v.warid), [lbHook.leaderboards]);
-    const wHook = useWarsHydrated(sheetId, { ids: warIds });
-    const loading = wHook.loading || rHook.loading || pHook.loading || lbHook.loading;
+    const warIds = useMemo(() => {
+        const ids = new Set<number>();
+        for (const lb of leaderboards) ids.add(lb.warid);
+        return Array.from(ids);
+    }, [leaderboards]);
 
-    const playerDetails = createCharacterDetails(lbHook.leaderboards, rHook.rosters, wHook.wars);
-    useEffect(() => {
-        setError(wHook.error || rHook.error || pHook.error || lbHook.error);
-    }, [wHook.error, rHook.error, pHook.error, lbHook.error]);
+    const { rosters, loading: rostersLoading, error: rostersError } = useRosters(sheetId, warIds);
+    const { wars, loading: warsLoading, error: warsError } = useWarsHydrated(sheetId, { ids: warIds });
 
-    return { loading, error, details: playerDetails };
+    const loading = altsLoading || lbLoading || rostersLoading || warsLoading || playerLoading;
+    const error = altsError || lbError || rostersError || warsError || playerError;
+
+    const details = createPlayerDetailsAndSummary(alts, leaderboards, rosters, wars);
+
+    return {
+        loading,
+        error,
+        player: { player, details }
+    };
 }

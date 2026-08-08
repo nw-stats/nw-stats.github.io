@@ -56,6 +56,10 @@ const toolLinks: NavItem[] = [
     {
         label: "Groupless",
         to: "/groupless"
+    },
+    {
+        label: "Cropper",
+        to: "/cropper"
     }
 ];
 

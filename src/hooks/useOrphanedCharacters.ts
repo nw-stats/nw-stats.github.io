@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { useLeaderboardtable } from "./tables/useLeaderboardTable";
+import { useLeaderboardTable } from "./tables/useLeaderboardTable";
 import { useCharactersTable } from "./tables/useCharactersTable";
 import { createCharacterToPlayerMap } from "../services/characterservice";
 import type { SheetId } from "../constants/sheets";
 
 export function useOrphanedCharacters(sheetId: SheetId) {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardTable(sheetId);
     const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);
 
     const orphans = useMemo(() => {

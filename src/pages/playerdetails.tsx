@@ -4,7 +4,7 @@ import NotFound from "./notfound";
 import Loading from "../components/atom/loading";
 import Dropdown from "../components/atom/dropdown";
 import CharacterDetailsDisplay from "../components/organisms/characterdetails";
-import { usePlayerDetails } from "../hooks/usePlayerFull";
+import { usePlayerDetails } from "../hooks/usePlayerDetails";
 import { useMemo, type JSX } from "react";
 import PlayerCard from "../components/organisms/playercard";
 import { useSeason } from "../hooks/base/useSeason";

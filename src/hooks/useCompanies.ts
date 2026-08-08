@@ -1,30 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 import type { Company } from "../types/company";
 import { getCompanies } from "../services/companiesservice";
 import type { SheetId } from "../constants/sheets";
+import { useFetch } from "./useFetch";
 
-export function useCompanies(sheetId: SheetId, names: string[]) {
-    const [companies, setCompanies] = useState<Company[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<any>(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        async function fetchAll() {
-            try {
-                setLoading(true);
-                const c = await getCompanies(sheetId, names);
-                if (cancelled) return;
-                setCompanies(c);
-            } catch (err) {
-                if (!cancelled) setError(err);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        fetchAll();
-        return () => { cancelled = true };
-    }, [names.join(',')]);
-
-    return { loading, error, companies };
+export function useCompanies(sheetId: SheetId, names?: string[]) {
+    const namesKey = useMemo(() => names?.join(',') ?? '', [names]);
+    const fetcher = useCallback(() => getCompanies(sheetId, names), [sheetId, namesKey]);
+    const { data: companies, loading, error } = useFetch<Company[]>(fetcher, []);
+    return { companies, loading, error };
 }

@@ -22,7 +22,7 @@ export function getGroupDetails(leaderboard: Leaderboard, rosters: Map<string, R
 
             for (const entry of leaderboard) {
                 for (const player of players) {
-                    if (player.name === entry.character) {
+                    if (player.name.toLowerCase() === entry.character.toLowerCase()) {
                         groupPerformance.stats.push({ ...entry, qpds: Boolean(player.qpds) });
                     }
                 }

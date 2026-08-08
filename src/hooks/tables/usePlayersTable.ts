@@ -1,28 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { PlayerRow } from "../../types/db/playerrow";
 import { getPlayersTable } from "../../services/playerservice";
 import type { SheetId } from "../../constants/sheets";
+import { useFetch } from "../useFetch";
 
 export function usePlayersTable(sheetId: SheetId) {
-    const [playerTable, SetPlayerTable] = useState<PlayerRow[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<unknown>(null);
-    useEffect(() => {
-        let cancelled = false;
-        async function fetchAll() {
-            setLoading(true);
-            try {
-                const pt = await getPlayersTable(sheetId);
-                if (cancelled) return;
-                SetPlayerTable(pt)
-            } catch (err) {
-                setError(err)
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        fetchAll();
-        return () => { cancelled = true };
-    }, [sheetId]);
-    return { loading, error, playerTable };
+    const fetcher = useCallback(() => getPlayersTable(sheetId), [sheetId]);
+    const { data: playerTable, loading, error } = useFetch<PlayerRow[]>(fetcher, []);
+    return { playerTable, loading, error };
 }

@@ -1,39 +1,23 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { Character } from "../../types/character";
 import { kCharacterColumns } from "../../mapping/charactersmap";
 import { Qop } from "../../types/queryparameter";
 import { getCharacters } from "../../services/characterservice";
 import type { SheetId } from "../../constants/sheets";
-
+import { useFetch } from "../useFetch";
 
 export interface UseCharactersOptions {
-    comapny?: string
+    company?: string;
 }
+
 export function useCharacters(sheetId: SheetId, options?: UseCharactersOptions) {
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<any>(null);
-    const [members, setMemebrs] = useState<Character[]>([]);
-
-    useEffect(() => {
-        let cancelled = false;
-        async function fetchAll() {
-            try {
-                setLoading(true);
-                let m: Character[] = [];
-                if (options?.comapny) {
-                    m = await getCharacters(sheetId, [{ column: kCharacterColumns.company, fn: Qop.Eq, value: options?.comapny }]);
-                }
-                if (cancelled) return;
-                setMemebrs(m);
-            } catch (err) {
-                if (!cancelled) setError(err);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
+    const company = options?.company;
+    const fetcher = useCallback(() => {
+        if (company) {
+            return getCharacters(sheetId, [{ column: kCharacterColumns.company, fn: Qop.Eq, value: company }]);
         }
-        fetchAll();
-        return () => { cancelled = true };
-    }, [options?.comapny, sheetId]);
-
+        return Promise.resolve<Character[]>([]);
+    }, [sheetId, company]);
+    const { data: members, loading, error } = useFetch<Character[]>(fetcher, []);
     return { loading, error, members };
 }

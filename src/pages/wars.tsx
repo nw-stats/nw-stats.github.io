@@ -1,6 +1,6 @@
 import { MultiselectDropdown } from "../components/atom/multiselectdropdown";
 import { WarListCard, WarListCardSkeleton } from "../components/molecules/warlistcard";
-import { useCompanies } from "../hooks2/useCompaniesNew";
+import { useCompanies } from "../hooks/useCompanies";
 import { useWarsHydrated } from "../hooks/composite/useWarsHydrated";
 import { Checkbox } from "../components/atom/checkbox";
 import type { JSX } from "react";

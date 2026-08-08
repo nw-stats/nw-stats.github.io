@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { HydrateLeaderboardTable, summarizeLeaderboards } from "../services/leaderboardservice";
 import { GroupRosterByWarId } from "../services/rosterservice";
-import { useLeaderboardtable } from "./tables/useLeaderboardTable";
-import { useRosterTable } from "./tables/userRosterTable";
+import { useLeaderboardTable } from "./tables/useLeaderboardTable";
+import { useRosterTable } from "./tables/useRosterTable";
 import { fillKpars } from "../utils/leaderboard";
 import { playerPerformanceKey, type PlayerRolePerformance } from "../types/characterperformance";
 import { useCharactersTable } from "./tables/useCharactersTable";
@@ -10,7 +10,7 @@ import { createCharacterToPlayerMap } from "../services/characterservice";
 import type { SheetId } from "../constants/sheets";
 
 export function useCharacterRankings(sheetId: SheetId) {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardTable(sheetId);
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
     const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);
 

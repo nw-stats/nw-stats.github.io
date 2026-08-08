@@ -59,7 +59,7 @@ export default function PlayerRankings(): JSX.Element {
         return sorted;
     }, [forReactTable]);
 
-    const colmns = useMemo<ColumnDef<StatZScore>[]>(() => ([
+    const columns = useMemo<ColumnDef<StatZScore>[]>(() => ([
         {
             accessorKey: 'name',
             cell: info => (
@@ -143,7 +143,7 @@ export default function PlayerRankings(): JSX.Element {
                 </div>
             </div >
             <div className="w-full max-w-6xl">
-                <StatsTable columns={colmns} data={filteredData} />
+                <StatsTable columns={columns} data={filteredData} />
             </div>
         </div>
     );

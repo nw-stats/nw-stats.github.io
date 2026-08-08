@@ -19,6 +19,7 @@ import Groupless from './pages/groupless';
 import PlayerCompare from './pages/playercompare';
 import ZScore from './pages/zscore';
 import CharacterRouting from './pages/characterrouting';
+import Cropper from './pages/cropper';
 const App: React.FC = () => {
   return (
 
@@ -43,6 +44,7 @@ const App: React.FC = () => {
             <Route path="/zscore" element={<ZScore />} />
             <Route path="/orphans" element={<OrphanedCharacters />} />
             <Route path="groupless" element={<Groupless />} />
+            <Route path="/cropper" element={<Cropper />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -4,7 +4,7 @@ import { usePlayerList } from "../hooks/usePlayerList";
 import { useSearchParams } from "react-router-dom";
 import Loading from "../components/atom/loading";
 import NotFound from "./notfound";
-import { usePlayerDetails } from "../hooks/usePlayerFull";
+import { usePlayerDetails } from "../hooks/usePlayerDetails";
 import { StatDistributionSet } from "../components/molecules/statdistributionset";
 import { useMeanStdev } from "../hooks/useMeanStdev";
 import SearchBox from "../components/atom/searchbox";
@@ -14,7 +14,6 @@ import { kSheetIds } from "../constants/sheets";
 
 function PlayerCompare(): JSX.Element {
     const { season } = useSeason();
-    console.log(season);
     const { loading, error, playerList } = usePlayerList(kSheetIds[season]);
     const [searchParams, setSearchParams] = useSearchParams();
     const { loading: zLoading, error: zError, zscore } = useMeanStdev(kSheetIds[season]);

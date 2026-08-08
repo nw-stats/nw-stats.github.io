@@ -1,34 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { getCharacter } from "../services/characterservice";
 import type { Character } from "../types/character";
 import type { SheetId } from "../constants/sheets";
+import { useFetch } from "./useFetch";
 
 export function useCharacter(sheetId: SheetId, playerName: string) {
-    const [player, setPlayer] = useState<Character | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<unknown>(null);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        async function fetchData() {
-            try {
-                setLoading(true);
-                const p = await getCharacter(sheetId, playerName);
-                if (cancelled) return;
-                setPlayer(p)
-
-            } catch (err) {
-                if (!cancelled) setError(err);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        fetchData();
-        return () => {
-            cancelled = true; // Prevent state update on unmounted component
-        };
-    }, [playerName, sheetId]);
-
+    const fetcher = useCallback(() => getCharacter(sheetId, playerName), [sheetId, playerName]);
+    const { data: player, loading, error } = useFetch<Character | null>(fetcher, null);
     return { error, loading, player };
 }

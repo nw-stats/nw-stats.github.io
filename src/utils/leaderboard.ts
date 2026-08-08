@@ -189,7 +189,7 @@ export function fillRoleAssignment(leaderboard: Leaderboard, rosters: Map<string
         if (companyRoster) {
             for (const [_, group] of companyRoster.groups) {
                 for (const wp of group) {
-                    if (wp.name === entry.character) {
+                    if (wp.name.toLowerCase() === entry.character.toLowerCase()) {
                         entry.roleAssignment = { role: wp.role }
                     }
                 }

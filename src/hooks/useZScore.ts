@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useLeaderboardtable } from "./tables/useLeaderboardTable";
-import { useRosterTable } from "./tables/userRosterTable";
+import { useLeaderboardTable } from "./tables/useLeaderboardTable";
+import { useRosterTable } from "./tables/useRosterTable";
 import { groupByPlayer, HydrateLeaderboardTable, normalizeLeaderboardEntries } from "../services/leaderboardservice";
 import { GroupRosterByWarId } from "../services/rosterservice";
 import { buildPlayerPerformanceProfile, buildRolePerformanceProfile, calculatePlayersZScore } from "../domain/stats";
@@ -10,40 +10,32 @@ import { useCharactersTable } from "./tables/useCharactersTable";
 import type { SheetId } from "../constants/sheets";
 
 export function useZScore(sheetId: SheetId) {
-    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardtable(sheetId);
+    const { loading: lbLoading, error: lbError, leaderboardTable: lbTable } = useLeaderboardTable(sheetId);
     const { loading: rosterLoading, error: rosterError, rosterTable: rosterTable } = useRosterTable(sheetId);
     const { loading: warLoading, error: warError, wars } = useWarRaw(sheetId)
     const { loading: characterLoading, error: characterError, characterTable } = useCharactersTable(sheetId);
 
+    const hydratedEntries = useMemo(() => {
+        const groupedRosters = GroupRosterByWarId(rosterTable);
+        return HydrateLeaderboardTable(lbTable, groupedRosters);
+    }, [lbTable, rosterTable]);
+
+    const normalizedEntries = useMemo(() => {
+        return normalizeLeaderboardEntries(hydratedEntries, wars);
+    }, [hydratedEntries, wars]);
+
     const normalizedProfile = useMemo(() => {
         const characterPlayerMap = createCharacterToPlayerMap(characterTable);
-
-        const groupedRosters = GroupRosterByWarId(rosterTable);
-        const leaderboardEntries = HydrateLeaderboardTable(lbTable, groupedRosters);
-        const normalizedEntries = normalizeLeaderboardEntries(leaderboardEntries, wars);
-
-        const leaderboardByPlayer = groupByPlayer(
-            normalizedEntries,
-            characterPlayerMap
-        );
-        const profile = buildPlayerPerformanceProfile(leaderboardByPlayer);
-
-        return profile;
-    }, [characterTable, lbTable, rosterTable, wars]);
+        const leaderboardByPlayer = groupByPlayer(normalizedEntries, characterPlayerMap);
+        return buildPlayerPerformanceProfile(leaderboardByPlayer);
+    }, [characterTable, normalizedEntries]);
 
     const rolePerformance = useMemo(() => {
-        const groupedRosters = GroupRosterByWarId(rosterTable);
-        const leaderboardEntries = HydrateLeaderboardTable(lbTable, groupedRosters);
-        const normalizedEntries = normalizeLeaderboardEntries(leaderboardEntries, wars);
-
         return buildRolePerformanceProfile(normalizedEntries);
-    }, [lbTable, rosterTable, wars]);
+    }, [normalizedEntries]);
 
     const zscore = useMemo(() => {
-        return calculatePlayersZScore(
-            normalizedProfile,
-            rolePerformance
-        );
+        return calculatePlayersZScore(normalizedProfile, rolePerformance);
     }, [normalizedProfile, rolePerformance]);
 
     return {

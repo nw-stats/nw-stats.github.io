@@ -149,7 +149,7 @@ export function HydrateLeaderboardTable(
         const roster = rosters.get(leaderboardRow.warid);
         if (!roster) continue;
         for (const rosterRow of roster) {
-            if (rosterRow.character === leaderboardRow.character) {
+            if (rosterRow.character.toLowerCase() === leaderboardRow.character.toLowerCase()) {
                 entries.push({
                     warid: leaderboardRow.warid,
                     character: leaderboardRow.character,
@@ -160,7 +160,7 @@ export function HydrateLeaderboardTable(
                     assists: leaderboardRow.assists,
                     healing: leaderboardRow.healing,
                     damage: leaderboardRow.damage,
-                    kpar: 0.,
+                    kpar: 0,
                     efficiency: 0,
                     aggression: 0,
                     pressure: 0,
@@ -196,7 +196,7 @@ export function groupByPlayer(
     const mapping = new Map<string, LeaderboardEntry[]>;
 
     for (const [character, player] of characterPlayerMap.entries()) {
-        const entries = leaderboardEntires.filter(v => v.character == character);
+        const entries = leaderboardEntires.filter(v => v.character.toLowerCase() === character.toLowerCase());
         if (entries.length) {
             if (mapping.has(player)) {
                 const prevEntires = mapping.get(player)!;
