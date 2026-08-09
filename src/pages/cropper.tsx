@@ -25,6 +25,13 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     });
 }
 
+function formatTime(seconds: number): string {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    const ms = Math.floor((seconds % 1) * 10);
+    return `${m}:${String(s).padStart(2, '0')}.${ms}`;
+}
+
 async function preprocessImage(src: string, opts: PreprocessOpts): Promise<string> {
     if (!opts.grayscale && !opts.invert && !opts.threshold && opts.contrast === 0 && opts.brightness === 0) return src;
     const img = await loadImage(src);
@@ -134,6 +141,10 @@ export default function Cropper(): JSX.Element {
     const [resizeAnchor, setResizeAnchor] = useState({ x: 0, y: 0 });
     const [resizeBaseRect, setResizeBaseRect] = useState<Rect | null>(null);
     const [moveState, setMoveState] = useState<{ startX: number; startY: number; origX: number; origY: number } | null>(null);
+
+    // step 1 scrubber
+    const [videoDuration, setVideoDuration] = useState(0);
+    const [videoCurrentTime, setVideoCurrentTime] = useState(0);
 
     // step 3
     const dragItemId = useRef<string | null>(null);
@@ -532,7 +543,26 @@ export default function Cropper(): JSX.Element {
                         <div className="flex flex-col gap-3">
                             <video ref={videoRef} src={videoSrc}
                                 className="w-full max-h-[55vh] rounded-lg bg-black object-contain cursor-pointer"
-                                onClick={() => { const v = videoRef.current; if (v) v.paused ? v.play() : v.pause(); }} />
+                                onClick={() => { const v = videoRef.current; if (v) v.paused ? v.play() : v.pause(); }}
+                                onTimeUpdate={e => setVideoCurrentTime(e.currentTarget.currentTime)}
+                                onLoadedMetadata={e => { setVideoDuration(e.currentTarget.duration); setVideoCurrentTime(0); }}
+                            />
+                            {/* Scrubber */}
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-muted font-mono w-12 shrink-0 text-right">{formatTime(videoCurrentTime)}</span>
+                                <input
+                                    type="range" min={0} max={videoDuration || 1} step={1 / FPS}
+                                    value={videoCurrentTime} title=""
+                                    onChange={e => {
+                                        const v = videoRef.current;
+                                        if (!v) return;
+                                        v.currentTime = +e.target.value;
+                                        setVideoCurrentTime(+e.target.value);
+                                    }}
+                                    className="flex-1 accent-foreground"
+                                />
+                                <span className="text-xs text-muted font-mono w-12 shrink-0">{formatTime(videoDuration)}</span>
+                            </div>
                             <div className="flex items-center gap-2 flex-wrap">
                                 <button className={BTN} onClick={() => { const v = videoRef.current; if (v) v.paused ? v.play() : v.pause(); }}>Play / Pause</button>
                                 <button className={BTN} onClick={() => jogVideo(-1)}>← Frame</button>
